@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyMarketList</string>
+    <string name="title">1</string>
+    <string name="subtitle">2</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

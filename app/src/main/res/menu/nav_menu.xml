@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page1"
+        android:icon="@android:drawable/alert_light_frame"
+        android:title="Page 1"  />
+    <item
+        android:id="@+id/page2"
+        android:icon="@android:drawable/alert_light_frame"
+        android:title="Page 2" />
+</menu>
