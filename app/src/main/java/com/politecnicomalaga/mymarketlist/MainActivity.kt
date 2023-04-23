@@ -6,8 +6,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.politecnicomalaga.mymarketlist.view.selectProducts.Frutas
-import com.politecnicomalaga.mymarketlist.view.selectProducts.Verduras
+import com.politecnicomalaga.mymarketlist.view.menu.Page1
+import com.politecnicomalaga.mymarketlist.view.menu.Page2
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,19 +19,19 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         setContentView(R.layout.activity_main)
 
-        loadFragment(Frutas())
+        loadFragment(Page1(this@MainActivity))
         bottomNav = findViewById(R.id.bottomNav)
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.page1 -> {
-                    loadFragment(Frutas())
+                    loadFragment(Page1(this@MainActivity))
                     it.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_launcher_foreground)
                     true
                 }
 
                 R.id.page2 -> {
-                    loadFragment(Verduras())
+                    loadFragment(Page2())
                     true
                 }
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
+        transaction.replace(R.id.frameLayout, fragment)
         transaction.commit()
     }
 
