@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.controller.selectProducts
+package com.politecnicomalaga.mymarketlist.controller.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

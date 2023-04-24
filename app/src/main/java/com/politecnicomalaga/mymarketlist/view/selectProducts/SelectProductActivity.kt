@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.controller.selectProducts.ViewPagerAdapter
+import com.politecnicomalaga.mymarketlist.controller.adapter.ViewPagerAdapter
 
 class SelectProductActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
