@@ -10,16 +10,14 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.politecnicomalaga.mymarketlist.MainActivity
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.controller.http.SqlQuery
 import com.politecnicomalaga.mymarketlist.view.selectProducts.SelectProductActivity
 
-class Page1(fromActivity: MainActivity) : Fragment() {
-
-    private val myContext: MainActivity
-
-    init {
-        myContext = fromActivity
+class Page1() : Fragment() {
+    constructor(fromActivity: MainActivity) : this() {
+        this.myContext = fromActivity
     }
+
+    private lateinit var myContext: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,8 +32,10 @@ class Page1(fromActivity: MainActivity) : Fragment() {
 
         val showList: Button = view.findViewById(R.id.btnShowList)
         showList.setOnClickListener {
-            val kk = SqlQuery().getProducts()
+
         }
+
+
         return view
     }
 

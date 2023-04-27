@@ -1,53 +1,29 @@
 package com.politecnicomalaga.mymarketlist.controller.http
 
-import android.os.Handler
-import android.os.Looper
-import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
-class MyRequest {
+class MyRequest() {
 
-    private val host: String = "http://192.168.1.175/SqlPhp/"
-    private lateinit var myData: String
+    private val host: String = "http://192.168.1.175/PhpSql/"
 
     companion object {
         const val PRODUCTS_QUERY = "ConsultaProductos.php"
         const val PRODUCTS_TABLE_QUERY = "ConsultaTablasProductos.php"
+        const val SHOW_CREATE_TABLE = "showCreateTable.php"
     }
 
-    fun sendRequest(consulta: String) {
-        val url = host + consulta
+    fun phpQuery(query: String, callback: Callback) {
+        val url = host + query
         val client = OkHttpClient()
-
         val request = Request.Builder()
             .url(url)
             .get()
+            .addHeader("cache-control", "no-cache")
             .build()
 
-        val myCall = client.newCall(request)
-        myCall.enqueue(object : Callback {
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                val theAnswer = response.body!!.string()
-                val myHandler = Handler(Looper.getMainLooper())
-                myHandler.post {
-                    myData = theAnswer
-                }
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                val myHandler = Handler(Looper.getMainLooper())
-                myHandler.post {
-                }
-            }
-        })
+        client.newCall(request).enqueue(callback)
     }
 
-    fun getMyData(): String {
-        return myData
-    }
 }

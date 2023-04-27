@@ -6,6 +6,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.view.menu.Page1
 import com.politecnicomalaga.mymarketlist.view.menu.Page2
 
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContentView(R.layout.activity_main)
+
+        MainController().getTables(this)
 
         loadFragment(Page1(this@MainActivity))
         bottomNav = findViewById(R.id.bottomNav)
