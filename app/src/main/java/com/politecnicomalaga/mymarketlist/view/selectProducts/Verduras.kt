@@ -9,10 +9,6 @@ import com.politecnicomalaga.mymarketlist.R
 
 class Verduras : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,16 +16,6 @@ class Verduras : Fragment() {
     ): View? {
 //        return super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_verduras, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        val textView = view.findViewById(R.id.txt1) as TextView
-//        textView.text = "gg"
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
 }

@@ -11,11 +11,6 @@ import com.politecnicomalaga.mymarketlist.R
 
 class Frutas : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,10 +24,6 @@ class Frutas : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val textView = view.findViewById(R.id.txt1) as TextView
         textView.text = "gg"
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
 }

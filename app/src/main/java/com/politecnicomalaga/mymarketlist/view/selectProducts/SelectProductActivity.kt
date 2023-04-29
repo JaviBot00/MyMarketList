@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.selectProducts;
+package com.politecnicomalaga.mymarketlist.view.selectProducts
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +19,7 @@ class SelectProductActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewPager)
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
-        tabLayout = findViewById (R.id.tabs)
+        tabLayout = findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(viewPager)
     }
 

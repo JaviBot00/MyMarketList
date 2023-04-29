@@ -1,5 +1,6 @@
 package com.politecnicomalaga.mymarketlist.view.menu
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +9,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import com.politecnicomalaga.mymarketlist.MainActivity
 import com.politecnicomalaga.mymarketlist.R
+import com.politecnicomalaga.mymarketlist.controller.entities.CloudProductsTables
 import com.politecnicomalaga.mymarketlist.view.selectProducts.SelectProductActivity
 
-class Page1() : Fragment() {
-    constructor(fromActivity: MainActivity) : this() {
-        this.myContext = fromActivity
-    }
-
-    private lateinit var myContext: MainActivity
+class Page1(val fromActivity: Activity) : Fragment() {
+//    constructor(fromActivity: MainActivity) : this() {
+//        this.myContext = fromActivity
+//    }
+//
+//    private lateinit var myContext: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -27,12 +28,14 @@ class Page1() : Fragment() {
 
         val makeList: Button = view.findViewById(R.id.btnMakeList)
         makeList.setOnClickListener {
-            startActivityForResult(Intent(myContext, SelectProductActivity::class.java), 2)
+            startActivityForResult(Intent(fromActivity, SelectProductActivity::class.java), 2)
         }
 
         val showList: Button = view.findViewById(R.id.btnShowList)
         showList.setOnClickListener {
+            CloudProductsTables(fromActivity).getCloudProductTables()
 
+            println(fromActivity.getString(R.string.host_unreachable))
         }
 
 
@@ -40,7 +43,7 @@ class Page1() : Fragment() {
     }
 
     fun errorData(error: String?) {
-        Snackbar.make(myContext.findViewById(android.R.id.content), "ss", Snackbar.LENGTH_LONG)
+        Snackbar.make(fromActivity.findViewById(android.R.id.content), "ss", Snackbar.LENGTH_LONG)
             .show()
 
     }
