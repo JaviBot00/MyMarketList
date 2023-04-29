@@ -13,7 +13,6 @@ class ManagerSQLite(context: Context) :
     companion object {
         const val DATABASE_NAME = "DBProducts.db"
         const val DATABASE_VERSION = 1
-        lateinit var myContext: Context
         lateinit var db: SQLiteDatabase
 
         const val DB_TUsers = "TUsers"
@@ -28,9 +27,7 @@ class ManagerSQLite(context: Context) :
         val TUG_ROLES = arrayOf("Admin", "Estandar", "Invitado")
     }
 
-    init {
-        myContext = context
-    }
+
 
     override fun onCreate(db: SQLiteDatabase) {
 //        db.execSQL(
@@ -62,6 +59,28 @@ class ManagerSQLite(context: Context) :
     fun createTable(table: String) {
         db.execSQL(
             "CREATE TABLE $table ( nombre TEXT PRIMARY KEY)"
+        )
+    }
+
+    fun getTables(): Cursor {
+        return db.query(
+            "sqlite_master", arrayOf("name"), "type = ?", arrayOf("table"), null, null, "name"
+        )
+    }
+
+    fun getProducts(table: String): Cursor {
+        return db.query(
+            table, null, null, null, null, null, "nombre"
+        )
+    }
+
+    fun insertProduct(table: String, product: String) {
+        db.execSQL("INSERT INTO $table VALUES ($product)")
+    }
+
+    fun truncateTable(table: String) {
+        db.execSQL(
+            "DELETE FROM $table"
         )
     }
 

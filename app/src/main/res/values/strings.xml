@@ -5,4 +5,6 @@
     <string name="showList">Mis listas</string>
     <string name="setting">Configuracion</string>
     <string name="newProducts">Crear nuevos productos</string>
+
+    <string name="host_unreachable">Host unreachable</string>
 </resources>
