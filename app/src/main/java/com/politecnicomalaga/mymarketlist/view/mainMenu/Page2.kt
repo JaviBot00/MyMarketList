@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.mianMenu
+package com.politecnicomalaga.mymarketlist.view.mainMenu
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.mianMenu
+package com.politecnicomalaga.mymarketlist.view.mainMenu
 
 import android.app.Activity
 import android.content.Intent

@@ -15,8 +15,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.politecnicomalaga.mymarketlist.controller.entities.CloudProductsTables
-import com.politecnicomalaga.mymarketlist.view.mianMenu.Page1
-import com.politecnicomalaga.mymarketlist.view.mianMenu.Page2
+import com.politecnicomalaga.mymarketlist.view.mainMenu.Page1
+import com.politecnicomalaga.mymarketlist.view.mainMenu.Page2
 
 
 class MainActivity : AppCompatActivity() {
