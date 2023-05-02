@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.menu
+package com.politecnicomalaga.mymarketlist.view.mianMenu
 
 import android.app.Activity
 import android.content.Intent
@@ -10,10 +10,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.controller.entities.CloudProductsTables
-import com.politecnicomalaga.mymarketlist.view.selectProducts.SelectProductActivity
+import com.politecnicomalaga.mymarketlist.view.productsMenu.ProductsActivity
 
-class Page1(val fromActivity: Activity) : Fragment() {
+class Page1(private val fromActivity: Activity) : Fragment() {
 //    constructor(fromActivity: MainActivity) : this() {
 //        this.myContext = fromActivity
 //    }
@@ -28,15 +27,15 @@ class Page1(val fromActivity: Activity) : Fragment() {
 
         val makeList: Button = view.findViewById(R.id.btnMakeList)
         makeList.setOnClickListener {
-            startActivityForResult(Intent(fromActivity, SelectProductActivity::class.java), 2)
+            startActivityForResult(Intent(fromActivity, ProductsActivity::class.java), 2)
         }
 
-        val showList: Button = view.findViewById(R.id.btnShowList)
-        showList.setOnClickListener {
-            CloudProductsTables(fromActivity).getCloudProductTables()
-
-            println(fromActivity.getString(R.string.host_unreachable))
-        }
+//        val showList: Button = view.findViewById(R.id.btnShowList)
+//        showList.setOnClickListener {
+//            CloudProductsTables(fromActivity).getCloudProductTables()
+//
+//            println(fromActivity.getString(R.string.host_unreachable))
+//        }
 
 
         return view
