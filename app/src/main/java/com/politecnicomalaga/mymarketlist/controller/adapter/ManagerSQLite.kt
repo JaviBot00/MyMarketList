@@ -1,6 +1,5 @@
 package com.politecnicomalaga.mymarketlist.controller.adapter
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -15,18 +14,9 @@ class ManagerSQLite(context: Context) :
         const val DATABASE_VERSION = 1
         lateinit var db: SQLiteDatabase
 
-        const val DB_TUsers = "TUsers"
-        val TUsers_USER = arrayOf("cUser", "0")
-        val TUsers_PASSWORD = arrayOf("cPassword", "1")
-        val TUsers_BIRTHDATE = arrayOf("dBirthdate", "2")
-        val TUsers_IMGPROFILE = arrayOf("bImgProfile", "3")
-        val TUsers_ROLE = arrayOf("cRole", "4")
+        val TPRODUCTS = arrayOf("es", "0")
 
-        const val DB_TUsersGroups = "TUsersGroups"
-        val TUsersGroups_ROLE = arrayOf("cRole", "0")
-        val TUG_ROLES = arrayOf("Admin", "Estandar", "Invitado")
     }
-
 
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -56,76 +46,41 @@ class ManagerSQLite(context: Context) :
         db = this.writableDatabase
     }
 
-    fun createTable(table: String) {
-        db.execSQL(
-            "CREATE TABLE $table ( nombre TEXT PRIMARY KEY)"
-        )
-    }
-
     fun getTables(): Cursor {
         return db.query(
             "sqlite_master", arrayOf("name"), "type = ?", arrayOf("table"), null, null, "name"
         )
     }
 
+    fun createTable(table: String) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS $table (" + TPRODUCTS[0] + " TEXT PRIMARY KEY)"
+        )
+    }
+
+    fun deleteTable(table: String) {
+        db.execSQL(
+            "DROP TABLE IF EXISTS $table"
+        )
+    }
+
     fun getProducts(table: String): Cursor {
         return db.query(
-            table, null, null, null, null, null, "nombre"
+            table, null, null, null, null, null, TPRODUCTS[0]
         )
     }
 
     fun insertProduct(table: String, product: String) {
-        db.execSQL("INSERT INTO $table VALUES ($product)")
+        db.execSQL("INSERT OR REPLACE INTO $table VALUES ('$product')")
     }
 
-    fun truncateTable(table: String) {
-        db.execSQL(
-            "DELETE FROM $table"
-        )
-    }
-
-    fun getUserLogin(user: String, password: String): Cursor {
-        return db.query(
-            DB_TUsers,
-            null,
-            TUsers_USER[0] + " = ? AND " + TUsers_PASSWORD[0] + " = ?",
-            arrayOf(user, password),
-            null,
-            null,
-            null
-        )
-    }
-
-    fun getOneUser(user: String): Cursor {
-        return db.query(DB_TUsers, null, TUsers_USER[0] + " = ?", arrayOf(user), null, null, null)
-    }
-
-    fun getUsers(): Cursor {
-        return db.query(DB_TUsers, null, null, null, null, null, TUsers_USER[0])
-    }
-
-    fun getGroups(): Cursor {
-        return db.query(DB_TUsersGroups, null, null, null, null, null, TUsersGroups_ROLE[0])
-    }
-
-    fun insertUser(values: ContentValues) {
-        db.insert(DB_TUsers, null, values)
-    }
-
-    fun updateUser(values: ContentValues, user: String) {
-        db.update(
-            DB_TUsers, values, TUsers_USER[0] + " = ?", arrayOf(user)
-        )
-    }
-
-    fun deleteUser(user: String) {
-        db.delete(
-            DB_TUsers, TUsers_USER[0] + " = ?", arrayOf(user)
-        )
+    fun deleteProduct(table: String, product: String) {
+        db.delete(table, TPRODUCTS[0] + " = ?", arrayOf(product))
     }
 
     fun getDb(): SQLiteDatabase {
         return db
     }
+
 
 }

@@ -2,91 +2,94 @@ package com.politecnicomalaga.mymarketlist.controller.entities
 
 import android.app.Activity
 import android.database.Cursor
-import com.google.android.material.snackbar.Snackbar
-import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.adapter.ManagerSQLite
 import com.politecnicomalaga.mymarketlist.controller.http.MyRequest
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
 
 class CloudProductsTables(val fromActivity: Activity) {
 
     companion object {
-        private const val DELIMITER_TABLE = "T"
-        private const val DELIMITER_PRODUCTS = ";"
+        private const val DELIMITER = ";"
         private const val SHOW_TABLE = "showTables.php"
         private const val SELECT_PRODUCTS_FROM = "selectProductsFrom.php"
     }
-    //    private val myProductsList = sortedMapOf<String, SortedSet<String>>()
+
+    private val mySQLite = ManagerSQLite(fromActivity)
 
     fun getCloudProductTables() {
-        val mySQLite = ManagerSQLite(fromActivity)
-        mySQLite.setWritable()
-        mySQLite.setReadable()
-        val tc: Cursor = mySQLite.getTables()
-        MyRequest().phpQuery(SHOW_TABLE, object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                response.body!!.string().split(DELIMITER_TABLE).forEach { t ->
-                    if (t == tc.getString(0) && !tc.getString(0).isNullOrEmpty()) {
-                        tc.moveToNext()
-                    } else {
-                        mySQLite.createTable(t)
+        mySQLite.setWritable() // Sets the database to be writable
+        MyRequest(fromActivity).phpQuery(SHOW_TABLE, // Sends a PHP query to retrieve a list of all tables from the server
+            object : MyRequest.ResponseListener {
+                override fun onResponseReceived(response: String) {
+                    val tables =
+                        response.split(DELIMITER) // Splits the response into a list of table names
+                    checkTables(tables) // Calls the checkTables function to compare server tables with local tables
+
+                    // For each table in the server, retrieves all products and calls checkProducts to compare them with local products
+                    tables.forEach { t ->
+                        if (t.isNotEmpty()) {
+                            MyRequest(fromActivity).phpQuery("$SELECT_PRODUCTS_FROM?table=$t",
+                                object : MyRequest.ResponseListener {
+                                    override fun onResponseReceived(response: String) {
+                                        val products =
+                                            response.split(DELIMITER) // Splits the response into a list of products
+                                        checkProducts(
+                                            t, products
+                                        ) // Calls the checkProducts function to compare server products with local products
+                                    }
+                                })
+                        }
                     }
-                    val pc: Cursor = mySQLite.getProducts(t)
-                    MyRequest().phpQuery("$SELECT_PRODUCTS_FROM?table=$t", object : Callback {
-                        override fun onResponse(call: Call, response: Response) {
-                            response.body!!.string().split(DELIMITER_PRODUCTS).forEach { p ->
-                                if (p == pc.getString(0) && !pc.getString(0).isNullOrEmpty()) {
-                                    pc.moveToNext()
-                                } else {
-                                    mySQLite.insertProduct(t, p)
-                                }
-                            }
-                        }
-
-                        override fun onFailure(call: Call, e: IOException) {
-                            e.printStackTrace()
-                        }
-                    })
                 }
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-                Snackbar.make(
-                    fromActivity.findViewById(android.R.id.content),
-                    fromActivity.getString(R.string.host_unreachable),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
-        })
+            })
     }
 
-//    fun getCloudProduct(): SortedMap<String, SortedSet<String>> {
-//        val productsList = sortedMapOf<String, SortedSet<String>>()
-//        val tables: String = getCloudTables()
-//        tables.split("T").forEach { t ->
-//            val products = sortedSetOf<String>()
-//            MyRequest().phpQuery(
-//                "$SELECT_PRODUCTS_FROM?table=$t",
-//                object : Callback {
-//                    override fun onResponse(call: Call, response: Response) {
-//
-//                        if (t.isNotEmpty()) {
-//                            products.add(response.body!!.string())
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call, e: IOException) {
-//                        e.printStackTrace()
-//                    }
-//                })
-//            if (t.isNotEmpty()) {
-//                productsList[t] = products
-//            }
-//        }
-//        return productsList
-//    }
+
+    fun checkTables(tCloud: List<String>) {
+        val tLocal: Cursor = mySQLite.getTables()
+
+        // Create any table in the cloud that does not exist in the local database
+        tCloud.forEach { t ->
+            if (t.isNotEmpty()) { // If the table does not exist in the local database
+                mySQLite.createTable(t)
+            }
+        }
+
+        // Delete any table in the local database that does not exist in the cloud
+        while (tLocal.moveToNext()) {
+            val tableName = tLocal.getString(0)
+            if (tableName != "android_metadata" && !tCloud.contains(tableName)) {
+                mySQLite.deleteTable(tableName)
+            }
+        }
+    }
+
+    fun checkProducts(table: String, pCloud: List<String>) {
+        val pLocal: Cursor = mySQLite.getProducts(table)
+        while (pLocal.moveToNext()) {
+            val productName = pLocal.getString(Integer.parseInt(ManagerSQLite.TPRODUCTS[1]))
+            if (!pCloud.contains(productName)) { // Delete local product if it's not present in pCloud
+                mySQLite.deleteProduct(table, productName)
+            }
+        }
+        pCloud.forEach { p ->
+            if (p.isNotEmpty()) { // Create any product in the cloud that doesn't exist locally
+                if (!cursorContainsProduct(pLocal, p)) {
+                    mySQLite.insertProduct(table, p)
+                }
+            }
+        }
+    }
+
+    // Helper function to check if a product is already in the cursor
+    private fun cursorContainsProduct(cursor: Cursor, productName: String): Boolean {
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            if (cursor.getString(Integer.parseInt(ManagerSQLite.TPRODUCTS[1])) == productName) {
+                return true
+            }
+            cursor.moveToNext()
+        }
+        return false
+    }
+
 }
