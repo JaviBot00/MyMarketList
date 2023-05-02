@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">MyMarketList</string>
 
-    <string name="makeList">Crear lista</string>
+    <string name="make_list">Crear lista</string>
     <string name="showList">Mis listas</string>
     <string name="setting">Configuracion</string>
     <string name="newProducts">Crear nuevos productos</string>
 
     <string name="host_unreachable">Host unreachable</string>
+    <string name="corrupt_data">Corrupt data</string>
+    <string name="checking_backup">Checking Backup</string>
+    <string name="error_backup">Error Backup</string>
 </resources>

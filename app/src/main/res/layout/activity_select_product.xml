@@ -4,23 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.selectProducts.SelectProductActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.MyMarketList"
-        app:layout_constraintBottom_toTopOf="@+id/tabs"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    tools:context=".view.productsMenu.ProductsActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
@@ -29,7 +13,7 @@
         app:layout_constraintBottom_toTopOf="@id/viewPager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLy"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabMode="scrollable" />
 

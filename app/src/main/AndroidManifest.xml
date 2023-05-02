@@ -17,10 +17,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.selectProducts.SelectProductActivity"
+            android:name=".view.productsMenu.ProductsActivity"
             android:exported="false"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <!--        <meta-data-->
+        <!--            android:name="android.support.PARENT_ACTIVITY"-->
+        <!--            android:value=".MainActivity" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
