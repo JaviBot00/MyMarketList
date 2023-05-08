@@ -11,15 +11,26 @@
         android:layout_margin="5dp"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/mDivider"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/checkBox"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:checked="false"
+        app:layout_constraintBottom_toTopOf="@id/mDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtProduct"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/mDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
         app:dividerInsetEnd="16dp"
         app:dividerInsetStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"

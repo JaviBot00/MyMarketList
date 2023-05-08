@@ -1,23 +1,31 @@
-package com.politecnicomalaga.mymarketlist.controller.adapter
-
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class ManagerSQLite(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
+class MarketListSQLite private constructor(fromContext: Context) :
+    SQLiteOpenHelper(fromContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
+        private var myMarketListSQLite: MarketListSQLite? = null
+        fun getInstance(fromContext: Context): MarketListSQLite {
+            if (myMarketListSQLite == null) {
+                myMarketListSQLite = MarketListSQLite(fromContext)
+            }
+            return myMarketListSQLite!!
+        }
+
         const val DATABASE_NAME = "DBProducts.db"
         const val DATABASE_VERSION = 1
         lateinit var db: SQLiteDatabase
 
-        val TPRODUCTS = arrayOf("es", "0")
+        // Table xxx
+        val PRODUCT_ID = arrayOf("id", "0")
+        val PRODUCT_ES = arrayOf("es", "1")
+//        val PRODUCT_ID = arrayOf("es", "0")
+
 
     }
-
 
     override fun onCreate(db: SQLiteDatabase) {
 //        db.execSQL(
@@ -54,7 +62,7 @@ class ManagerSQLite(context: Context) :
 
     fun createTable(table: String) {
         db.execSQL(
-            "CREATE TABLE IF NOT EXISTS $table (" + TPRODUCTS[0] + " TEXT PRIMARY KEY)"
+            "CREATE TABLE IF NOT EXISTS $table (id INTEGER PRIMARY KEY AUTOINCREMENT, " + PRODUCT_ES[0] + " TEXT PRIMARY KEY NOT NULL)"
         )
     }
 
@@ -66,16 +74,16 @@ class ManagerSQLite(context: Context) :
 
     fun getProducts(table: String): Cursor {
         return db.query(
-            table, null, null, null, null, null, TPRODUCTS[0]
+            table, null, null, null, null, null, PRODUCT_ES[0]
         )
     }
 
     fun insertProduct(table: String, product: String) {
-        db.execSQL("INSERT OR REPLACE INTO $table VALUES ('$product')")
+        db.execSQL("INSERT OR REPLACE INTO $table VALUES (null, '$product')")
     }
 
     fun deleteProduct(table: String, product: String) {
-        db.delete(table, TPRODUCTS[0] + " = ?", arrayOf(product))
+        db.delete(table, PRODUCT_ES[0] + " = ?", arrayOf(product))
     }
 
     fun getDb(): SQLiteDatabase {

@@ -10,4 +10,10 @@
     <string name="corrupt_data">Corrupt data</string>
     <string name="checking_backup">Checking Backup</string>
     <string name="error_backup">Error Backup</string>
+    <string name="show_items">Ver lista</string>
+    <string name="clear_list">Limpiar lista</string>
+    <string name="items_selected">Articulos Seleccionados</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="clear_list_message">Se borraran todos los productos marcados y tendra empezar de nuevo\n¿Desea continuar?</string>
 </resources>
