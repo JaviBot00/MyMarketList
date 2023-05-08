@@ -17,16 +17,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.productsMenu.ProductsActivity"
+            android:name=".view.activity.ProductsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".view.activity.MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <!--        <meta-data-->
         <!--            android:name="android.support.PARENT_ACTIVITY"-->
         <!--            android:value=".MainActivity" />-->
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMarketList.Starting"

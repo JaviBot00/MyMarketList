@@ -1,8 +1,8 @@
 package com.politecnicomalaga.mymarketlist.controller.entities
 
+import MarketListSQLite
 import android.app.Activity
 import android.database.Cursor
-import com.politecnicomalaga.mymarketlist.controller.adapter.ManagerSQLite
 import com.politecnicomalaga.mymarketlist.controller.http.MyRequest
 
 class CloudProductsTables(val fromActivity: Activity) {
@@ -13,7 +13,7 @@ class CloudProductsTables(val fromActivity: Activity) {
         private const val SELECT_PRODUCTS_FROM = "selectProductsFrom.php"
     }
 
-    private val mySQLite = ManagerSQLite(fromActivity)
+    private val mySQLite = MarketListSQLite.getInstance(fromActivity)
 
     fun getCloudProductTables() {
         mySQLite.setWritable() // Sets the database to be writable
@@ -39,6 +39,7 @@ class CloudProductsTables(val fromActivity: Activity) {
                                 })
                         }
                     }
+//                    mySQLite.getDb().close() // Close database
                 }
             })
     }
@@ -65,31 +66,32 @@ class CloudProductsTables(val fromActivity: Activity) {
 
     fun checkProducts(table: String, pCloud: List<String>) {
         val pLocal: Cursor = mySQLite.getProducts(table)
+        pCloud.forEach { p ->
+            if (p.isNotEmpty()) { // Create any product in the cloud that doesn't exist locally
+//                if (!cursorContainsProduct(pLocal, p)) {
+                mySQLite.insertProduct(table, p)
+//                }
+            }
+        }
+
         while (pLocal.moveToNext()) {
-            val productName = pLocal.getString(Integer.parseInt(ManagerSQLite.TPRODUCTS[1]))
+            val productName = pLocal.getString(Integer.parseInt(MarketListSQLite.PRODUCT_ES[1]))
             if (!pCloud.contains(productName)) { // Delete local product if it's not present in pCloud
                 mySQLite.deleteProduct(table, productName)
             }
         }
-        pCloud.forEach { p ->
-            if (p.isNotEmpty()) { // Create any product in the cloud that doesn't exist locally
-                if (!cursorContainsProduct(pLocal, p)) {
-                    mySQLite.insertProduct(table, p)
-                }
-            }
-        }
     }
 
-    // Helper function to check if a product is already in the cursor
-    private fun cursorContainsProduct(cursor: Cursor, productName: String): Boolean {
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
-            if (cursor.getString(Integer.parseInt(ManagerSQLite.TPRODUCTS[1])) == productName) {
-                return true
-            }
-            cursor.moveToNext()
-        }
-        return false
-    }
+//    // Helper function to check if a product is already in the cursor
+//    private fun cursorContainsProduct(cursor: Cursor, productName: String): Boolean {
+//        cursor.moveToFirst()
+//        while (!cursor.isAfterLast) {
+//            if (cursor.getString(Integer.parseInt(MarketListSQLite.TPRODUCTS[1])) == productName) {
+//                return true
+//            }
+//            cursor.moveToNext()
+//        }
+//        return false
+//    }
 
 }

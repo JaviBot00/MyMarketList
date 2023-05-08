@@ -13,9 +13,10 @@ import java.io.IOException
 
 class MyRequest(val fromActivity: Activity) {
 
-interface ResponseListener {
-    fun onResponseReceived(response: String)
-}
+    interface ResponseListener {
+        fun onResponseReceived(response: String)
+    }
+
     private val host: String = "http://192.168.1.175/PhpSql/"
 //    private val host: String = "http://79.147.83.111:8080/PhpSql/"
 
