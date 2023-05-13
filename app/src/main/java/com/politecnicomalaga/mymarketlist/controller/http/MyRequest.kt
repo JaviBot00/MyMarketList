@@ -13,16 +13,14 @@ import java.io.IOException
 
 class MyRequest(val fromActivity: Activity) {
 
-    interface ResponseListener {
-        fun onResponseReceived(response: String)
-    }
-
     private val host: String = "http://192.168.1.175/PhpSql/"
-//    private val host: String = "http://79.147.83.111:8080/PhpSql/"
 
-    fun phpQuery(query: String, responseListener: ResponseListener) {
+    //    private val host: String = "http://192.168.58.30/PhpSql/"
+//    private val host: String = "http://79.147.83.111:8080/PhpSql/"
+    private val client: OkHttpClient = OkHttpClient()
+
+    fun phpQuery(query: String, onResponseReceived: (String) -> Unit) {
         val url = host + query
-        val client = OkHttpClient()
         val request = Request.Builder()
             .url(url)
             .get()
@@ -31,7 +29,6 @@ class MyRequest(val fromActivity: Activity) {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // Manejar error de petición
                 Snackbar.make(
                     fromActivity.findViewById(android.R.id.content),
                     fromActivity.getString(R.string.host_unreachable),
@@ -40,10 +37,8 @@ class MyRequest(val fromActivity: Activity) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val responseString = response.body!!.string()
-                responseListener.onResponseReceived(responseString)
+                onResponseReceived(response.body.string())
             }
         })
     }
-
 }

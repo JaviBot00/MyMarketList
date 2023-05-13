@@ -1,11 +1,14 @@
 package com.politecnicomalaga.mymarketlist.view.activity
 
+import ClientSQLite
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.textfield.TextInputLayout
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.adapter.TabsVPAdapter
@@ -16,15 +19,12 @@ class ProductsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
-        MainController.getInstance()
-            .setAppBar(this@ProductsActivity, resources.getString(R.string.make_list))
+        MainController().setAppBar(this@ProductsActivity, resources.getString(R.string.make_list))
         ProductList.myList.clear()
 
         val viewPager: ViewPager = findViewById(R.id.viewPager)
         val tabsVPAdapter = TabsVPAdapter(
-            supportFragmentManager,
-            this@ProductsActivity,
-            ProductList.getInstance().getMyProducts(this@ProductsActivity)
+            supportFragmentManager, ProductList().getMyProducts(this@ProductsActivity)
         )
 
         viewPager.adapter = tabsVPAdapter
@@ -35,22 +35,70 @@ class ProductsActivity : AppCompatActivity() {
         val fabShowItems: FloatingActionButton = findViewById(R.id.fabShowItems)
         val fabCreateList: FloatingActionButton = findViewById(R.id.fabCreateList)
 
-        fabClearList.setOnClickListener { fab ->
-            MaterialAlertDialogBuilder(fab.context).setTitle(resources.getString(R.string.clear_list)).setMessage(resources.getString(R.string.clear_list_message))
-                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
-                }.setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+        fabClearList.setOnClickListener {
+            MaterialAlertDialogBuilder(this@ProductsActivity).setTitle(resources.getString(R.string.clear_list))
+                .setMessage(resources.getString(R.string.clear_list_message))
+                .setNegativeButton(resources.getString(R.string.cancel), null)
+                .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
                     ProductList.myList.clear()
                     tabsVPAdapter.notifyDataSetChanged()
                     viewPager.adapter = tabsVPAdapter
-                }.show()
-        }
-
-        fabShowItems.setOnClickListener { fab ->
-            MaterialAlertDialogBuilder(fab.context).setTitle(resources.getString(R.string.items_selected))
-                .setItems(ProductList.myList.map { it.name }.toTypedArray()) { dialog, which ->
-                }.setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
                 }.setCancelable(false).show()
         }
+
+        fabShowItems.setOnClickListener {
+            MaterialAlertDialogBuilder(this@ProductsActivity).setTitle(resources.getString(R.string.items_selected))
+                .setItems(ProductList.myList.map { it.name }.toTypedArray(), null)
+                .setPositiveButton(resources.getString(R.string.accept), null).setCancelable(false)
+                .setOnItemSelectedListener(null).show()
+        }
+
+        fabCreateList.setOnClickListener {
+            val builder = MaterialAlertDialogBuilder(this@ProductsActivity)
+            val inflater = LayoutInflater.from(this@ProductsActivity)
+            val dialogView = inflater.inflate(R.layout.dialog_ly, null)
+            val textInputList: TextInputLayout = dialogView.findViewById(R.id.editTxtList)
+
+            builder.setView(dialogView).setTitle(resources.getString(R.string.make_list))
+                .setMessage(resources.getString(R.string.make_list_name))
+                .setNegativeButton(resources.getString(R.string.cancel), null).setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+
+
+                    MaterialAlertDialogBuilder(this@ProductsActivity).setTitle(resources.getString(R.string.make_list))
+                        .setMessage(
+                            resources.getString(R.string.make_list_message) + textInputList.editText!!.text
+                        ).setCancelable(false).setOnItemSelectedListener(null)
+                        .setNegativeButton(resources.getString(R.string.cancel), null)
+                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                            val mySQLite = ClientSQLite(this@ProductsActivity)
+                            mySQLite.setWritable()
+                            mySQLite.setReadable()
+                            val txtReplace: String =
+                                textInputList.editText!!.text.toString().replace(" ", "_", false)
+                            mySQLite.insertList(txtReplace)
+                            mySQLite.createTable(txtReplace)
+                            ProductList.myList.forEach {
+                                mySQLite.insertProduct(
+                                    txtReplace, it.name
+                                )
+                            }
+                        }.show()
+                }
+            builder.create()
+            builder.show()
+        }
+
+//        val builder = MaterialAlertDialogBuilder(context)
+//        builder.setTitle("Mi diálogo")
+//        builder.setMessage("Este es el mensaje del diálogo.")
+//        builder.setPositiveButton("Aceptar") { dialog, which ->
+//            // Acción a realizar al hacer clic en el botón Aceptar
+//        }
+//
+//        val textView = builder.show().findViewById<TextView>(android.R.id.message)
+//        textView.textSize = 20f // Tamaño de fuente en píxeles
+
     }
 
 }
