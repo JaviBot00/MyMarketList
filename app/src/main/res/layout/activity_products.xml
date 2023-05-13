@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
             android:layout_margin="16dp"
-            android:contentDescription="@string/show_items"
+            android:contentDescription="@string/clear_list"
             android:src="@drawable/delete_cross"
             app:backgroundTint="@android:color/holo_red_dark" />
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_margin="16dp"
-            android:contentDescription="@string/clear_list"
+            android:contentDescription="@string/items_selected"
             android:src="@drawable/show"
             app:backgroundTint="#FFA500" />
 
@@ -65,7 +65,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:contentDescription="@string/make_list"
-            android:src="@drawable/add_plus"
+            android:src="@drawable/add_check"
             app:backgroundTint="@android:color/holo_green_dark" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

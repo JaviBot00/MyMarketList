@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.entities.CloudProductsTables
+import com.politecnicomalaga.mymarketlist.controller.entities.ServerData
 import com.politecnicomalaga.mymarketlist.view.fragments.Menu1Fragment
 import com.politecnicomalaga.mymarketlist.view.fragments.Menu2Fragment
 
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
         try {
-            CloudProductsTables(this@MainActivity).getCloudProductTables()
+            ServerData(this@MainActivity).getServerProductTables()
         } catch (e: Exception) {
             Toast.makeText(
                 this@MainActivity,
@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         installSplashScreen()
         setContentView(R.layout.activity_main)
-        MainController.getInstance()
-            .setAppBar(this@MainActivity, resources.getString(R.string.app_name))
+        MainController().setAppBar(this@MainActivity, resources.getString(R.string.app_name))
 
         loadFragment(Menu1Fragment(this@MainActivity))
         bottomNav = findViewById(R.id.bottomNav)
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.page2 -> {
-                    loadFragment(Menu2Fragment(this@MainActivity))
+                    loadFragment(Menu2Fragment())
                     true
                 }
 

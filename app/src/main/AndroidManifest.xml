@@ -17,20 +17,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".view.activity.ListActivity"
+            android:exported="false"
+            android:parentActivityName=".view.activity.MainActivity" />
+        <activity
             android:name=".view.activity.ProductsActivity"
             android:exported="false"
-            android:parentActivityName=".view.activity.MainActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <!--        <meta-data-->
-        <!--            android:name="android.support.PARENT_ACTIVITY"-->
-        <!--            android:value=".MainActivity" />-->
+            android:parentActivityName=".view.activity.MainActivity" /> <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value=".MainActivity" /> -->
         <activity
             android:name=".view.activity.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MyMarketList.Starting"
-            tools:ignore="LockedOrientationActivity">
+            android:theme="@style/Theme.MyMarketList.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

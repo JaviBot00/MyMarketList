@@ -54,6 +54,7 @@ class ProductList {
             list.online = (lc.getInt(Integer.parseInt(ClientSQLite.TList_OnLine[1])) == 1)
             myLists.add(list)
         }
+        mySQLite.getDb().close()
     }
 
     fun getMyLists(fromActivity: Activity): ArrayList<MyLists> {

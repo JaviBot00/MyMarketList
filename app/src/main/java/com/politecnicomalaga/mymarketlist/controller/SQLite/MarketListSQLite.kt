@@ -3,34 +3,30 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class MarketListSQLite private constructor(fromContext: Context) :
+class MarketListSQLite(fromContext: Context) :
     SQLiteOpenHelper(fromContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private var myMarketListSQLite: MarketListSQLite? = null
-        fun getInstance(fromContext: Context): MarketListSQLite {
-            if (myMarketListSQLite == null) {
-                myMarketListSQLite = MarketListSQLite(fromContext)
-            }
-            return myMarketListSQLite!!
-        }
-
         const val DATABASE_NAME = "DBProducts.db"
         const val DATABASE_VERSION = 1
         lateinit var db: SQLiteDatabase
 
+        const val DB_TCategories = "TCategories"
+        val TCategories_ID = arrayOf("nID", "0")
+        val TCategories_TYPE = arrayOf("cTypes", "1")
+
         // Table xxx
-        val PRODUCT_ID = arrayOf("id", "0")
-        val PRODUCT_ES = arrayOf("es", "1")
-//        val PRODUCT_ID = arrayOf("es", "0")
+        val TProduct_ID = arrayOf("id", "0")
+        val TProduct_ES = arrayOf("es", "1")
+//        val PRODUCT_ID = arrayOf("en", "2")
 
 
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-//        db.execSQL(
-//            "CREATE TABLE " + DB_TUsers + " ( " + TUsers_USER[0] + " VARCHAR(30) PRIMARY KEY," + TUsers_PASSWORD[0] + " VARCHAR(30) NOT NULL, " + TUsers_BIRTHDATE[0] + " VARCHAR(10) NOT NULL, " + TUsers_IMGPROFILE[0] + " BLOB, " + TUsers_ROLE[0] + " VRCHAR(10) NOT NULL) "
-//        )
+        db.execSQL(
+            "CREATE TABLE $DB_TCategories ('" + TCategories_ID[0] + "' INTEGER PRIMARY KEY NOT NULL, '" + TCategories_TYPE[0] + "' TEXT NOT NULL)"
+        )
 //
 //        db.execSQL(
 //            "CREATE TABLE " + DB_TUsersGroups + " ( " + TUsersGroups_ROLE[0] + " VARCHAR(10) PRIMARY KEY)"
@@ -46,45 +42,56 @@ class MarketListSQLite private constructor(fromContext: Context) :
         TODO("Not yet implemented")
     }
 
-    fun setReadable() {
-        db = this.readableDatabase
-    }
-
     fun setWritable() {
         db = this.writableDatabase
     }
 
-    fun getTables(): Cursor {
-        return db.query(
-            "sqlite_master", arrayOf("name"), "type = ?", arrayOf("table"), null, null, "name"
-        )
+    fun setReadable() {
+        db = this.readableDatabase
     }
 
     fun createTable(table: String) {
         db.execSQL(
-            "CREATE TABLE IF NOT EXISTS $table (id INTEGER PRIMARY KEY AUTOINCREMENT, " + PRODUCT_ES[0] + " TEXT PRIMARY KEY NOT NULL)"
+            "CREATE TABLE IF NOT EXISTS $table ('" + TProduct_ID[0] + "' INTEGER PRIMARY KEY NOT NULL, '" + TProduct_ES[0] + "' TEXT NOT NULL)"
         )
     }
 
-    fun deleteTable(table: String) {
-        db.execSQL(
-            "DROP TABLE IF EXISTS $table"
+    fun getTables(): Cursor {
+        return db.query(
+            DB_TCategories,
+            null,
+            null,
+            null,
+            null,
+            null,
+            TCategories_TYPE[0]
         )
     }
+
+    fun insertTables(id: String, table: String) {
+        db.execSQL("INSERT OR REPLACE INTO $DB_TCategories VALUES ($id, '$table')")
+
+    }
+
+//    fun deleteTable(table: String) {
+//        db.execSQL(
+//            "DROP TABLE IF EXISTS $table"
+//        )
+//    }
 
     fun getProducts(table: String): Cursor {
         return db.query(
-            table, null, null, null, null, null, PRODUCT_ES[0]
+            table, null, null, null, null, null, TProduct_ES[0]
         )
     }
 
-    fun insertProduct(table: String, product: String) {
-        db.execSQL("INSERT OR REPLACE INTO $table VALUES (null, '$product')")
+    fun insertProduct(table: String, id: String, product: String) {
+        db.execSQL("INSERT OR REPLACE INTO $table VALUES ($id, '$product')")
     }
 
-    fun deleteProduct(table: String, product: String) {
-        db.delete(table, PRODUCT_ES[0] + " = ?", arrayOf(product))
-    }
+//    fun deleteProduct(table: String, product: String) {
+//        db.delete(table, TProduct_ES[0] + " = ?", arrayOf(product))
+//    }
 
     fun getDb(): SQLiteDatabase {
         return db

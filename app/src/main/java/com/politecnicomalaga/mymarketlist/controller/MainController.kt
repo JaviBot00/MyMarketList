@@ -1,5 +1,6 @@
 package com.politecnicomalaga.mymarketlist.controller
 
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -13,18 +14,19 @@ import com.politecnicomalaga.mymarketlist.R
 
 class MainController {
 
-    companion object {
-        private var myController: MainController? = null
-
-        fun getInstance(): MainController {
-            if (myController == null) {
-                myController = MainController()
-            }
-            return myController!!
-        }
-    }
+//    companion object {
+//        private var myController: MainController? = null
+//
+//        fun getInstance(): MainController {
+//            if (myController == null) {
+//                myController = MainController()
+//            }
+//            return myController!!
+//        }
+//    }
 
     fun setAppBar(fromActivity: AppCompatActivity, title: String) {
+        fromActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         if (fromActivity.supportActionBar != null) {
             if (fromActivity.parentActivityIntent == null) {
                 fromActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(false)

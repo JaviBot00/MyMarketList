@@ -83,6 +83,7 @@ class ProductsActivity : AppCompatActivity() {
                                     txtReplace, it.name
                                 )
                             }
+                            mySQLite.getDb().close()
                         }.show()
                 }
             builder.create()
