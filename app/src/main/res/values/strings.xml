@@ -1,19 +1,31 @@
 <resources>
+    <!--    AppBar    -->
     <string name="app_name">MyMarketList</string>
-
     <string name="make_list">Crear lista</string>
+    <string name="my_list">Mis listas</string>
+
+    <!--    App Name    -->
     <string name="showList">Mis listas</string>
     <string name="setting">Configuracion</string>
     <string name="newProducts">Crear nuevos productos</string>
 
+    <!--    Network Message    -->
     <string name="host_unreachable">Host unreachable</string>
     <string name="corrupt_data">Corrupt data</string>
     <string name="checking_backup">Checking Backup</string>
     <string name="error_backup">Error Backup</string>
-    <string name="show_items">Ver lista</string>
+
+    <!--    Make List    -->
+<!--    <string name="show_items">Ver productos</string>-->
     <string name="clear_list">Limpiar lista</string>
-    <string name="items_selected">Articulos Seleccionados</string>
+    <string name="items_selected">Productos seleccionados</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="clear_list_message">Se borraran todos los productos marcados y tendra empezar de nuevo\n¿Desea continuar?</string>
+    <string name="clear_list_message">Se borraran todos los productos marcados y tendra empezar de nuevo</string>
+    <string name="make_list_message">Se creara una lista con el siguiente nombre:\t</string>
+<!--    <string name="want_continue">\n¿Desea continuar?</string>-->
+    <string name="make_list_name">Ponga un nombre para la lista:</string>
+    <string name="name_of_list">Nombre de la lista</string>
+    <string name="online">Online</string>
+
 </resources>

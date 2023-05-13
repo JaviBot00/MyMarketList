@@ -1,6 +1,5 @@
 package com.politecnicomalaga.mymarketlist.view.fragments
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,20 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.politecnicomalaga.mymarketlist.R
 
-class Menu2Fragment() : Fragment() {
-
-    private lateinit var fromActivity: Activity
-    private var mState: String? = null
-
-    constructor(fromActivity: Activity) : this() {
-        this.fromActivity = fromActivity
-    }
+class Menu2Fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            mState = savedInstanceState.getString("my_state")
-        }
+        retainInstance = true
     }
 
     override fun onCreateView(
@@ -39,10 +29,5 @@ class Menu2Fragment() : Fragment() {
 //            startActivityForResult(Intent(fromActivity, ProductsActivity::class.java), 2)
 //        }
 //    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("my_state", mState)
-    }
 
 }

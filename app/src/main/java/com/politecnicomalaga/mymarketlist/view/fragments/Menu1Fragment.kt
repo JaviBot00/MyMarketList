@@ -10,22 +10,14 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.politecnicomalaga.mymarketlist.R
+import com.politecnicomalaga.mymarketlist.view.activity.ListActivity
 import com.politecnicomalaga.mymarketlist.view.activity.ProductsActivity
 
-class Menu1Fragment() : Fragment() {
-
-    private lateinit var fromActivity: Activity
-    private var mState: String? = null
-
-    constructor(fromActivity: Activity) : this() {
-        this.fromActivity = fromActivity
-    }
+class Menu1Fragment(private val fromActivity: Activity) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            mState = savedInstanceState.getString("my_state")
-        }
+        retainInstance = true
     }
 
     override fun onCreateView(
@@ -37,15 +29,15 @@ class Menu1Fragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val makeList: Button = view.findViewById(R.id.btnMakeList)
-        makeList.setOnClickListener {
-            startActivityForResult(Intent(fromActivity, ProductsActivity::class.java), 2)
+        val btnMakeList: Button = view.findViewById(R.id.btnMakeList)
+        btnMakeList.setOnClickListener {
+            startActivityForResult(Intent(fromActivity, ProductsActivity::class.java), 0)
         }
-    }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("my_state", mState)
+        val btnShowLists: Button = view.findViewById(R.id.btnShowList)
+        btnShowLists.setOnClickListener {
+            startActivityForResult(Intent(fromActivity, ListActivity::class.java), 1)
+        }
     }
 
     fun errorData(error: String?) {
