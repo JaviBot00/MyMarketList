@@ -1,7 +1,7 @@
 package com.politecnicomalaga.mymarketlist.controller.entities
 
-import ClientSQLite
-import MarketListSQLite
+import com.politecnicomalaga.mymarketlist.controller.SQLite.ClientSQLite
+import com.politecnicomalaga.mymarketlist.controller.SQLite.MarketListSQLite
 import android.app.Activity
 import android.database.Cursor
 import com.politecnicomalaga.mymarketlist.model.ClassifiedProducts

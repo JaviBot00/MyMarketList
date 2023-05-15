@@ -12,7 +12,6 @@ class TabsVPAdapter(
 ) :
     FragmentStatePagerAdapter(fm) {
 
-
     override fun getCount(): Int {
         return myProducts.size
     }

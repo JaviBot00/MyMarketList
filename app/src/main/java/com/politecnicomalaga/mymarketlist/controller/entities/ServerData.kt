@@ -1,6 +1,6 @@
 package com.politecnicomalaga.mymarketlist.controller.entities
 
-import MarketListSQLite
+import com.politecnicomalaga.mymarketlist.controller.SQLite.MarketListSQLite
 import android.app.Activity
 import com.politecnicomalaga.mymarketlist.controller.http.MyRequest
 

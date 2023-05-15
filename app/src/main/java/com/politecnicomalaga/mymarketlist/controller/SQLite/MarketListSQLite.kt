@@ -1,3 +1,5 @@
+package com.politecnicomalaga.mymarketlist.controller.SQLite
+
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase

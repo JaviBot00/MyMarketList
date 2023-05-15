@@ -1,3 +1,5 @@
+package com.politecnicomalaga.mymarketlist.controller.SQLite
+
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -43,7 +45,7 @@ class ClientSQLite(fromContext: Context) :
         )
 
         db.execSQL(
-            "CREATE TABLE $DB_TList ( " + TList_ID[0] + " INTEGER PRIMARY KEY, " + TList_NAME[0] + " TEXT NOT NULL, " + TList_DCREATED[0] + " DATETIME NOT NULL, " + TList_DREALIZED[0] + " DATETIME, " + TList_Price[0] + " REAL, " + TList_OnLine[0] + " BOOLEAN NOT NULL) "
+            "CREATE TABLE $DB_TList ( " + TList_ID[0] + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TList_NAME[0] + " TEXT NOT NULL, " + TList_DCREATED[0] + " DATETIME NOT NULL, " + TList_DREALIZED[0] + " DATETIME, " + TList_Price[0] + " REAL, " + TList_OnLine[0] + " BOOLEAN NOT NULL) "
         )
 
     }

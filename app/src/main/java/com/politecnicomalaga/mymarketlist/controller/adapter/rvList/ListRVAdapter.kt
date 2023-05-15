@@ -19,11 +19,9 @@ class ListRVAdapter(
 
     override fun onBindViewHolder(holder: ListRVHolder, position: Int) {
         val myProduct: MyLists = myLists[position]
-        holder.checkBox.isEnabled = false
 
         holder.txtProduct.text = myProduct.name.replace("_", " ", false)
         holder.checkBox.isChecked = myProduct.online
-
     }
 
     override fun getItemCount(): Int {

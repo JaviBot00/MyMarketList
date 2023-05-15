@@ -1,8 +1,9 @@
 package com.politecnicomalaga.mymarketlist.view.activity
 
-import ClientSQLite
+import com.politecnicomalaga.mymarketlist.controller.SQLite.ClientSQLite
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -54,23 +55,18 @@ class ProductsActivity : AppCompatActivity() {
         }
 
         fabCreateList.setOnClickListener {
-            val builder = MaterialAlertDialogBuilder(this@ProductsActivity)
-            val inflater = LayoutInflater.from(this@ProductsActivity)
-            val dialogView = inflater.inflate(R.layout.dialog_ly, null)
-            val textInputList: TextInputLayout = dialogView.findViewById(R.id.editTxtList)
+            if (!ProductList.myList.isEmpty()) {
+                val builder = MaterialAlertDialogBuilder(this@ProductsActivity)
+                val inflater = LayoutInflater.from(this@ProductsActivity)
+                val dialogView = inflater.inflate(R.layout.dialog_ly, null)
+                val textInputList: TextInputLayout = dialogView.findViewById(R.id.editTxtList)
 
-            builder.setView(dialogView).setTitle(resources.getString(R.string.make_list))
-                .setMessage(resources.getString(R.string.make_list_name))
-                .setNegativeButton(resources.getString(R.string.cancel), null).setCancelable(false)
-                .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-
-
-                    MaterialAlertDialogBuilder(this@ProductsActivity).setTitle(resources.getString(R.string.make_list))
-                        .setMessage(
-                            resources.getString(R.string.make_list_message) + textInputList.editText!!.text
-                        ).setCancelable(false).setOnItemSelectedListener(null)
-                        .setNegativeButton(resources.getString(R.string.cancel), null)
-                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                builder.setView(dialogView).setTitle(resources.getString(R.string.make_list))
+                    .setMessage(resources.getString(R.string.make_list_name))
+                    .setNegativeButton(resources.getString(R.string.cancel), null)
+                    .setCancelable(false)
+                    .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+                        if (!textInputList.editText!!.text.isNullOrEmpty()) {
                             val mySQLite = ClientSQLite(this@ProductsActivity)
                             mySQLite.setWritable()
                             mySQLite.setReadable()
@@ -84,10 +80,25 @@ class ProductsActivity : AppCompatActivity() {
                                 )
                             }
                             mySQLite.getDb().close()
-                        }.show()
-                }
-            builder.create()
-            builder.show()
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this@ProductsActivity,
+                                getString(R.string.please_put_name),
+                                Toast.LENGTH_LONG
+                            ).show()
+//                        dialog.dismiss()
+                        }
+                        builder.create()
+                        builder.show()
+                    }
+            } else {
+                Toast.makeText(
+                    this@ProductsActivity,
+                    getString(R.string.choose_item),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
 //        val builder = MaterialAlertDialogBuilder(context)
