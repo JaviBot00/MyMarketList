@@ -87,11 +87,11 @@ class ProductsActivity : AppCompatActivity() {
                                 getString(R.string.please_put_name),
                                 Toast.LENGTH_LONG
                             ).show()
-//                        dialog.dismiss()
+                        dialog.dismiss()
                         }
+                    }
                         builder.create()
                         builder.show()
-                    }
             } else {
                 Toast.makeText(
                     this@ProductsActivity,
