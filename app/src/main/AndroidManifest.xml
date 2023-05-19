@@ -16,6 +16,7 @@
         android:theme="@style/Theme.MyMarketList"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        
         <activity
             android:name=".view.activity.ListActivity"
             android:exported="false"
@@ -28,6 +29,14 @@
         <!-- android:value=".MainActivity" /> -->
         <activity
             android:name=".view.activity.MainActivity"
+            android:exported="false"
+            android:parentActivityName=".view.activity.MainActivity" />
+        <activity
+            android:name=".view.activity.RegisterActivity"
+            android:exported="false"
+            android:parentActivityName=".view.activity.LoginActivity" />
+        <activity
+            android:name=".view.activity.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.MyMarketList.Starting">
             <intent-filter>
