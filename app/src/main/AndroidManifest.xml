@@ -2,8 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />-->
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-feature android:name="android.hardware.camera.*" />
+<!--    <uses-feature android:name="android.hardware.camera.autofocus" />-->
+<!--    <uses-feature android:name="android.hardware.camera.flash" />-->
 
     <application
         android:allowBackup="true"
@@ -16,25 +25,21 @@
         android:theme="@style/Theme.MyMarketList"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        
+
         <activity
             android:name=".view.activity.ListActivity"
             android:exported="false"
-            android:parentActivityName=".view.activity.MainActivity" />
+            android:parentActivityName=".view.activity.ControlPanelActivity" />
         <activity
             android:name=".view.activity.ProductsActivity"
             android:exported="false"
-            android:parentActivityName=".view.activity.MainActivity" /> <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value=".MainActivity" /> -->
+            android:parentActivityName=".view.activity.ControlPanelActivity" />
         <activity
-            android:name=".view.activity.MainActivity"
-            android:exported="false"
-            android:parentActivityName=".view.activity.MainActivity" />
+            android:name=".view.activity.ControlPanelActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.RegisterActivity"
-            android:exported="false"
-            android:parentActivityName=".view.activity.LoginActivity" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.LoginActivity"
             android:exported="true"

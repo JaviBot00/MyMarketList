@@ -13,7 +13,13 @@ import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.view.activity.ListActivity
 import com.politecnicomalaga.mymarketlist.view.activity.ProductsActivity
 
-class Menu1Fragment(private val fromActivity: Activity) : Fragment() {
+class Menu1Fragment : Fragment {
+
+    private val fromActivity: Activity
+
+    constructor(fromActivity: Activity) : super() {
+        this.fromActivity = fromActivity
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
