@@ -1,5 +1,6 @@
 package com.politecnicomalaga.mymarketlist.controller.SQLite
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -62,6 +63,18 @@ class ClientSQLite(fromContext: Context) :
         db = this.readableDatabase
     }
 
+    fun getUser(): Cursor {
+        return db.query(DB_TUsers, null, null, null, null, null, null)
+    }
+
+    fun insertUser(values: ContentValues) {
+        db.insertWithOnConflict(DB_TUsers, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+    }
+
+    fun delUser() {
+        db.delete(DB_TUsers, null, null)
+    }
+
     fun getLists(): Cursor {
         return db.query(
             DB_TList, null, null, null, null, null, TList_DCREATED[0]
@@ -69,7 +82,11 @@ class ClientSQLite(fromContext: Context) :
     }
 
     fun insertList(name: String) {
-        db.execSQL("INSERT OR REPLACE INTO $DB_TList VALUES(null, '$name', datetime('now'), null, null, false)")
+        db.execSQL("INSERT OR REPLACE INTO $DB_TList VALUES(null, '$name', datetime('now'), null, null, 0)")
+    }
+
+    fun insertList(id: Int, name: String, dCreated: String, dRealized: String, price: Int) {
+        db.execSQL("INSERT OR REPLACE INTO $DB_TList VALUES($id, '$name', $dCreated, $dRealized, $price, 1)")
     }
 
     fun createTable(table: String) {

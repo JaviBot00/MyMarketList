@@ -5,15 +5,17 @@
     <string name="my_list">Mis listas</string>
 
     <!--    App Name    -->
-    <string name="showList">Mis listas</string>
     <string name="setting">Configuracion</string>
     <string name="newProducts">Crear nuevos productos</string>
+    <string name="log_out">Cerrar sesion</string>
+
 
     <!--    Network Message    -->
     <string name="host_unreachable">Host unreachable</string>
     <string name="corrupt_data">Corrupt data</string>
     <string name="checking_backup">Checking Backup</string>
     <string name="error_backup">Error Backup</string>
+    <string name="cheking_data">Comprobando…</string>
 
     <!--    Make List    -->
     <!--    <string name="show_items">Ver productos</string>-->
@@ -22,7 +24,7 @@
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="clear_list_message">Se borraran todos los productos marcados y empezará de nuevo</string>
-<!--    <string name="make_list_message">Se creara una lista con el siguiente nombre:\t</string>-->
+    <!--    <string name="make_list_message">Se creara una lista con el siguiente nombre:\t</string>-->
     <!--    <string name="want_continue">\n¿Desea continuar?</string>-->
     <string name="make_list_name">Ponga un nombre para la lista:</string>
     <string name="please_put_name">Por favor, ingrese un nombre</string>
@@ -31,5 +33,37 @@
     <!--    Show List    -->
     <string name="name_of_list">Nombre de la lista</string>
     <string name="online">Online</string>
+
+    <!--    Login    -->
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="set_user">Inserte Usuario</string>
+    <string name="set_password">Inserte Contraseña</string>
+    <string name="access">Acceder</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="user_not_exist">Este usuario no existe</string>
+    <string name="error_get_user_data">Error al obtener los datos del usuario</string>
+    <string name="user_successfully_registered">Usuario registrado con exito</string>
+    <string name="user_not_registered">Usuario no registrado</string>
+    <string name="successful_log_out">Sesion cerrada con exito</string>
+    <string name="error_at_insert_data">Error al guardar el usuario</string>
+
+
+    <string name="sing_in">Iniciar Sesion</string>
+
+    <!--    Register    -->
+    <string name="create_account">Crear Cuenta</string>
+    <string name="camera">Camara</string>
+    <string name="gallery">Galeria</string>
+    <string name="email">Correo</string>
+    <string name="user_exist">Este usuario ya existe</string>
+    <string name="select_image">Seleccione una Imagen</string>
+    <string name="error_create_user">Error al crear usuario</string>
+    <string name="error_get_image">Error al obtener la imagen</string>
+    <string name="deny_permissions">Permiso denegado</string>
+    <string name="permissions_required_title">Permisos</string>
+    <string name="permissions_required_message">Se requieren permisos para poder continuar</string>
+    <string name="go_to_settings">Ajustes\n</string>
+    <string name="exit_register_activity">Si sale de esta pantalla, perderá los datos escritos</string>
 
 </resources>

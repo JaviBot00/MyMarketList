@@ -2,232 +2,208 @@ package com.politecnicomalaga.mymarketlist.view.activity
 
 import android.Manifest
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
+import android.provider.Settings
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.google.android.material.datepicker.MaterialDatePicker
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.politecnicomalaga.mymarketlist.R
-
+import com.politecnicomalaga.mymarketlist.controller.MainController
+import com.politecnicomalaga.mymarketlist.controller.entities.CheckPermissions
+import com.politecnicomalaga.mymarketlist.controller.entities.ServerData
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
-     lateinit var textInputUser: TextInputLayout
-     lateinit var textInputPassword: TextInputLayout
-     lateinit var textInputBirthday: TextInputLayout
-     lateinit var textInputUserGroup: TextInputLayout
-     lateinit var imgProfile: ImageView
-     lateinit var btnAddImg: FloatingActionButton
-     lateinit var btnSearchImg: FloatingActionButton
-     var myImageBitMap: Bitmap? = null
-     var myImageByteArray: ByteArray? = null
+    companion object {
+        private var myRegister: RegisterActivity? = null
 
-    val CAMERA_PERMISSION_REQUEST = 1
-    val CAMERA_REQUEST = 10
-    val GALLERY_PERMISSION_REQUEST = 2
-    val GALLERY_REQUEST = 20
+        fun getInstance(): RegisterActivity {
+            if (myRegister == null) {
+                myRegister = RegisterActivity()
+            }
+            return myRegister!!
+        }
+    }
+
+    private var imgProfile: ImageView? = null
+    private var myImageBitMap: Bitmap? = null
+    private var myImageByteArray: ByteArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        MainController().setAppBar(
+            this@RegisterActivity, resources.getString(R.string.create_account)
+        )
+        MainController().backPressed(this@RegisterActivity)
 
-        textInputUser = findViewById(R.id.txtFldUser)
-        textInputPassword = findViewById(R.id.txtFldPassWord)
-        textInputBirthday = findViewById(R.id.txtFldEmail)
+        val textInputUsername: TextInputLayout = findViewById(R.id.txtFldUserName)
+        val textInputPassword: TextInputLayout = findViewById(R.id.txtFldPassWord)
+        val textInputEmail: TextInputLayout = findViewById(R.id.txtFldEmail)
+        val btnSaveUser: Button = findViewById(R.id.btnSaveUser)
+
+        val btnAddImg: FloatingActionButton = findViewById(R.id.btnAddImg)
+        val btnSearchImg: FloatingActionButton = findViewById(R.id.btnSearchImg)
         imgProfile = findViewById(R.id.imgProfile)
-        btnAddImg = findViewById(R.id.btnAddImg)
-        btnSearchImg = findViewById(R.id.btnSearchImg)
 
-        textInputUser.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isNotEmpty()) {
-                    textInputUser.isErrorEnabled = false
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
-
-        textInputPassword.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isNotEmpty()) {
-                    textInputPassword.isErrorEnabled = false
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
-
-        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select date").build()
-        textInputBirthday.editText?.setOnClickListener {
-            if (!datePicker.isAdded) {
-                datePicker.show(supportFragmentManager, "tag")
+        textInputUsername.editText?.addTextChangedListener {
+            if (it?.isNotEmpty() == true) {
+                textInputUsername.error = null
             }
         }
 
-        datePicker.addOnPositiveButtonClickListener {
-            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
-            val date = Date(it)
-            textInputBirthday.editText?.setText(simpleDateFormat.format(date))
+        textInputPassword.editText?.addTextChangedListener {
+            if (it?.isNotEmpty() == true) {
+                textInputPassword.error = null
+            }
         }
 
-//        val mySQLite = MySQLiteManager(this@RegisterActivity)
-//        mySQLite.setWritable()
-//        val myCursor = mySQLite.getGroups()
-//        val options = arrayOfNulls<String>(myCursor.count)
-//        var cont = 0
-//        while (myCursor.moveToNext()) {
-//            options[cont] = myCursor.getString(0)
-//            cont++
-//        }
-//        mySQLite.getDb().close()
-//        textInputUserGroup.editText?.setOnClickListener {
-//            MaterialAlertDialogBuilder(it.context).setTitle("Choose Rol")
-//                .setSingleChoiceItems(options, -1, ({ dialogInterface: DialogInterface, i: Int ->
-//                    textInputUserGroup.editText!!.setText(options[i])
-//                })).setPositiveButton("Accept") { dialogInterface: DialogInterface?, i: Int ->
-//                    textInputUserGroup.error = null
-//                }.setNegativeButton("Cancel") { dialogInterface: DialogInterface?, i: Int ->
-//                    textInputUserGroup.editText!!.text.clear()
-//                }.show()
-//        }
+        textInputEmail.editText?.addTextChangedListener {
+            if (it?.isNotEmpty() == true) {
+                textInputEmail.error = null
+            }
+        }
 
         btnAddImg.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this@RegisterActivity, Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST
-                )
-            } else if (ContextCompat.checkSelfPermission(
-                    this@RegisterActivity, Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                startActivityForResult(
-                    Intent(
-                        MediaStore.ACTION_IMAGE_CAPTURE
-                    ), CAMERA_REQUEST
-                )
+            if (CheckPermissions(this@RegisterActivity).isCameraPermissionGranted()) {
+                CheckPermissions(this@RegisterActivity).startCameraActivity()
+            } else {
+                CheckPermissions(this@RegisterActivity).requestCameraPermission()
             }
         }
 
         btnSearchImg.setOnClickListener {
-            if ((ContextCompat.checkSelfPermission(
-                    this@RegisterActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED) || (ContextCompat.checkSelfPermission(
-                    this@RegisterActivity, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED)
-            ) {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ), GALLERY_PERMISSION_REQUEST
-                )
-            } else if (ContextCompat.checkSelfPermission(
-                    this@RegisterActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                    this@RegisterActivity, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                startActivityForResult(
-                    Intent(
-                        Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                    ), GALLERY_REQUEST
-                )
+            if (CheckPermissions(this@RegisterActivity).areStoragePermissionsGranted()) {
+                CheckPermissions(this@RegisterActivity).startGalleryActivity()
+            } else {
+                CheckPermissions(this@RegisterActivity).requestStoragePermissions()
             }
         }
+
+        btnSaveUser.setOnClickListener {
+            val regex = Regex("^[a-zA-Z0-9]+$")
+            val emailRegex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$")
+            val validUser = regex.matches(textInputUsername.editText!!.text)
+            val validPassword = regex.matches(textInputPassword.editText!!.text)
+            val validEmail = emailRegex.matches(textInputEmail.editText!!.text)
+            if (textInputUsername.editText!!.text.isNullOrEmpty() || !validUser) {
+                textInputUsername.error = "Enter a valid username"
+                return@setOnClickListener
+            }
+            if (textInputPassword.editText!!.text.isNullOrEmpty() || !validPassword) {
+                textInputPassword.error = "Enter a valid password"
+                return@setOnClickListener
+            }
+            if (textInputEmail.editText!!.text.isNullOrEmpty() || !validEmail) {
+                textInputEmail.error = "Enter a valid email"
+                return@setOnClickListener
+            }
+            if (myImageByteArray == null) {
+                MainController().showToast(this@RegisterActivity, R.string.select_image)
+                return@setOnClickListener
+            }
+            ServerData(this@RegisterActivity).setServerUser(
+                textInputUsername.editText!!.text.toString().lowercase(Locale.ROOT),
+                textInputPassword.editText!!.text.toString().lowercase(Locale.ROOT),
+                textInputEmail.editText!!.text.toString().lowercase(Locale.ROOT),
+                myImageByteArray!!
+            )
+        }
+    }
+
+    fun endRegister(fromActivity: Activity) {
+        val result = Intent(fromActivity, LoginActivity::class.java)
+        fromActivity.setResult(RESULT_OK, result)
+        fromActivity.finish()
+    }
+
+    fun setError(fromActivity: Activity) {
+        MainController().showToast(fromActivity, R.string.error_create_user)
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            CAMERA_PERMISSION_REQUEST -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivityForResult(
-                        Intent(
-                            MediaStore.ACTION_IMAGE_CAPTURE
-                        ), CAMERA_REQUEST
-                    )
-                } else {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST
-                    )
-                }
-            }
 
-            GALLERY_PERMISSION_REQUEST -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivityForResult(
-                        Intent(
-                            Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                        ), GALLERY_REQUEST
-                    )
-                } else {
-                    requestPermissions(
-                        arrayOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ), GALLERY_PERMISSION_REQUEST
-                    )
-                }
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            when (requestCode) {
+                CheckPermissions.CAMERA_PERMISSION_REQUEST -> CheckPermissions(this@RegisterActivity).startCameraActivity()
+                CheckPermissions.GALLERY_PERMISSION_REQUEST -> CheckPermissions(this@RegisterActivity).startGalleryActivity()
             }
+        } else if (!CheckPermissions(this@RegisterActivity).isCameraPermissionGranted() && Manifest.permission.CAMERA in permissions) {
+            showPermissionRequiredDialog()
+        } else if (!CheckPermissions(this@RegisterActivity).areStoragePermissionsGranted() && (Manifest.permission.READ_EXTERNAL_STORAGE in permissions || Manifest.permission.WRITE_EXTERNAL_STORAGE in permissions)) {
+            showPermissionRequiredDialog()
+        } else {
+            MainController().showToast(this@RegisterActivity, R.string.deny_permissions)
         }
+    }
+
+    private fun showPermissionRequiredDialog() {
+        MaterialAlertDialogBuilder(this@RegisterActivity).setTitle(R.string.permissions_required_title)
+            .setMessage(R.string.permissions_required_message)
+            .setPositiveButton(R.string.go_to_settings) { _, _ ->
+                openAppSettings()
+            }.setNegativeButton(R.string.cancel, null).setCancelable(false).show()
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivityForResult(intent, 1)
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                myImageBitMap = data.extras?.get("data") as Bitmap
-                val stream = ByteArrayOutputStream()
-                myImageBitMap!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                myImageByteArray = stream.toByteArray()
-                imgProfile.setImageBitmap(myImageBitMap)
+        when (requestCode) {
+            CheckPermissions.CAMERA_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    myImageBitMap = data.extras!!.get("data") as Bitmap
+                    val stream = ByteArrayOutputStream()
+                    myImageBitMap!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    myImageByteArray = stream.toByteArray()
+                    imgProfile?.setImageBitmap(myImageBitMap)
+                } else {
+                    MainController().showToast(this@RegisterActivity, R.string.error_get_image)
+                }
             }
-        }
 
-        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                myImageBitMap =
-                    BitmapFactory.decodeStream(contentResolver.openInputStream(data.data as Uri))
-                val stream = ByteArrayOutputStream()
-                myImageBitMap!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                myImageByteArray = stream.toByteArray()
-                imgProfile.setImageBitmap(myImageBitMap)
+            CheckPermissions.GALLERY_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    myImageBitMap =
+                        BitmapFactory.decodeStream(contentResolver.openInputStream(data.data as Uri))
+                    val stream = ByteArrayOutputStream()
+                    myImageBitMap!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    myImageByteArray = stream.toByteArray()
+                    imgProfile?.setImageBitmap(myImageBitMap)
+                } else {
+                    MainController().showToast(this@RegisterActivity, R.string.error_get_image)
+                }
             }
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        MaterialAlertDialogBuilder(this@RegisterActivity).setTitle("Warning")
-            .setMessage("Si sale de esta pantalla, perdera los datos escritos \n¿Esta seguro de salir?")
-            .setPositiveButton("SI") { dialogInterface: DialogInterface?, i: Int ->
-                super.onBackPressed()
-            }.setNegativeButton("NO") { dialogInterface: DialogInterface?, i: Int ->
-            }.show()
+    override fun onDestroy() {
+        super.onDestroy()
+        myImageBitMap?.recycle()
+        myImageBitMap = null
+        myImageByteArray = null
+        imgProfile = null
     }
+
 }

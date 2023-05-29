@@ -21,7 +21,6 @@ class ProductsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
         MainController().setAppBar(this@ProductsActivity, resources.getString(R.string.make_list))
-        ProductList.myList.clear()
 
         val viewPager: ViewPager = findViewById(R.id.viewPager)
         val tabsVPAdapter = TabsVPAdapter(
@@ -80,6 +79,7 @@ class ProductsActivity : AppCompatActivity() {
                                 )
                             }
                             mySQLite.getDb().close()
+                            ProductList.myList.clear()
                             finish()
                         } else {
                             Toast.makeText(
@@ -96,7 +96,7 @@ class ProductsActivity : AppCompatActivity() {
                 Toast.makeText(
                     this@ProductsActivity,
                     getString(R.string.choose_item),
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }

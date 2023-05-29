@@ -83,7 +83,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtFldUser"
+                android:id="@+id/txtFldUserName"
                 style="?attr/textInputFilledStyle"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
