@@ -1,9 +1,13 @@
 package com.politecnicomalaga.mymarketlist.controller.http
 
 import android.app.Activity
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import okhttp3.Call
@@ -12,9 +16,8 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
+import java.util.concurrent.TimeUnit
 
 class MyRequest(private val fromActivity: Activity) {
     companion object {
@@ -37,18 +40,16 @@ class MyRequest(private val fromActivity: Activity) {
             Request.Builder().url(url).post(requestBody).addHeader("cache-control", "no-cache")
                 .build()
 
+        val handler = Handler(Looper.getMainLooper())
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                val handler = Handler(Looper.getMainLooper())
                 handler.post {
                     Log.e("NET", e.toString())
                     onFail()
-                    MainController().showToast(fromActivity, R.string.host_unreachable)
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val handler = Handler(Looper.getMainLooper())
                 handler.post {
                     onResponseReceived(response.body.string())
                 }
@@ -56,33 +57,54 @@ class MyRequest(private val fromActivity: Activity) {
         })
     }
 
-    fun checkIP() {
-        try {
-            val processBuilder = ProcessBuilder("/system/bin/ping", "-c", "1", currentIP)
-            val process = processBuilder.start()
-            val inputStream = process.inputStream
-            val reader = BufferedReader(InputStreamReader(inputStream))
-            var line: String?
-            var reach = false
+    fun checkNetworkConnectivity() {
+        val connectivityManager =
+            fromActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
 
-            while (reader.readLine().also { line = it } != null) {
-                // Lee la salida del proceso de ping
-                if (line!!.contains("1 packets transmitted, 1 received")) {
-                    Log.e("NET", "OK")
-                    reach = true
-                    break
-                }
-            }
-            if (!reach) {
-                Log.e("NET", "FAIL")
-                if (currentIP != IPs.last()) {
-                    currentIP = IPs[IPs.indexOf(currentIP) + 1]
-                    checkIP()
-                } else {
-                    MainController().showToast(fromActivity, R.string.host_unreachable)
-                }
-            }
-        } catch (_: Exception) {
+        if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+            checkIP()
+        } else {
+            MainController().showToast(fromActivity, R.string.error_network)
+            MainController().showToast(fromActivity, R.string.check_network)
+            fromActivity.window.statusBarColor =
+                ContextCompat.getColor(fromActivity, R.color.colorPrimary)
         }
+    }
+
+    private fun checkIP() {
+        val client = OkHttpClient.Builder().callTimeout(10, TimeUnit.SECONDS).build()
+
+        val request =
+            Request.Builder().url("http://$currentIP") // Reemplaza con la URL de tu servidor
+                .build()
+
+        val handler = Handler(Looper.getMainLooper())
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                handler.post {
+                    // Error de conexión
+                    Log.e("NET", "INVALID IP")
+                    if (currentIP != IPs.last()) {
+                        currentIP = IPs[IPs.indexOf(currentIP) + 1]
+                        checkIP()
+                    } else {
+                        MainController().showToast(fromActivity, R.string.fail_connection)
+                    }
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                handler.post {
+                    // Respuesta exitosa
+                    fromActivity.window.statusBarColor =
+                        ContextCompat.getColor(fromActivity, android.R.color.holo_green_dark)
+                    MainController().showToast(fromActivity, R.string.successful_connection)
+                    Log.e("NET", "OK")
+                    // Aquí puedes realizar las acciones necesarias cuando la conexión con el servidor es exitosa
+                }
+            }
+        })
     }
 }

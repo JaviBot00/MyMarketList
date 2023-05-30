@@ -33,10 +33,10 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MyRequest(this@LoginActivity).checkNetworkConnectivity()
         installSplashScreen()
         setContentView(R.layout.activity_login)
         MainController().setAppBar(this@LoginActivity, resources.getString(R.string.app_name))
-        MyRequest(this@LoginActivity).checkIP()
 //        ServerData(this@LoginActivity).getServerProductTables()
 
         checkAccess(this@LoginActivity)
