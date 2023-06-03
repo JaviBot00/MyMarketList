@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.fragments
+package com.politecnicomalaga.mymarketlist.view.vFragments
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.view.activity.ListActivity
-import com.politecnicomalaga.mymarketlist.view.activity.ProductsActivity
+import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
+import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 
 class Menu1Fragment : Fragment {
 
@@ -37,12 +38,17 @@ class Menu1Fragment : Fragment {
         super.onViewCreated(view, savedInstanceState)
         val btnMakeList: Button = view.findViewById(R.id.btnMakeList)
         btnMakeList.setOnClickListener {
-            startActivityForResult(Intent(fromActivity, ProductsActivity::class.java), 0)
+            startActivityForResult(Intent(fromActivity, CatalogueActivity::class.java), 0)
         }
 
         val btnShowLists: Button = view.findViewById(R.id.btnShowList)
         btnShowLists.setOnClickListener {
             startActivityForResult(Intent(fromActivity, ListActivity::class.java), 1)
+        }
+
+        val btnSendLists: Button = view.findViewById(R.id.btnSetting)
+        btnSendLists.setOnClickListener {
+            ServerData(fromActivity).setServerLists()
         }
     }
 
@@ -50,4 +56,5 @@ class Menu1Fragment : Fragment {
         Snackbar.make(fromActivity.findViewById(android.R.id.content), "ss", Snackbar.LENGTH_LONG)
             .show()
     }
+
 }

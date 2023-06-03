@@ -1,14 +1,14 @@
-package com.politecnicomalaga.mymarketlist.controller.adapter.rvList
+package com.politecnicomalaga.mymarketlist.controller.cAdapter.rvList
 
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.model.MyLists
+import com.politecnicomalaga.mymarketlist.model.Lists
 
 class ListRVAdapter(
-    private val fromActivity: Activity, private val myLists: ArrayList<MyLists>
+    private val fromActivity: Activity, private val lists: ArrayList<Lists>
 ) : RecyclerView.Adapter<ListRVHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListRVHolder {
@@ -18,15 +18,15 @@ class ListRVAdapter(
     }
 
     override fun onBindViewHolder(holder: ListRVHolder, position: Int) {
-        val myProduct: MyLists = myLists[position]
+        val myProduct: Lists = lists[position]
 
         holder.checkBox.isEnabled = false
-        holder.txtProduct.text = myProduct.name.replace("_", " ", false)
-        holder.checkBox.isChecked = myProduct.online
+        holder.txtProduct.text = myProduct.sName.replace("_", " ", false)
+        holder.checkBox.isChecked = myProduct.bOnline
     }
 
     override fun getItemCount(): Int {
-        return myLists.size
+        return lists.size
     }
 
 }

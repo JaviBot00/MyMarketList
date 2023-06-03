@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.activity
+package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.app.Activity
 import android.content.Intent
@@ -10,9 +10,9 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputLayout
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.SQLite.ClientSQLite
-import com.politecnicomalaga.mymarketlist.controller.entities.ServerData
-import com.politecnicomalaga.mymarketlist.controller.http.MyRequest
+import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
+import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
+import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import java.util.Locale
 
 class LoginActivity : AppCompatActivity() {
@@ -33,13 +33,15 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MyRequest(this@LoginActivity).checkNetworkConnectivity()
         installSplashScreen()
         setContentView(R.layout.activity_login)
+        MyRequest(this@LoginActivity).checkNetworkConnectivity()
+        setEnable(this@LoginActivity, false)
         MainController().setAppBar(this@LoginActivity, resources.getString(R.string.app_name))
-//        ServerData(this@LoginActivity).getServerProductTables()
 
         checkAccess(this@LoginActivity)
+        ServerData(this@LoginActivity).getServerProductTables()
+
 
         val textInputUser: TextInputLayout = findViewById(R.id.txtFldUser)
         val textInputPass: TextInputLayout = findViewById(R.id.txtFldPass)
@@ -84,26 +86,37 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkAccess(fromActivity: Activity) {
-        val mySQLite = ClientSQLite(fromActivity)
-        mySQLite.setReadable()
-        if (mySQLite.getUser().moveToNext()) {
+        if (ClientSQLite(fromActivity).getUser().userName.isNotEmpty()) {
             doAccess(fromActivity)
         }
-        mySQLite.getDb().close()
     }
 
     fun doAccess(fromActivity: Activity) {
         fromActivity.startActivityForResult(
             Intent(fromActivity, ControlPanelActivity::class.java), CONTROLPANEL_REQUEST
         )
-        fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
-        fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
+        fromActivity.runOnUiThread {
+            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
+            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
+        }
+    }
+
+    fun setEnable(fromActivity: Activity, check: Boolean) {
+        fromActivity.runOnUiThread {
+            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).isEnabled = check
+            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).isEnabled = check
+            fromActivity.findViewById<Button>(R.id.btnAccess).isEnabled = check
+            fromActivity.findViewById<Button>(R.id.btnRegister).isEnabled = check
+        }
     }
 
     fun setError(fromActivity: Activity, message: Int) {
-        MainController().showToast(
-            fromActivity, message
-        )
+        fromActivity.runOnUiThread {
+
+            MainController().showToast(
+                fromActivity, message
+            )
+        }
     }
 
     @Deprecated("Deprecated in Java")

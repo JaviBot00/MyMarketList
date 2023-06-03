@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.activity
+package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,10 +11,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.SQLite.ClientSQLite
-import com.politecnicomalaga.mymarketlist.controller.entities.ServerData
-import com.politecnicomalaga.mymarketlist.view.fragments.Menu1Fragment
-import com.politecnicomalaga.mymarketlist.view.fragments.Menu2Fragment
+import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
+import com.politecnicomalaga.mymarketlist.view.vFragments.Menu1Fragment
+import com.politecnicomalaga.mymarketlist.view.vFragments.Menu2Fragment
 
 class ControlPanelActivity : AppCompatActivity() {
 
@@ -27,8 +26,8 @@ class ControlPanelActivity : AppCompatActivity() {
         MainController().setAppBar(
             this@ControlPanelActivity, resources.getString(R.string.app_name)
         )
-        MainController().showToast(this@ControlPanelActivity, R.string.checking_backup)
-        ServerData(this@ControlPanelActivity).getServerProductTables()
+//        MainController().showToast(this@ControlPanelActivity, R.string.checking_backup)
+//        ServerData(this@ControlPanelActivity).getServerProductTables()
 
         loadFragment(Menu1Fragment(this@ControlPanelActivity))
         bottomNav = findViewById(R.id.bottomNav)
@@ -67,9 +66,7 @@ class ControlPanelActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_log_out -> {
                 val mySQLite = ClientSQLite(this@ControlPanelActivity)
-                mySQLite.setWritable()
                 mySQLite.delUser()
-                mySQLite.getDb().close()
                 val result = Intent(this@ControlPanelActivity, LoginActivity::class.java)
                 setResult(RESULT_OK, result)
                 finish()

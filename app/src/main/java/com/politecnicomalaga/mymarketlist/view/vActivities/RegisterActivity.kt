@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.activity
+package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.Manifest
 import android.app.Activity
@@ -19,8 +19,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.entities.CheckPermissions
-import com.politecnicomalaga.mymarketlist.controller.entities.ServerData
+import com.politecnicomalaga.mymarketlist.controller.cEntities.CheckPermissions
+import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
+import com.politecnicomalaga.mymarketlist.model.UserFeatures
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -114,23 +115,28 @@ class RegisterActivity : AppCompatActivity() {
                 MainController().showToast(this@RegisterActivity, R.string.select_image)
                 return@setOnClickListener
             }
-            ServerData(this@RegisterActivity).setServerUser(
+            val user = UserFeatures(
                 textInputUsername.editText!!.text.toString().lowercase(Locale.ROOT),
                 textInputPassword.editText!!.text.toString().lowercase(Locale.ROOT),
                 textInputEmail.editText!!.text.toString().lowercase(Locale.ROOT),
                 myImageByteArray!!
             )
+            ServerData(this@RegisterActivity).setServerUser(user)
         }
     }
 
     fun endRegister(fromActivity: Activity) {
-        val result = Intent(fromActivity, LoginActivity::class.java)
-        fromActivity.setResult(RESULT_OK, result)
-        fromActivity.finish()
+        fromActivity.runOnUiThread {
+            val result = Intent(fromActivity, LoginActivity::class.java)
+            fromActivity.setResult(RESULT_OK, result)
+            fromActivity.finish()
+        }
     }
 
     fun setError(fromActivity: Activity) {
-        MainController().showToast(fromActivity, R.string.error_create_user)
+        fromActivity.runOnUiThread {
+            MainController().showToast(fromActivity, R.string.error_create_user)
+        }
     }
 
     override fun onRequestPermissionsResult(

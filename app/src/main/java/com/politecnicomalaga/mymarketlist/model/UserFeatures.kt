@@ -1,23 +1,17 @@
 package com.politecnicomalaga.mymarketlist.model
 
-import android.graphics.Bitmap
-import java.io.Serializable
-
-class UserFeatures() : Serializable {
+class UserFeatures() {
     var userName: String = ""
     var passWord: String = ""
-    var birthDay: String = ""
-    var imgProfile: Bitmap? = null
+    var email: String = ""
+    var imgProfile: ByteArray? = null
 
     constructor(
-        userName: String,
-        passWord: String,
-        birthDay: String,
-        imgProfile: Bitmap?
+        userName: String, passWord: String, birthDay: String, imgProfile: ByteArray
     ) : this() {
         this.userName = userName
         this.passWord = passWord
-        this.birthDay = birthDay
+        this.email = birthDay
         this.imgProfile = imgProfile
     }
 

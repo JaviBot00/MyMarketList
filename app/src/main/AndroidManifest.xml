@@ -28,21 +28,21 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".view.activity.ListActivity"
+            android:name=".view.vActivities.ListActivity"
             android:exported="false"
-            android:parentActivityName=".view.activity.ControlPanelActivity" />
+            android:parentActivityName=".view.vActivities.ControlPanelActivity" />
         <activity
-            android:name=".view.activity.ProductsActivity"
+            android:name=".view.vActivities.CatalogueActivity"
             android:exported="false"
-            android:parentActivityName=".view.activity.ControlPanelActivity" />
+            android:parentActivityName=".view.vActivities.ControlPanelActivity" />
         <activity
-            android:name=".view.activity.ControlPanelActivity"
+            android:name=".view.vActivities.ControlPanelActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.RegisterActivity"
+            android:name=".view.vActivities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.LoginActivity"
+            android:name=".view.vActivities.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.MyMarketList.Starting">
             <intent-filter>

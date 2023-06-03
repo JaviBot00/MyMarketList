@@ -11,11 +11,16 @@ import android.text.style.StyleSpan
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.view.activity.RegisterActivity
+import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
+import com.politecnicomalaga.mymarketlist.view.vActivities.LoginActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
 
 class MainController {
+
+    // Metodos estaticos para los colores
 
 //    companion object {
 //        private var myController: MainController? = null
@@ -29,6 +34,14 @@ class MainController {
 //    }
 
     fun setAppBar(fromActivity: AppCompatActivity, title: String) {
+        MyRequest(fromActivity).checkNetworkConnectivity()
+        if (fromActivity.window.statusBarColor == ContextCompat.getColor(
+                fromActivity, R.color.colorAccent
+            )
+        ) {
+            MainController().showToast(fromActivity, R.string.try_connection)
+        }
+
         fromActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         if (fromActivity.supportActionBar != null) {
             if (fromActivity.parentActivityIntent == null) {
@@ -48,6 +61,7 @@ class MainController {
 //                )
 //            )
 //        )
+
         val spannableString = SpannableString(title)
         spannableString.setSpan(
             StyleSpan(Typeface.BOLD), 0, spannableString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -81,6 +95,25 @@ class MainController {
     }
 
     fun showToast(fromActivity: Activity, message: Int) {
-        if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
+        fromActivity.runOnUiThread {
+            if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun setColorStatusBar(fromActivity: Activity, ping: Boolean) {
+        if (ping) {
+            fromActivity.window.statusBarColor =
+                ContextCompat.getColor(fromActivity, android.R.color.holo_green_dark)
+            MainController().showToast(fromActivity, R.string.successful_connection)
+        } else {
+            fromActivity.window.statusBarColor =
+                ContextCompat.getColor(fromActivity, R.color.colorPrimary)
+            MainController().showToast(fromActivity, R.string.error_network)
+            MainController().showToast(fromActivity, R.string.check_network)
+        }
+
+        if (fromActivity is LoginActivity) {
+            LoginActivity.getInstance().setEnable(fromActivity, ping)
+        }
     }
 }

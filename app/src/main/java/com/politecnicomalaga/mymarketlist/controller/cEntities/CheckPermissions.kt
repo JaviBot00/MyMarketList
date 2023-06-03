@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.controller.entities
+package com.politecnicomalaga.mymarketlist.controller.cEntities
 
 import android.Manifest
 import android.app.Activity

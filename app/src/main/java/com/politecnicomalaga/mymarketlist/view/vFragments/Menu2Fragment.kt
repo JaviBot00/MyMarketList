@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.fragments
+package com.politecnicomalaga.mymarketlist.view.vFragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,7 +26,7 @@ class Menu2Fragment : Fragment() {
 //        super.onViewCreated(view, savedInstanceState)
 //        val makeList: Button = view.findViewById(R.id.btnMakeList)
 //        makeList.setOnClickListener {
-//            startActivityForResult(Intent(fromActivity, ProductsActivity::class.java), 2)
+//            startActivityForResult(Intent(fromActivity, CatalogueActivity::class.java), 2)
 //        }
 //    }
 

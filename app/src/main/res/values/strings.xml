@@ -11,12 +11,13 @@
 
 
     <!--    Network Message    -->
-    <string name="cheking_data">Comprobando…</string>
+    <string name="try_connection">Conectando al servidor…</string>
     <string name="fail_connection">Fallo en la conexion al servidor</string>
     <string name="successful_connection">Conexion al servidor exitosa</string>
     <string name="error_network">Sin conexion a Internet</string>
     <string name="check_network">Comprueba tu conexion WI-FI o de datos moviles</string>
 
+    <string name="cheking_data">Comprobando…</string>
     <string name="corrupt_data">Corrupt data</string>
     <string name="checking_backup">Checking Backup</string>
     <string name="error_backup">Error Backup</string>

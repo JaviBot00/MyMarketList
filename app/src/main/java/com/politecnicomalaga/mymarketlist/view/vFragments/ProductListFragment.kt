@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.fragments
+package com.politecnicomalaga.mymarketlist.view.vFragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.controller.adapter.rvProducts.ProductsRVAdapter
+import com.politecnicomalaga.mymarketlist.controller.cAdapter.rvProducts.ProductsRVAdapter
 import com.politecnicomalaga.mymarketlist.model.Product
 
 
