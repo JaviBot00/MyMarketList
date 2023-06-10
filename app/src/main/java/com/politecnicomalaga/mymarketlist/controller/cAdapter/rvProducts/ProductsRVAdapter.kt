@@ -25,15 +25,15 @@ class ProductsRVAdapter(
 
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                ClientSQLite.myList.add(myProduct)
-            } else if (!isChecked && ClientSQLite.myList.contains(myProduct)) {
-                ClientSQLite.myList.remove(myProduct)
+                ClientSQLite.myProductsList.add(myProduct)
+            } else if (!isChecked && ClientSQLite.myProductsList.contains(myProduct)) {
+                ClientSQLite.myProductsList.remove(myProduct)
             }
         }
 
-        if (ClientSQLite.myList.contains(myProduct)) {
+        if (ClientSQLite.myProductsList.contains(myProduct)) {
             holder.checkBox.isChecked = true
-        } else if (!ClientSQLite.myList.contains(myProduct)) {
+        } else if (!ClientSQLite.myProductsList.contains(myProduct)) {
             holder.checkBox.isChecked = false
         }
     }

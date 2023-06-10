@@ -7,6 +7,7 @@ class Product : Comparable<Product> {
     var nIdType: Int = 0 // Para el catalago
 
     var nIdList: Int = 0 // Para  guardar en la lista
+    var bOnline = false
 
     override fun compareTo(other: Product): Int {
         return sName.compareTo(other.sName)

@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:contentDescription="@string/make_list"
+            android:contentDescription="@string/catalogue"
             android:src="@drawable/add_check"
             app:backgroundTint="@android:color/holo_green_dark" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
