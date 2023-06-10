@@ -11,7 +11,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
-import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import java.util.Locale
 
@@ -32,16 +31,13 @@ class LoginActivity : AppCompatActivity() {
     private val CONTROLPANEL_REQUEST = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        MyRequest(this@LoginActivity).checkNetworkConnectivity()
-        setEnable(this@LoginActivity, false)
+        checkAccess(this@LoginActivity)
         MainController().setAppBar(this@LoginActivity, resources.getString(R.string.app_name))
 
-        checkAccess(this@LoginActivity)
         ServerData(this@LoginActivity).getServerProductTables()
-
 
         val textInputUser: TextInputLayout = findViewById(R.id.txtFldUser)
         val textInputPass: TextInputLayout = findViewById(R.id.txtFldPass)
@@ -72,10 +68,12 @@ class LoginActivity : AppCompatActivity() {
                 textInputPass.error = getString(R.string.set_password)
                 return@setOnClickListener
             }
-            ServerData(this@LoginActivity).getServerUser(
-                textInputUser.editText?.text.toString().lowercase(Locale.ROOT),
-                textInputPass.editText?.text.toString().lowercase(Locale.ROOT)
-            )
+            if (MainController().isConnected(this@LoginActivity)) {
+                ServerData(this@LoginActivity).getServerUser(
+                    textInputUser.editText!!.text.toString().lowercase(Locale.ROOT),
+                    textInputPass.editText!!.text.toString().lowercase(Locale.ROOT)
+                )
+            }
         }
 
         btnRegister.setOnClickListener {
@@ -95,28 +93,8 @@ class LoginActivity : AppCompatActivity() {
         fromActivity.startActivityForResult(
             Intent(fromActivity, ControlPanelActivity::class.java), CONTROLPANEL_REQUEST
         )
-        fromActivity.runOnUiThread {
-            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
-            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
-        }
-    }
-
-    fun setEnable(fromActivity: Activity, check: Boolean) {
-        fromActivity.runOnUiThread {
-            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).isEnabled = check
-            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).isEnabled = check
-            fromActivity.findViewById<Button>(R.id.btnAccess).isEnabled = check
-            fromActivity.findViewById<Button>(R.id.btnRegister).isEnabled = check
-        }
-    }
-
-    fun setError(fromActivity: Activity, message: Int) {
-        fromActivity.runOnUiThread {
-
-            MainController().showToast(
-                fromActivity, message
-            )
-        }
+        fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
+        fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
     }
 
     @Deprecated("Deprecated in Java")

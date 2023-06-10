@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 
 class MyRequest(private val fromActivity: Activity) {
     companion object {
-        private val IPs = arrayOf("192.168.1.175", "192.168.58.14", "79.147.88.210:8080")
+        private val IPs = arrayOf("79.147.88.210:8080", "192.168.1.175", "192.168.58.14")
         private var currentIP = IPs[0]
     }
 
@@ -36,42 +36,18 @@ class MyRequest(private val fromActivity: Activity) {
             Request.Builder().url(url).post(requestBody).addHeader("cache-control", "no-cache")
                 .build()
 
-//        val handler = Handler(Looper.getMainLooper())
+        val handler = Handler(Looper.getMainLooper())
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-//                handler.post {
+                handler.post {
                     Log.e("NET", e.toString())
-//                }
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
-//                handler.post {
+                handler.post {
                     onResponseReceived(response.body.string())
-//                }
-            }
-        })
-    }
-
-    fun phpQueryImage(
-        query: String, requestBody: MultipartBody, onResponseReceived: (ByteArray) -> Unit
-    ) {
-        val url = "$host$query"
-        val request =
-            Request.Builder().url(url).post(requestBody).addHeader("cache-control", "no-cache")
-                .build()
-
-//        val handler = Handler(Looper.getMainLooper())
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-//                handler.post {
-                    Log.e("NET", e.toString())
-//                }
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-//                handler.post {
-                    onResponseReceived(response.body.bytes())
-//                }
+                }
             }
         })
     }
@@ -82,18 +58,18 @@ class MyRequest(private val fromActivity: Activity) {
         val url = "$host$query"
         val request = Request.Builder().url(url).addHeader("cache-control", "no-cache").build()
 
-//        val handler = Handler(Looper.getMainLooper())
+        val handler = Handler(Looper.getMainLooper())
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-//                handler.post {
+                handler.post {
                     Log.e("NET", e.toString())
-//                }
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
-//                handler.post {
+                handler.post {
                     onResponseReceived(response.body.string())
-//                }
+                }
             }
         })
     }
@@ -107,7 +83,7 @@ class MyRequest(private val fromActivity: Activity) {
         if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
             isConnected = checkIP()
         } else {
-            MainController().setColorStatusBar(fromActivity, false)
+            MainController().setColorStatusBar(fromActivity, MainController.FAIL, false)
         }
         return isConnected
     }
@@ -122,19 +98,20 @@ class MyRequest(private val fromActivity: Activity) {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 handler.post {
+                    MainController().setColorStatusBar(fromActivity, MainController.TRY, false)
                     Log.e("NET", "INVALID IP")
                     if (currentIP != IPs.last()) {
                         currentIP = IPs[IPs.indexOf(currentIP) + 1]
                         isConnected = checkIP()
                     } else {
-                        MainController().showToast(fromActivity, R.string.fail_connection)
+                        MainController().setColorStatusBar(fromActivity, MainController.FAIL, true)
                     }
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
                 handler.post {
-                    MainController().setColorStatusBar(fromActivity, true)
+                    MainController().setColorStatusBar(fromActivity, MainController.OK, false)
                     Log.e("NET", "OK")
                     isConnected = true
                 }

@@ -119,24 +119,20 @@ class RegisterActivity : AppCompatActivity() {
                 textInputUsername.editText!!.text.toString().lowercase(Locale.ROOT),
                 textInputPassword.editText!!.text.toString().lowercase(Locale.ROOT),
                 textInputEmail.editText!!.text.toString().lowercase(Locale.ROOT),
-                myImageByteArray!!
+                myImageByteArray!!,
+                "/photos/" + textInputUsername.editText!!.text.toString()
+                    .lowercase(Locale.ROOT) + ".png"
             )
-            ServerData(this@RegisterActivity).setServerUser(user)
+            if (MainController().isConnected(this@RegisterActivity)) {
+                ServerData(this@RegisterActivity).setServerUser(user)
+            }
         }
     }
 
     fun endRegister(fromActivity: Activity) {
-        fromActivity.runOnUiThread {
-            val result = Intent(fromActivity, LoginActivity::class.java)
-            fromActivity.setResult(RESULT_OK, result)
-            fromActivity.finish()
-        }
-    }
-
-    fun setError(fromActivity: Activity) {
-        fromActivity.runOnUiThread {
-            MainController().showToast(fromActivity, R.string.error_create_user)
-        }
+        val result = Intent(fromActivity, LoginActivity::class.java)
+        fromActivity.setResult(RESULT_OK, result)
+        fromActivity.finish()
     }
 
     override fun onRequestPermissionsResult(

@@ -15,33 +15,21 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
-import com.politecnicomalaga.mymarketlist.view.vActivities.LoginActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
 
 class MainController {
 
-    // Metodos estaticos para los colores
-
-//    companion object {
-//        private var myController: MainController? = null
-//
-//        fun getInstance(): MainController {
-//            if (myController == null) {
-//                myController = MainController()
-//            }
-//            return myController!!
-//        }
-//    }
+    companion object {
+        const val OK = 1
+        const val TRY = 0
+        const val FAIL = -1
+        var bOK = true
+        var bTRY = true
+        var bFAIL = true
+    }
 
     fun setAppBar(fromActivity: AppCompatActivity, title: String) {
         MyRequest(fromActivity).checkNetworkConnectivity()
-        if (fromActivity.window.statusBarColor == ContextCompat.getColor(
-                fromActivity, R.color.colorAccent
-            )
-        ) {
-            MainController().showToast(fromActivity, R.string.try_connection)
-        }
-
         fromActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         if (fromActivity.supportActionBar != null) {
             if (fromActivity.parentActivityIntent == null) {
@@ -95,25 +83,63 @@ class MainController {
     }
 
     fun showToast(fromActivity: Activity, message: Int) {
-        fromActivity.runOnUiThread {
-            if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
-        }
+        if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun setColorStatusBar(fromActivity: Activity, ping: Boolean) {
-        if (ping) {
-            fromActivity.window.statusBarColor =
-                ContextCompat.getColor(fromActivity, android.R.color.holo_green_dark)
-            MainController().showToast(fromActivity, R.string.successful_connection)
+    fun isConnected(fromActivity: Activity): Boolean {
+        if (fromActivity.window.statusBarColor == ContextCompat.getColor(
+                fromActivity, android.R.color.holo_green_dark
+            )
+        ) {
+            return true
         } else {
-            fromActivity.window.statusBarColor =
-                ContextCompat.getColor(fromActivity, R.color.colorPrimary)
-            MainController().showToast(fromActivity, R.string.error_network)
-            MainController().showToast(fromActivity, R.string.check_network)
+            MyRequest(fromActivity).checkNetworkConnectivity()
+            showToast(fromActivity, R.string.try_agein_later)
+        }
+        return false
+    }
+
+    fun setColorStatusBar(fromActivity: Activity, ping: Int, b: Boolean) {
+        when (ping) {
+            OK -> {
+                fromActivity.window.statusBarColor =
+                    ContextCompat.getColor(fromActivity, android.R.color.holo_green_dark)
+                if (bOK) {
+                    showToast(fromActivity, R.string.successful_connection)
+                    bOK = false
+                    bTRY = false
+                    bFAIL = true
+                }
+            }
+
+            TRY -> {
+                fromActivity.window.statusBarColor = ContextCompat.getColor(
+                    fromActivity, android.R.color.holo_orange_light
+                )
+                if (bTRY) {
+                    showToast(fromActivity, R.string.try_connection)
+                    bOK = true
+                    bTRY = false
+                    bFAIL = true
+                }
+            }
+
+            FAIL -> {
+                fromActivity.window.statusBarColor =
+                    ContextCompat.getColor(fromActivity, android.R.color.holo_red_dark)
+                if (bFAIL) {
+                    if (b) {
+                        showToast(fromActivity, R.string.fail_connection)
+                    } else {
+                        showToast(fromActivity, R.string.error_network)
+                    }
+                    showToast(fromActivity, R.string.check_network)
+                    bOK = true
+                    bTRY = true
+                    bFAIL = false
+                }
+            }
         }
 
-        if (fromActivity is LoginActivity) {
-            LoginActivity.getInstance().setEnable(fromActivity, ping)
-        }
     }
 }

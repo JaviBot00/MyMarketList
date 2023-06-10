@@ -1,5 +1,7 @@
 package com.politecnicomalaga.mymarketlist.view.vActivities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +22,7 @@ class CatalogueActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
-        MainController().setAppBar(this@CatalogueActivity, resources.getString(R.string.make_list))
+        MainController().setAppBar(this@CatalogueActivity, resources.getString(R.string.catalogue))
 
         val viewPager: ViewPager = findViewById(R.id.viewPager)
         val tabsVPAdapter = TabsVPAdapter(
@@ -40,7 +42,7 @@ class CatalogueActivity : AppCompatActivity() {
                 .setMessage(resources.getString(R.string.clear_list_message))
                 .setNegativeButton(resources.getString(R.string.cancel), null)
                 .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                    ClientSQLite.myList.clear()
+                    ClientSQLite.myProductsList.clear()
                     tabsVPAdapter.notifyDataSetChanged()
                     viewPager.adapter = tabsVPAdapter
                 }.setCancelable(false).show()
@@ -48,28 +50,29 @@ class CatalogueActivity : AppCompatActivity() {
 
         fabShowItems.setOnClickListener {
             MaterialAlertDialogBuilder(this@CatalogueActivity).setTitle(resources.getString(R.string.items_selected))
-                .setItems(ClientSQLite.myList.map { it.sName }.toTypedArray(), null)
+                .setItems(ClientSQLite.myProductsList.map { it.sName }.toTypedArray(), null)
                 .setPositiveButton(resources.getString(R.string.accept), null).setCancelable(false)
                 .setOnItemSelectedListener(null).show()
         }
 
         fabCreateList.setOnClickListener {
-            if (!ClientSQLite.myList.isEmpty()) {
+            if (!ClientSQLite.myProductsList.isEmpty()) {
                 val builder = MaterialAlertDialogBuilder(this@CatalogueActivity)
                 val inflater = LayoutInflater.from(this@CatalogueActivity)
                 val dialogView = inflater.inflate(R.layout.dialog_ly, null)
                 val textInputList: TextInputLayout = dialogView.findViewById(R.id.editTxtList)
 //                textInputList.editText!!.textSize = 20f
 
-                builder.setView(dialogView).setTitle(resources.getString(R.string.make_list))
+                builder.setView(dialogView).setTitle(resources.getString(R.string.catalogue))
                     .setMessage(resources.getString(R.string.make_list_name))
                     .setNegativeButton(resources.getString(R.string.cancel), null)
                     .setCancelable(false)
                     .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
                         if (!textInputList.editText!!.text.isNullOrEmpty()) {
                             ClientSQLite(this@CatalogueActivity).setList(textInputList.editText!!.text)
-                            ServerData(this@CatalogueActivity).setServerLists()
-                            finish()
+                            if (MainController().isConnected(this@CatalogueActivity)) {
+                                ServerData(this@CatalogueActivity).setServerLists()
+                            }
                         } else {
                             MainController().showToast(
                                 this@CatalogueActivity, R.string.please_put_name
@@ -83,5 +86,11 @@ class CatalogueActivity : AppCompatActivity() {
                 MainController().showToast(this@CatalogueActivity, R.string.choose_item)
             }
         }
+    }
+
+    fun endCatalogue(fromActivity: Activity){
+        val result = Intent(fromActivity, ControlPanelActivity::class.java)
+        fromActivity.setResult(RESULT_OK, result)
+        fromActivity.finish()
     }
 }
