@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.politecnicomalaga.mymarketlist.R
 
-class Menu2Fragment : Fragment() {
+class Nav2DetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class Menu2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu2, container, false)
+        return inflater.inflate(R.layout.fragment_nav2_details, container, false)
     }
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
