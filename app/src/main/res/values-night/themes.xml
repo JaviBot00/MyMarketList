@@ -10,7 +10,7 @@
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
         <item name="android:button">@color/colorButton</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:statusBarColor">@android:color/holo_green_dark</item>
         <!-- Customize your theme here. -->
         <!--        <item name="android:forceDarkAllowed">true</item>-->
         <!--        <item name="android:navigationBarColor">@color/black</item>-->
@@ -22,10 +22,11 @@
         <item name="windowSplashScreenBackground">@color/colorBackground</item>
         <!-- Use windowSplashScreenAnimatedIcon to add either a drawable or an
              animated drawable. One of these is required. -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/discord_dark</item>
         <!-- Required for animated icons -->
         <item name="windowSplashScreenAnimationDuration">300</item>
         <!-- Set the theme of the Activity that directly follows your splash screen. -->
+<!--        <item name="android:windowSplashScreenBrandingImage">@drawable/...</item>-->
         <!-- Required -->
         <item name="postSplashScreenTheme">@style/Theme.MyMarketList</item>
         <!-- Status bar and Nav bar configs -->

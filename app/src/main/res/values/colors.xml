@@ -2,10 +2,10 @@
 <resources>
 <!-- Tema claro -->
     <color name="colorPrimaryDark">#F2F2F2</color>
-    <color name="colorPrimary">#8C353D</color>
+    <color name="colorPrimary">#D91818</color>
     <color name="colorAccent">#F2B705</color>
     <color name="colorBackground">#F2F2F2</color>
     <color name="colorTextPrimary">#212126</color>
-    <color name="colorTextSecondary">#8C353D</color>
-    <color name="colorButton">#D91818</color>
+    <color name="colorTextSecondary">#D91818</color>
+    <color name="colorButton">#8C353D</color>
 </resources>
