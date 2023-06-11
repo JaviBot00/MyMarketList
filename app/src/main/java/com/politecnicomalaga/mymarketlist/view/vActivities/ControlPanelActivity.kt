@@ -6,13 +6,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment
+import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment.Companion.CATALOGUE_REQUEST
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav2DetailsFragment
 
 class ControlPanelActivity : AppCompatActivity() {
@@ -21,11 +21,8 @@ class ControlPanelActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
         setContentView(R.layout.activity_control_panel)
-        MainController().setAppBar(
-            this@ControlPanelActivity, resources.getString(R.string.app_name)
-        )
+        MainController().setControllers(this@ControlPanelActivity, R.string.app_name)
 
         loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
         bottomNav = findViewById(R.id.bottomNav)
@@ -52,6 +49,28 @@ class ControlPanelActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CATALOGUE_REQUEST -> {
+                when (resultCode) {
+                    RESULT_OK -> {
+                        MainController().showToast(
+                            this@ControlPanelActivity, R.string.successful_create_list
+                        )
+                    }
+
+                    RESULT_CANCELED -> {
+                        MainController().showToast(
+                            this@ControlPanelActivity, R.string.error_create_list
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         MenuInflater(this@ControlPanelActivity).inflate(R.menu.menu_options, menu)
         menu.findItem(R.id.menu_log_out)
@@ -63,9 +82,7 @@ class ControlPanelActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_log_out -> {
                 ClientSQLite(this@ControlPanelActivity).resetTables(
-                    ClientSQLite(this@ControlPanelActivity).writableDatabase,
-                    true,
-                    true
+                    ClientSQLite(this@ControlPanelActivity).writableDatabase, true, true
                 )
                 val result = Intent(this@ControlPanelActivity, LoginActivity::class.java)
                 setResult(RESULT_OK, result)

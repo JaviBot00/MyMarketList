@@ -26,6 +26,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".view.vActivities.EditActivity"
+            android:exported="false"
+            android:parentActivityName=".view.vActivities.ListActivity" />
+        <activity
             android:name=".view.vActivities.StatsActivity"
             android:exported="false"
             android:parentActivityName=".view.vActivities.ControlPanelActivity" />

@@ -9,9 +9,11 @@ import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.CatalogueSQLite
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
-import com.politecnicomalaga.mymarketlist.model.Lists
+import com.politecnicomalaga.mymarketlist.model.List
 import com.politecnicomalaga.mymarketlist.model.Product
 import com.politecnicomalaga.mymarketlist.model.UserFeatures
+import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.LoginActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
 import okhttp3.MultipartBody
@@ -103,7 +105,6 @@ class ServerData(private val fromActivity: Activity) {
             .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName).build()
         MyRequest(fromActivity).phpQuery(SELECT_LIST_FROM_DB, requestBody) { response1 ->
             ClientSQLite(fromActivity).resetTables(ClientSQLite(fromActivity).writableDatabase, true, false)
-
             response1.split(DELIMITER1).forEach {
                 if (it.isNotEmpty()) {
                     ClientSQLite(fromActivity).setOnlineList(it.split(DELIMITER2))
@@ -115,12 +116,15 @@ class ServerData(private val fromActivity: Activity) {
                         ClientSQLite(fromActivity).setOnlineProduct(it.split(DELIMITER2))
                     }
                 }
+                if (fromActivity is ListActivity) {
+                    ListActivity.getInstance().endRefresh(fromActivity)
+                }
             }
         }
     }
 
     fun setServerLists() {
-        val myLists = arrayListOf<Lists>()
+        val myLists = arrayListOf<List>()
         val myProducts = arrayListOf<Product>()
         myLists.clear()
         myProducts.clear()
@@ -134,22 +138,27 @@ class ServerData(private val fromActivity: Activity) {
                 myProducts.add(it)
             }
         }
-        val requestBody1 = MultipartBody.Builder().setType(MultipartBody.FORM)
-            .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
-            .addFormDataPart("arrayOfLists",
-                myLists.joinToString { it.sName + ";" + it.dCreated + ";" + it.dRealized + ";" + it.nPrice })
-            .addFormDataPart(
-                "arrayOfProducts",
-                myProducts.joinToString { it.sName + ";" + it.nIdList }).build()
-        MyRequest(fromActivity).phpQuery(INSERT_LIST_INTO_DB, requestBody1) { response ->
-            val state = response.split(DELIMITER2)
-            if (state.all { it == "OK" }) {
-                MainController().showToast(fromActivity, R.string.accept)
-                ClientSQLite(fromActivity).updateList(myLists, 1)
-                ClientSQLite(fromActivity).updateProducts(myProducts, 1)
-            } else {
-//                RegisterActivity.getInstance().setError(fromActivity)
+        if (myLists.isNotEmpty() && myProducts.isNotEmpty()) {
+            val requestBody1 = MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
+                .addFormDataPart("arrayOfLists",
+                    myLists.joinToString { it.sName + ";" + it.dCreated + ";" + it.dRealized + ";" + it.nPrice })
+                .addFormDataPart(
+                    "arrayOfProducts",
+                    myProducts.joinToString { it.sName + ";" + it.nIdList }).build()
+            MyRequest(fromActivity).phpQuery(INSERT_LIST_INTO_DB, requestBody1) { response ->
+                val state = response.split(DELIMITER2)
+                if (state.all { it == "OK" }) {
+                    ClientSQLite(fromActivity).updateList(myLists, 1)
+                    ClientSQLite(fromActivity).updateProducts(myProducts, 1)
+                    CatalogueActivity.getInstance().endCatalogue(fromActivity)
+                    this@ServerData.getServerLists()
+                } else {
+                    MainController().showToast(fromActivity, R.string.in_maintenance)
+                }
             }
+        } else{
+            this@ServerData.getServerLists()
         }
     }
 

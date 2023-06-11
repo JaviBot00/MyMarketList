@@ -1,6 +1,8 @@
 package com.politecnicomalaga.mymarketlist.view.vFragments
 
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.StatsActivity
 
 class Nav1ListsFragment : Fragment {
+
+    companion object {
+        val CATALOGUE_REQUEST = 1000
+        val LIST_REQUEST = 2000
+        val STATS_REQUEST = 3000
+    }
 
     private val fromActivity: Activity
 
@@ -40,23 +46,30 @@ class Nav1ListsFragment : Fragment {
         super.onViewCreated(view, savedInstanceState)
         val btnMakeList: Button = view.findViewById(R.id.btnMakeList)
         btnMakeList.setOnClickListener {
-            fromActivity.startActivityForResult(Intent(fromActivity, CatalogueActivity::class.java), 0)
+            fromActivity.startActivityForResult(
+                Intent(fromActivity, CatalogueActivity::class.java),
+                CATALOGUE_REQUEST
+            )
         }
 
         val btnShowLists: Button = view.findViewById(R.id.btnShowList)
         btnShowLists.setOnClickListener {
-            fromActivity.startActivityForResult(Intent(fromActivity, ListActivity::class.java), 1)
+            fromActivity.startActivityForResult(
+                Intent(fromActivity, ListActivity::class.java),
+                LIST_REQUEST
+            )
         }
 
         val btnStats: Button = view.findViewById(R.id.btnStats)
         btnStats.setOnClickListener {
-//            ServerData(fromActivity).getServerLists()
-        fromActivity.startActivityForResult(Intent(fromActivity, StatsActivity::class.java), 2)
+            fromActivity.startActivityForResult(
+                Intent(fromActivity, StatsActivity::class.java),
+                STATS_REQUEST
+            )
         }
 
         val btnSuggest: Button = view.findViewById(R.id.btnSuggest)
         btnSuggest.setOnClickListener {
-//            ServerData(fromActivity).setServerLists()
             MainController().showToast(fromActivity, R.string.in_maintenance)
         }
     }

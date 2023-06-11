@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.text.Editable
-import com.politecnicomalaga.mymarketlist.model.Lists
+import com.politecnicomalaga.mymarketlist.model.List
 import com.politecnicomalaga.mymarketlist.model.Product
 import com.politecnicomalaga.mymarketlist.model.UserFeatures
 import java.text.SimpleDateFormat
@@ -53,11 +53,11 @@ class ClientSQLite(fromContext: Context) :
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        resetTables(db, false, false)
+        resetTables(db, true, true)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        resetTables(db, true, false)
+        resetTables(db, true, true)
     }
 
     override fun close() {
@@ -92,15 +92,15 @@ class ClientSQLite(fromContext: Context) :
         )
     }
 
-    fun getLists(): ArrayList<Lists> {
-        val lists = arrayListOf(Lists())
+    fun getLists(): ArrayList<List> {
+        val lists = arrayListOf(List())
         lists.clear()
         val listCursor: Cursor = this.readableDatabase.query(
             DB_LIST, null, null, null, null, null, tLIST_CREATED[0]
         )
         listCursor.use {
             while (it.moveToNext()) {
-                val list = Lists()
+                val list = List()
                 list.nId = it.getInt(Integer.parseInt(tLIST_ID[1]))
                 list.sName = it.getString(Integer.parseInt(tLIST_NAME[1]))
                 list.dCreated = it.getString(Integer.parseInt(tLIST_CREATED[1]))
@@ -129,7 +129,7 @@ class ClientSQLite(fromContext: Context) :
         myProductsList.clear()
     }
 
-    fun updateList(myLists: ArrayList<Lists>, online: Int) {
+    fun updateList(myLists: ArrayList<List>, online: Int) {
         myLists.forEach {
             val values = ContentValues()
             values.put(tLIST_OnLine[0], online)
@@ -158,6 +158,26 @@ class ClientSQLite(fromContext: Context) :
         return myProducts
     }
 
+    fun getProducts(list: List): ArrayList<Product> {
+        val myProducts = arrayListOf(Product())
+        myProducts.clear()
+        val productCursor: Cursor = this.readableDatabase.query(
+            DB_PRODUCTS, null, tPRODUCT_IdList[0] + " = ?",
+            arrayOf(list.nId.toString()), null, null, tPRODUCT_NAME[0]
+        )
+        productCursor.use {
+            while (productCursor.moveToNext()) {
+                val product = Product()
+                product.nId = it.getInt(Integer.parseInt(tPRODUCT_ID[1]))
+                product.sName = it.getString(Integer.parseInt(tPRODUCT_NAME[1]))
+                product.nIdList = it.getInt(Integer.parseInt(tPRODUCT_IdList[1]))
+                product.bOnline = (it.getInt(Integer.parseInt(tPRODUCT_OnLine[1])) == 1)
+                myProducts.add(product)
+            }
+        }
+        return myProducts
+    }
+
     fun updateProducts(myProducts: ArrayList<Product>, online: Int) {
         myProducts.forEach {
             val values = ContentValues()
@@ -168,7 +188,7 @@ class ClientSQLite(fromContext: Context) :
         }
     }
 
-    fun setOnlineList(dataList: List<String>) {
+    fun setOnlineList(dataList: kotlin.collections.List<String>) {
         val listValues = ContentValues()
         listValues.put(tLIST_ID[0], dataList[0])
         listValues.put(tLIST_NAME[0], dataList[1])
@@ -181,7 +201,7 @@ class ClientSQLite(fromContext: Context) :
         )
     }
 
-    fun setOnlineProduct(dataProduct: List<String>) {
+    fun setOnlineProduct(dataProduct: kotlin.collections.List<String>) {
         val productValues = ContentValues()
         productValues.put(tPRODUCT_ID[0], dataProduct[0])
         productValues.put(tPRODUCT_NAME[0], dataProduct[1])

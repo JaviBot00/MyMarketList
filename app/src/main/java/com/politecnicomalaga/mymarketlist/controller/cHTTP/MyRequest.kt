@@ -7,8 +7,8 @@ import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
+import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MultipartBody
@@ -41,6 +41,7 @@ class MyRequest(private val fromActivity: Activity) {
             override fun onFailure(call: Call, e: IOException) {
                 handler.post {
                     Log.e("NET", e.toString())
+
                 }
             }
 
@@ -89,6 +90,7 @@ class MyRequest(private val fromActivity: Activity) {
     }
 
     private fun checkIP(): Boolean {
+        MainController().setColorStatusBar(fromActivity, MainController.TRY, false)
         val client = OkHttpClient.Builder().callTimeout(10, TimeUnit.SECONDS).build()
 
         val request = Request.Builder().url("http://$currentIP").build()
@@ -98,13 +100,16 @@ class MyRequest(private val fromActivity: Activity) {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 handler.post {
-                    MainController().setColorStatusBar(fromActivity, MainController.TRY, false)
                     Log.e("NET", "INVALID IP")
                     if (currentIP != IPs.last()) {
                         currentIP = IPs[IPs.indexOf(currentIP) + 1]
                         isConnected = checkIP()
                     } else {
+                        currentIP = IPs[0]
                         MainController().setColorStatusBar(fromActivity, MainController.FAIL, true)
+                        if (fromActivity is ListActivity) {
+                            ListActivity.getInstance().endRefresh(fromActivity)
+                        }
                     }
                 }
             }

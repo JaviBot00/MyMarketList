@@ -27,15 +27,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private val REGISTER_REQUEST = 1
-    private val CONTROLPANEL_REQUEST = 2
+    private val REGISTER_REQUEST = 1000
+    private val CONTROLPANEL_REQUEST = 2000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         checkAccess(this@LoginActivity)
-        MainController().setAppBar(this@LoginActivity, resources.getString(R.string.app_name))
+        MainController().setControllers(this@LoginActivity, R.string.app_name)
 
         ServerData(this@LoginActivity).getServerProductTables()
 
@@ -90,11 +90,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun doAccess(fromActivity: Activity) {
-        fromActivity.startActivityForResult(
-            Intent(fromActivity, ControlPanelActivity::class.java), CONTROLPANEL_REQUEST
-        )
-        fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
-        fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
+        if (fromActivity is LoginActivity) {
+            fromActivity.startActivityForResult(
+                Intent(fromActivity, ControlPanelActivity::class.java), CONTROLPANEL_REQUEST
+            )
+            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
+            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
+        }
     }
 
     @Deprecated("Deprecated in Java")

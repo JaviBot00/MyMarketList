@@ -45,10 +45,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        MainController().setAppBar(
-            this@RegisterActivity, resources.getString(R.string.create_account)
-        )
-        MainController().backPressed(this@RegisterActivity)
+        MainController().setControllers(this@RegisterActivity, R.string.create_account)
 
         val textInputUsername: TextInputLayout = findViewById(R.id.txtFldUserName)
         val textInputPassword: TextInputLayout = findViewById(R.id.txtFldPassWord)
@@ -130,9 +127,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun endRegister(fromActivity: Activity) {
-        val result = Intent(fromActivity, LoginActivity::class.java)
-        fromActivity.setResult(RESULT_OK, result)
-        fromActivity.finish()
+        if (fromActivity is RegisterActivity) {
+            val result = Intent(fromActivity, LoginActivity::class.java)
+            fromActivity.setResult(RESULT_OK, result)
+            fromActivity.finish()
+        }
     }
 
     override fun onRequestPermissionsResult(

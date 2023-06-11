@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,14 +20,25 @@ import com.politecnicomalaga.mymarketlist.controller.cSQLite.CatalogueSQLite
 
 class CatalogueActivity : AppCompatActivity() {
 
+    companion object {
+        private var myCatalogue: CatalogueActivity? = null
+
+        fun getInstance(): CatalogueActivity {
+            if (myCatalogue == null) {
+                myCatalogue = CatalogueActivity()
+            }
+            return myCatalogue!!
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
-        MainController().setAppBar(this@CatalogueActivity, resources.getString(R.string.catalogue))
+        MainController().setControllers(this@CatalogueActivity, R.string.catalogue)
 
         val viewPager: ViewPager = findViewById(R.id.viewPager)
         val tabsVPAdapter = TabsVPAdapter(
-            supportFragmentManager, CatalogueSQLite(this@CatalogueActivity).getCatalogue()
+            supportFragmentManager, this@CatalogueActivity, CatalogueSQLite(this@CatalogueActivity).getCatalogue()
         )
 
         viewPager.adapter = tabsVPAdapter
@@ -89,8 +101,19 @@ class CatalogueActivity : AppCompatActivity() {
     }
 
     fun endCatalogue(fromActivity: Activity){
-        val result = Intent(fromActivity, ControlPanelActivity::class.java)
-        fromActivity.setResult(RESULT_OK, result)
-        fromActivity.finish()
+        if (fromActivity is CatalogueActivity) {
+            val result = Intent(fromActivity, ControlPanelActivity::class.java)
+            fromActivity.setResult(RESULT_OK, result)
+            fromActivity.finish()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+//            val result = Intent(this@CatalogueActivity, StatsActivity::class.java)
+            this@CatalogueActivity.setResult(RESULT_CANCELED)
+            this@CatalogueActivity.finish()
+        }
+        return true
     }
 }

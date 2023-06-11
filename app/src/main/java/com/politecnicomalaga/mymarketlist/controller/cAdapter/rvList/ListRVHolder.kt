@@ -7,6 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.politecnicomalaga.mymarketlist.R
 
 class ListRVHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var txtProduct: TextView = itemView.findViewById(R.id.txtItems)
-    var checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
+    var txtLists: TextView = itemView.findViewById(R.id.txtLists)
+    var txtPrice: TextView = itemView.findViewById(R.id.txtPrice)
 }

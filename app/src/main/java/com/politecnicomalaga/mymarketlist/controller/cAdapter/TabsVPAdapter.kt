@@ -1,5 +1,6 @@
 package com.politecnicomalaga.mymarketlist.controller.cAdapter
 
+import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -7,7 +8,7 @@ import com.politecnicomalaga.mymarketlist.model.Catalogue
 import com.politecnicomalaga.mymarketlist.view.vFragments.ProductListFragment
 
 class TabsVPAdapter(
-    fm: FragmentManager,
+    fm: FragmentManager, private val fromActivity: Activity,
     private val myProducts: ArrayList<Catalogue>
 ) :
     FragmentStatePagerAdapter(fm) {
@@ -17,7 +18,7 @@ class TabsVPAdapter(
     }
 
     override fun getItem(position: Int): Fragment {
-        return ProductListFragment(myProducts[position].oProducts)
+        return ProductListFragment(fromActivity, myProducts[position].oProducts)
     }
 
     override fun getPageTitle(position: Int): CharSequence {

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
+import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
 
 class MainController {
@@ -28,7 +29,12 @@ class MainController {
         var bFAIL = true
     }
 
-    fun setAppBar(fromActivity: AppCompatActivity, title: String) {
+    fun setControllers(fromActivity: AppCompatActivity, title: Int) {
+        setAppBar(fromActivity, title)
+        backPressed(fromActivity)
+    }
+
+    private fun setAppBar(fromActivity: AppCompatActivity, title: Int) {
         MyRequest(fromActivity).checkNetworkConnectivity()
         fromActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         if (fromActivity.supportActionBar != null) {
@@ -50,7 +56,7 @@ class MainController {
 //            )
 //        )
 
-        val spannableString = SpannableString(title)
+        val spannableString = SpannableString(fromActivity.resources.getString(title))
         spannableString.setSpan(
             StyleSpan(Typeface.BOLD), 0, spannableString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
@@ -63,7 +69,7 @@ class MainController {
         fromActivity.supportActionBar?.title = spannableString
     }
 
-    fun backPressed(fromActivity: AppCompatActivity) {
+    private fun backPressed(fromActivity: AppCompatActivity) {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when (fromActivity) {
@@ -93,8 +99,8 @@ class MainController {
         ) {
             return true
         } else {
+            MainController().setColorStatusBar(fromActivity, TRY, false)
             MyRequest(fromActivity).checkNetworkConnectivity()
-            showToast(fromActivity, R.string.try_agein_later)
         }
         return false
     }
@@ -109,6 +115,9 @@ class MainController {
                     bOK = false
                     bTRY = false
                     bFAIL = true
+                }
+                if (fromActivity is ListActivity) {
+                    ListActivity.getInstance().setRecycler(fromActivity)
                 }
             }
 
@@ -134,7 +143,8 @@ class MainController {
                         showToast(fromActivity, R.string.error_network)
                     }
                     showToast(fromActivity, R.string.check_network)
-                    bOK = true
+                    showToast(fromActivity, R.string.try_agein_later)
+                    bOK = false
                     bTRY = true
                     bFAIL = false
                 }

@@ -1,6 +1,6 @@
 package com.politecnicomalaga.mymarketlist.model
 
-class Lists {
+class List {
 
     var nId: Int = 0
     var sName: String = ""
