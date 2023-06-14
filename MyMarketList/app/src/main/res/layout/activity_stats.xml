@@ -6,26 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".view.vActivities.StatsActivity">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/spLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Titulo"
         app:layout_constraintBottom_toTopOf="@id/gvGraphic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spYears"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="2.5dp"
+            android:layout_weight="1"
+            android:hapticFeedbackEnabled="false"
+            android:textAlignment="center" />
+
+        <Spinner
+            android:id="@+id/spMonths"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="2.5dp"
+            android:layout_weight="1"
+            android:hapticFeedbackEnabled="false"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/gvGraphic"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/section_label" />
+        app:layout_constraintTop_toBottomOf="@id/spLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,8 +25,11 @@
     <string name="nav2_details">Detalles</string>
 
     <!--    Option Menu    -->
+    <string name="alert">Alerta</string>
     <string name="help">Ayuda</string>
     <string name="log_out">Cerrar sesion</string>
+    <string name="exit_activity">Si sale de esta pantalla, perderá los datos sin guardar</string>
+
 
     <!--    Login    -->
     <string name="username">Usuario</string>
@@ -39,7 +42,7 @@
     <string name="user_successfully_registered">Usuario registrado con exito</string>
     <string name="user_not_registered">Usuario no registrado</string>
     <string name="successful_log_out">Sesion cerrada con exito</string>
-    <string name="error_at_insert_data">Error al guardar el usuario</string>
+    <string name="error_insert_user_data">Error al guardar el usuario</string>
 
     <!--    Register    -->
     <string name="sign_up">Registrarse</string>
@@ -57,7 +60,6 @@
     <string name="permissions_required_title">Permisos</string>
     <string name="permissions_required_message">Se requieren permisos para poder continuar</string>
     <string name="go_to_settings">Ajustes</string>
-    <string name="exit_register_activity">Si sale de esta pantalla, perderá los datos escritos</string>
 
     <!--    Control Panel   -->
     <string name="successful_create_list">Lista creada con exito</string>
@@ -81,16 +83,19 @@
     <string name="try_again_later">Intentelo de nuevo mas tarde cuando tenga conexion</string>
     <!--    <string name="online">Online</string>-->
     <string name="list_date">Fecha de compra</string>
-    <string name="list_price">Precio de compra</string>
-    <string name="set_price">Inserte precio</string>
+    <string name="list_price">Precio de compra (€)</string>
+    <string name="set_valid_price">Inserte precio valido (123.45)</string>
     <string name="set_date">Inserte fecha</string>
+    <string name="successful_edit_list">Lista editada con exito</string>
+    <string name="error_edit_list">Error al editar la lista</string>
 
     <!--    Stats    -->
+    <string name="bills">Gastos</string>
 
 
     <!--    Suggests    -->
     <string name="in_maintenance">En mantenimiento</string>
-
+    <string name="generate_datas">Generar Datos</string>
 
 
 </resources>

@@ -46,7 +46,7 @@
             android:layout_gravity="bottom|start"
             android:layout_margin="16dp"
             android:contentDescription="@string/clear_list"
-            android:src="@drawable/delete_cross"
+            android:src="@drawable/icon_delete_forever"
             app:backgroundTint="@android:color/holo_red_dark" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,8 +56,8 @@
             android:layout_gravity="bottom|center"
             android:layout_margin="16dp"
             android:contentDescription="@string/items_selected"
-            android:src="@drawable/show"
-            app:backgroundTint="#FFA500" />
+            android:src="@drawable/icon_format_list"
+            app:backgroundTint="@android:color/holo_orange_light" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabCreateList"
@@ -66,7 +66,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:contentDescription="@string/catalogue"
-            android:src="@drawable/add_check"
+            android:src="@drawable/icon_save_as"
             app:backgroundTint="@android:color/holo_green_dark" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

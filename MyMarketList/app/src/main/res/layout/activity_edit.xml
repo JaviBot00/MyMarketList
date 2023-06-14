@@ -76,6 +76,6 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@id/txtFldDate"
         app:layout_constraintEnd_toEndOf="@id/rvList"
-        app:srcCompat="@drawable/save_icon" />
+        app:srcCompat="@drawable/icon_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
