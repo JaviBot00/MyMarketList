@@ -54,6 +54,12 @@ class ServerData(private val fromActivity: Activity) {
                         CatalogueSQLite(fromActivity).setItems(myProduct)
                     }
                 }
+                if (response2.isEmpty()){
+                    MainController().showToast(fromActivity, R.string.corrupt_data)
+                }
+            }
+            if (response1.isEmpty()){
+                MainController().showToast(fromActivity, R.string.corrupt_data)
             }
         }
     }
@@ -107,10 +113,44 @@ class ServerData(private val fromActivity: Activity) {
                     }
                 }
             }
+            if (response1.isEmpty()){
+                MainController().showToast(fromActivity, R.string.corrupt_data)
+            }
         }
     }
 
-    fun getServerLists() {
+    fun updateServerLists() {
+        val myLists = arrayListOf<List>()
+        myLists.clear()
+        ClientSQLite(fromActivity).getLists().forEach {
+            if (!it.bOnline && it.nPrice > 0F) {
+                myLists.add(it)
+            }
+        }
+        if (myLists.isNotEmpty()) {
+            val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
+                .addFormDataPart("arrayOfLists",
+                    myLists.joinToString { it.sName + ";" + it.dCreated + ";" + it.dRealized + ";" + it.nPrice })
+                .build()
+            MyRequest(fromActivity).phpQuery(UPDATE_LIST_INTO_DB, requestBody) {
+                if (it.isNotEmpty()) {
+                    if (fromActivity is EditActivity) {
+                        ClientSQLite(fromActivity).updateList(myLists, 1)
+                        EditActivity.getInstance().endEdit(fromActivity)
+                    } else {
+                        MainController().showToast(fromActivity, R.string.in_maintenance)
+                    }
+                } else {
+                    MainController().showToast(fromActivity, R.string.corrupt_data)
+                }
+            }
+        } else {
+            this@ServerData.setServerLists()
+        }
+    }
+
+    private fun getServerLists() {
         val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName).build()
         MyRequest(fromActivity).phpQuery(SELECT_LIST_FROM_DB, requestBody) { response1 ->
@@ -119,25 +159,39 @@ class ServerData(private val fromActivity: Activity) {
             )
             response1.split(DELIMITER1).forEach {
                 if (it.isNotEmpty()) {
-                    ClientSQLite(fromActivity).setOnlineList(it.split(DELIMITER2))
+                    val myList = List()
+                    myList.nId = it.split(DELIMITER2)[0].toInt()
+                    myList.sName = it.split(DELIMITER2)[1]
+                    myList.dCreated = it.split(DELIMITER2)[2]
+                    myList.dRealized = it.split(DELIMITER2)[3]
+                    myList.nPrice = it.split(DELIMITER2)[4].toFloat()
+                    ClientSQLite(fromActivity).setOnlineList(myList)
                 }
             }
             MyRequest(fromActivity).phpQuery(SELECT_PRODUCTS_FROM_DB, requestBody) { response2 ->
                 response2.split(DELIMITER1).forEach {
                     if (it.isNotEmpty()) {
-                        ClientSQLite(fromActivity).setOnlineProduct(it.split(DELIMITER2))
+                        val myProduct = Product()
+                        myProduct.nId = it.split(DELIMITER2)[0].toInt()
+                        myProduct.sName = it.split(DELIMITER2)[1]
+                        myProduct.nIdList = it.split(DELIMITER2)[2].toInt()
+                        ClientSQLite(fromActivity).setOnlineProduct(myProduct)
                     }
                 }
                 if (fromActivity is ListActivity) {
                     ListActivity.getInstance().endRefresh(fromActivity)
-                } else {
-                    MainController().showToast(fromActivity, R.string.in_maintenance)
                 }
+                if (response2.isEmpty()){
+                    MainController().showToast(fromActivity, R.string.corrupt_data)
+                }
+            }
+            if (response1.isEmpty()){
+                MainController().showToast(fromActivity, R.string.corrupt_data)
             }
         }
     }
 
-    fun setServerLists() {
+    private fun setServerLists() {
         val myLists = arrayListOf<List>()
         val myProducts = arrayListOf<Product>()
         myLists.clear()
@@ -157,7 +211,8 @@ class ServerData(private val fromActivity: Activity) {
                 .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
                 .addFormDataPart("arrayOfLists",
                     myLists.joinToString { it.sName + ";" + it.dCreated + ";" + it.dRealized + ";" + it.nPrice })
-                .addFormDataPart("arrayOfProducts",
+                .addFormDataPart(
+                    "arrayOfProducts",
                     myProducts.joinToString { it.sName + ";" + it.nIdList }).build()
             MyRequest(fromActivity).phpQuery(INSERT_LIST_INTO_DB, requestBody) { response ->
                 val state = response.split(DELIMITER2)
@@ -171,31 +226,11 @@ class ServerData(private val fromActivity: Activity) {
                         MainController().showToast(fromActivity, R.string.in_maintenance)
                     }
                 } else {
-                    MainController().showToast(fromActivity, R.string.in_maintenance)
+                    MainController().showToast(fromActivity, R.string.corrupt_data)
                 }
             }
         } else {
             this@ServerData.getServerLists()
-        }
-    }
-
-    fun updateServerList(list2edit: List) {
-        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
-            .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
-            .addFormDataPart(
-                "list2edit",
-                list2edit.sName + "," + list2edit.dCreated + "," + list2edit.dRealized + "," + list2edit.nPrice
-            ).build()
-        MyRequest(fromActivity).phpQuery(UPDATE_LIST_INTO_DB, requestBody) {
-            if (it.isNotEmpty()) {
-                if (fromActivity is EditActivity) {
-                    EditActivity.getInstance().endEdit(fromActivity)
-                } else {
-                    MainController().showToast(fromActivity, R.string.in_maintenance)
-                }
-            } else {
-                MainController().showToast(fromActivity, R.string.error_at_insert_data)
-            }
         }
     }
 
@@ -215,7 +250,7 @@ class ServerData(private val fromActivity: Activity) {
             }
         } catch (e: SQLException) {
             Log.e("USER", e.toString())
-            MainController().showToast(fromActivity, R.string.error_at_insert_data)
+            MainController().showToast(fromActivity, R.string.corrupt_data)
         }
     }
 }

@@ -8,4 +8,5 @@ import com.politecnicomalaga.mymarketlist.R
 class ListRVHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtLists: TextView = itemView.findViewById(R.id.txtLists)
     var txtPrice: TextView = itemView.findViewById(R.id.txtPrice)
+    var txtDate: TextView = itemView.findViewById(R.id.txtDate)
 }

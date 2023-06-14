@@ -11,16 +11,11 @@ import androidx.fragment.app.Fragment
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.ControlPanelActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.StatsActivity
 
 class Nav1ListsFragment : Fragment {
-
-    companion object {
-        val CATALOGUE_REQUEST = 1000
-        val LIST_REQUEST = 2000
-        val STATS_REQUEST = 3000
-    }
 
     private val fromActivity: Activity
 
@@ -46,7 +41,7 @@ class Nav1ListsFragment : Fragment {
         btnMakeList.setOnClickListener {
             fromActivity.startActivityForResult(
                 Intent(fromActivity, CatalogueActivity::class.java),
-                CATALOGUE_REQUEST
+                ControlPanelActivity.CATALOGUE_REQUEST
             )
         }
 
@@ -54,7 +49,7 @@ class Nav1ListsFragment : Fragment {
         btnShowLists.setOnClickListener {
             fromActivity.startActivityForResult(
                 Intent(fromActivity, ListActivity::class.java),
-                LIST_REQUEST
+                ControlPanelActivity.LIST_REQUEST
             )
         }
 
@@ -62,7 +57,7 @@ class Nav1ListsFragment : Fragment {
         btnStats.setOnClickListener {
             fromActivity.startActivityForResult(
                 Intent(fromActivity, StatsActivity::class.java),
-                STATS_REQUEST
+                ControlPanelActivity.STATS_REQUEST
             )
         }
 

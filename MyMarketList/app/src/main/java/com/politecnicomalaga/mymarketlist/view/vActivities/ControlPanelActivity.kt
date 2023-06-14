@@ -12,10 +12,15 @@ import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment
-import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment.Companion.CATALOGUE_REQUEST
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav2DetailsFragment
 
 class ControlPanelActivity : AppCompatActivity() {
+
+    companion object {
+        val CATALOGUE_REQUEST = 1000
+        val LIST_REQUEST = 2000
+        val STATS_REQUEST = 3000
+    }
 
     private lateinit var bottomNav: BottomNavigationView
 
@@ -73,8 +78,7 @@ class ControlPanelActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         MenuInflater(this@ControlPanelActivity).inflate(R.menu.menu_options, menu)
-        menu.findItem(R.id.menu_log_out)
-        menu.findItem(R.id.menu_help).isVisible = false
+        menu.findItem(R.id.menu_log_out).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 

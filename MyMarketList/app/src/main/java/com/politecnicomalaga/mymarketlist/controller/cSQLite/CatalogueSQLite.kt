@@ -13,7 +13,7 @@ class CatalogueSQLite(fromContext: Context) :
 
     companion object {
         const val DATABASE_NAME = "DBProducts.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 3
     }
 
     private val DB_TYPES = "Types"
@@ -30,27 +30,12 @@ class CatalogueSQLite(fromContext: Context) :
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(
-            "CREATE TABLE $DB_TYPES ('" + tTYPES_ID[0] + "' INTEGER PRIMARY KEY NOT NULL, '" + tTYPES_NAME[0] + "' TEXT NOT NULL)"
-        )
-
-        db.execSQL(
-            "CREATE TABLE $DB_PRODUCTS  ( " + tPRODUCTS_ID[0] + " INTEGER PRIMARY KEY NOT NULL, '" + tPRODUCTS_NAME[0] + "' TEXT NOT NULL, '" + tPRODUCTS_IdType[0] + "' INTEGER NOT NULL, FOREIGN KEY ('" + tPRODUCTS_IdType[0] + "') REFERENCES $DB_TYPES ('" + tTYPES_ID[0] + "'))"
-        )
+        resetTables(db, false)
 
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $DB_TYPES")
-        db.execSQL("DROP TABLE IF EXISTS $DB_PRODUCTS")
-
-        db.execSQL(
-            "CREATE TABLE $DB_TYPES ('" + tTYPES_ID[0] + "' INTEGER PRIMARY KEY NOT NULL, '" + tTYPES_NAME[0] + "' TEXT NOT NULL)"
-        )
-
-        db.execSQL(
-            "CREATE TABLE $DB_PRODUCTS  ( " + tPRODUCTS_ID[0] + " INTEGER PRIMARY KEY NOT NULL, '" + tPRODUCTS_NAME[0] + "' TEXT NOT NULL, '" + tPRODUCTS_IdType[0] + "' INTEGER NOT NULL, FOREIGN KEY ('" + tPRODUCTS_IdType[0] + "') REFERENCES $DB_TYPES ('" + tTYPES_ID[0] + "'))"
-        )
+        resetTables(db, true)
     }
 
     override fun close() {
@@ -118,6 +103,21 @@ class CatalogueSQLite(fromContext: Context) :
         productValues.put(tPRODUCTS_IdType[0], productData.nIdType)
         this.writableDatabase.insertWithOnConflict(
             DB_PRODUCTS, null, productValues, SQLiteDatabase.CONFLICT_REPLACE
+        )
+    }
+
+    private fun resetTables(db: SQLiteDatabase, reset: Boolean) {
+        if (reset) {
+            db.execSQL("DROP TABLE IF EXISTS $DB_TYPES")
+            db.execSQL("DROP TABLE IF EXISTS $DB_PRODUCTS")
+        }
+
+        db.execSQL(
+            "CREATE TABLE $DB_TYPES ('" + tTYPES_ID[0] + "' INTEGER PRIMARY KEY NOT NULL, '" + tTYPES_NAME[0] + "' TEXT NOT NULL)"
+        )
+
+        db.execSQL(
+            "CREATE TABLE $DB_PRODUCTS  ( " + tPRODUCTS_ID[0] + " INTEGER PRIMARY KEY NOT NULL, '" + tPRODUCTS_NAME[0] + "' TEXT NOT NULL, '" + tPRODUCTS_IdType[0] + "' INTEGER NOT NULL, FOREIGN KEY ('" + tPRODUCTS_IdType[0] + "') REFERENCES $DB_TYPES ('" + tTYPES_ID[0] + "'))"
         )
     }
 

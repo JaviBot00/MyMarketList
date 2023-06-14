@@ -20,7 +20,7 @@ class ClientSQLite(fromContext: Context) :
         val myProductsList = sortedSetOf<Product>()
 
         const val DATABASE_NAME = "DBClient.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     private val DB_USER = "User"
@@ -96,7 +96,7 @@ class ClientSQLite(fromContext: Context) :
         val lists = arrayListOf(List())
         lists.clear()
         val listCursor: Cursor = this.readableDatabase.query(
-            DB_LIST, null, null, null, null, null, tLIST_CREATED[0]
+            DB_LIST, null, null, null, null, null, tLIST_REALIZED[0]
         )
         listCursor.use {
             while (it.moveToNext()) {
@@ -120,6 +120,8 @@ class ClientSQLite(fromContext: Context) :
         val listValues = ContentValues()
         listValues.put(tLIST_NAME[0], txtReplace)
         listValues.put(tLIST_CREATED[0], simpleDateFormat.format(Date()))
+//        listValues.put(tLIST_REALIZED[0], "0000-00-00")
+//        listValues.put(tLIST_PRICE[0], 0)
         listValues.put(tLIST_OnLine[0], 0)
         this.writableDatabase.insert(DB_LIST, null, listValues)
         val idList = getLists()[getLists().lastIndex].nId
@@ -192,24 +194,24 @@ class ClientSQLite(fromContext: Context) :
         }
     }
 
-    fun setOnlineList(dataList: kotlin.collections.List<String>) {
+    fun setOnlineList(dataList: List) {
         val listValues = ContentValues()
-        listValues.put(tLIST_ID[0], dataList[0])
-        listValues.put(tLIST_NAME[0], dataList[1])
-        listValues.put(tLIST_CREATED[0], dataList[2])
-        listValues.put(tLIST_REALIZED[0], dataList[3])
-        listValues.put(tLIST_PRICE[0], dataList[4])
+        listValues.put(tLIST_ID[0], dataList.nId)
+        listValues.put(tLIST_NAME[0], dataList.sName)
+        listValues.put(tLIST_CREATED[0], dataList.dCreated)
+        listValues.put(tLIST_REALIZED[0], dataList.dRealized)
+        listValues.put(tLIST_PRICE[0], dataList.nPrice)
         listValues.put(tLIST_OnLine[0], 1)
         this.writableDatabase.insertWithOnConflict(
             DB_LIST, null, listValues, SQLiteDatabase.CONFLICT_REPLACE
         )
     }
 
-    fun setOnlineProduct(dataProduct: kotlin.collections.List<String>) {
+    fun setOnlineProduct(dataProduct: Product) {
         val productValues = ContentValues()
-        productValues.put(tPRODUCT_ID[0], dataProduct[0])
-        productValues.put(tPRODUCT_NAME[0], dataProduct[1])
-        productValues.put(tPRODUCT_IdList[0], dataProduct[2])
+        productValues.put(tPRODUCT_ID[0], dataProduct.nId)
+        productValues.put(tPRODUCT_NAME[0], dataProduct.sName)
+        productValues.put(tPRODUCT_IdList[0], dataProduct.nIdList)
         productValues.put(tPRODUCT_OnLine[0], 1)
         this.writableDatabase.insertWithOnConflict(
             DB_PRODUCTS, null, productValues, SQLiteDatabase.CONFLICT_REPLACE
@@ -238,7 +240,7 @@ class ClientSQLite(fromContext: Context) :
             db.execSQL("DROP TABLE IF EXISTS $DB_PRODUCTS")
 
             db.execSQL(
-                "CREATE TABLE $DB_LIST ( " + tLIST_ID[0] + " INTEGER PRIMARY KEY AUTOINCREMENT, " + tLIST_NAME[0] + " TEXT NOT NULL, " + tLIST_CREATED[0] + " DATETIME NOT NULL, " + tLIST_REALIZED[0] + " DATETIME, " + tLIST_PRICE[0] + " REAL, " + tLIST_OnLine[0] + " BOOLEAN NOT NULL) "
+                "CREATE TABLE $DB_LIST ( " + tLIST_ID[0] + " INTEGER PRIMARY KEY AUTOINCREMENT, " + tLIST_NAME[0] + " TEXT NOT NULL, " + tLIST_CREATED[0] + " DATE NOT NULL, " + tLIST_REALIZED[0] + " DATE, " + tLIST_PRICE[0] + " REAL, " + tLIST_OnLine[0] + " BOOLEAN NOT NULL) "
             )
 
             db.execSQL(

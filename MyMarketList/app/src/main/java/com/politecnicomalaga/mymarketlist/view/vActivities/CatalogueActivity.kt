@@ -33,7 +33,7 @@ class CatalogueActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_products)
+        setContentView(R.layout.activity_catalogue)
         MainController().setControllers(this@CatalogueActivity, R.string.catalogue, "")
 
         val viewPager: ViewPager = findViewById(R.id.viewPager)
@@ -85,7 +85,7 @@ class CatalogueActivity : AppCompatActivity() {
                         if (!textInputList.editText!!.text.isNullOrEmpty()) {
                             ClientSQLite(this@CatalogueActivity).setList(textInputList.editText!!.text)
                             if (MainController().isConnected(this@CatalogueActivity)) {
-                                ServerData(this@CatalogueActivity).setServerLists()
+                                ServerData(this@CatalogueActivity).updateServerLists()
                             }
                         } else {
                             MainController().showToast(
@@ -103,19 +103,19 @@ class CatalogueActivity : AppCompatActivity() {
     }
 
     fun endCatalogue(fromActivity: Activity) {
-        if (fromActivity is CatalogueActivity) {
             val result = Intent(fromActivity, ControlPanelActivity::class.java)
             fromActivity.setResult(RESULT_OK, result)
             fromActivity.finish()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-//            val result = Intent(this@CatalogueActivity, StatsActivity::class.java)
-            this@CatalogueActivity.setResult(RESULT_CANCELED)
-            this@CatalogueActivity.finish()
+        when (item.itemId) {
+            android.R.id.home -> {
+                MainController().exitDialog(this@CatalogueActivity)
+                return true
+            }
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
+
 }

@@ -1,13 +1,19 @@
 package com.politecnicomalaga.mymarketlist.controller
 
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.media.Session2Command
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +21,11 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
+import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.EditActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
+
 
 class MainController {
 
@@ -35,9 +43,24 @@ class MainController {
         backPressed(fromActivity)
     }
 
+    fun showToast(fromActivity: Activity, message: Int) {
+        if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun exitDialog(fromActivity: AppCompatActivity){
+        MaterialAlertDialogBuilder(fromActivity).setTitle(fromActivity.resources.getString(R.string.alert))
+            .setMessage(fromActivity.resources.getString(R.string.exit_activity))
+            .setPositiveButton(fromActivity.resources.getString(R.string.accept)) { _, _ ->
+                fromActivity.setResult(RESULT_CANCELED)
+                fromActivity.finish()
+            }.setNegativeButton(
+                fromActivity.resources.getString(R.string.cancel), null
+            ).show()
+    }
+
     private fun setAppBar(fromActivity: AppCompatActivity, title: Int, list: String) {
         MyRequest(fromActivity).checkNetworkConnectivity()
-        fromActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//        fromActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         if (fromActivity.supportActionBar != null) {
             if (fromActivity.parentActivityIntent == null) {
                 fromActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
@@ -51,8 +74,7 @@ class MainController {
 //        fromActivity.supportActionBar!!.setBackgroundDrawable(
 //            ColorDrawable(
 //                ContextCompat.getColor(
-//                    fromActivity,
-//                    R.color.marine_blue
+//                    fromActivity, R.color.colorButton
 //                )
 //            )
 //        )
@@ -77,23 +99,13 @@ class MainController {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when (fromActivity) {
-                    is RegisterActivity -> {
-                        MaterialAlertDialogBuilder(fromActivity).setTitle("Warning")
-                            .setMessage(fromActivity.resources.getString(R.string.exit_register_activity))
-                            .setPositiveButton(fromActivity.resources.getString(R.string.accept)) { _, _ ->
-                                fromActivity.finish()
-                            }.setNegativeButton(
-                                fromActivity.resources.getString(R.string.cancel), null
-                            ).show()
+                    is RegisterActivity, is CatalogueActivity, is EditActivity -> {
+                        exitDialog(fromActivity)
                     }
                 }
             }
         }
         fromActivity.onBackPressedDispatcher.addCallback(fromActivity, callback)
-    }
-
-    fun showToast(fromActivity: Activity, message: Int) {
-        if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
     }
 
     fun isConnected(fromActivity: Activity): Boolean {

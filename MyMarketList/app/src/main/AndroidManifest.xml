@@ -28,28 +28,35 @@
         <activity
             android:name=".view.vActivities.EditActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ListActivity" />
+            android:parentActivityName=".view.vActivities.ListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.StatsActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity" />
+            android:parentActivityName=".view.vActivities.ControlPanelActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.ListActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity" />
+            android:parentActivityName=".view.vActivities.ControlPanelActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.CatalogueActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity" />
+            android:parentActivityName=".view.vActivities.ControlPanelActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.ControlPanelActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.LoginActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMarketList.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

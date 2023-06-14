@@ -2,6 +2,7 @@ package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +43,8 @@ class EditActivity : AppCompatActivity() {
         MainController().setControllers(
             this@EditActivity, 0, ListActivity.list2edit.sName.replace("_", " ", false)
         )
+        val simpleDateFormatEN = SimpleDateFormat("yyyy-MM-dd", Locale("es", "ES"))
+        val simpleDateFormatES = SimpleDateFormat("dd-MM-yyyy", Locale("es", "ES"))
 
         val textInputPrice: TextInputLayout = findViewById(R.id.txtFldPrice)
         val textInputDate: TextInputLayout = findViewById(R.id.txtFldDate)
@@ -68,12 +71,24 @@ class EditActivity : AppCompatActivity() {
         }
 
         textInputPrice.editText!!.setText(if (ListActivity.list2edit.nPrice == 0F) "" else ListActivity.list2edit.nPrice.toString())
-        textInputDate.editText!!.setText(ListActivity.list2edit.dRealized)
+        textInputDate.editText!!.setText(
+            if (ListActivity.list2edit.dRealized.isNullOrEmpty()) "" else simpleDateFormatES.format(
+                simpleDateFormatEN.parse(ListActivity.list2edit.dRealized!!)!!
+            )
+        )
+
+        if (ListActivity.list2edit.nPrice > 0F) {
+            textInputPrice.editText!!.isEnabled = false
+            fabSaveList.isEnabled = false
+        }
+        if (ListActivity.list2edit.dRealized!!.isNotEmpty()) {
+            textInputDate.editText!!.isEnabled = false
+            fabSaveList.isEnabled = false
+        }
 
         textInputDate.editText!!.setOnClickListener {
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("es", "ES"))
             val dCreated = Calendar.getInstance()
-            dCreated.time = simpleDateFormat.parse(ListActivity.list2edit.dCreated) as Date
+            dCreated.time = simpleDateFormatEN.parse(ListActivity.list2edit.dCreated) as Date
 
             val today = MaterialDatePicker.todayInUtcMilliseconds()
             val compositeValidator = CompositeDateValidator.allOf(
@@ -91,15 +106,16 @@ class EditActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "tag")
 
             datePicker.addOnPositiveButtonClickListener {
-                textInputDate.editText!!.setText(simpleDateFormat.format(Date(it)))
+                textInputDate.editText!!.setText(simpleDateFormatES.format(Date(it)))
+                ListActivity.list2edit.dRealized = simpleDateFormatEN.format(Date(it))
             }
         }
 
         fabSaveList.setOnClickListener {
-            val regex = Regex("^\\d+(\\.\\d{1,2})?$")
+            val regex = Regex("^\\d{0,3}(\\.\\d{1,2})?$")
             val validPrice = regex.matches(textInputPrice.editText!!.text)
-            if (textInputPrice.editText!!.text.isNullOrEmpty() && !validPrice) {
-                textInputPrice.error = resources.getString(R.string.set_price)
+            if (textInputPrice.editText!!.text.isNullOrEmpty() || !validPrice) {
+                textInputPrice.error = resources.getString(R.string.set_valid_price)
                 return@setOnClickListener
             }
             if (textInputDate.editText!!.text.isNullOrEmpty()) {
@@ -107,16 +123,29 @@ class EditActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             ListActivity.list2edit.nPrice = (textInputPrice.editText!!.text.toString()).toFloat()
-            ListActivity.list2edit.dRealized = textInputDate.editText!!.text.toString()
-            MainController().showToast(this@EditActivity, R.string.in_maintenance)
             ClientSQLite(this@EditActivity).updateList(arrayListOf(ListActivity.list2edit), 0)
             if (MainController().isConnected(this@EditActivity)) {
-                ServerData(this@EditActivity).updateServerList(ListActivity.list2edit)
+                ServerData(this@EditActivity).updateServerLists()
             }
         }
     }
 
-    fun endEdit(fromActivity: Activity){
+    fun endEdit(fromActivity: Activity) {
+        fromActivity.setResult(RESULT_OK)
+        fromActivity.finish()
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                if (this@EditActivity.findViewById<TextInputLayout>(R.id.txtFldPrice).editText!!.isEnabled) {
+                    MainController().exitDialog(this@EditActivity)
+                } else {
+                    this@EditActivity.finish()
+                }
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
