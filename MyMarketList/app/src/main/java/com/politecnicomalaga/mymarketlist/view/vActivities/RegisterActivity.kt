@@ -156,7 +156,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun showPermissionRequiredDialog() {
         MaterialAlertDialogBuilder(this@RegisterActivity).setTitle(R.string.permissions_required_title)
             .setMessage(R.string.permissions_required_message)
-            .setPositiveButton(R.string.go_to_settings) { _, _ ->
+            .setPositiveButton(R.string.settings) { _, _ ->
                 openAppSettings()
             }.setNegativeButton(R.string.cancel, null).setCancelable(false).show()
     }

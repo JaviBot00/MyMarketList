@@ -10,25 +10,38 @@ $dbname = $_POST['username'];
 $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
 or die ('Could not connect to the database server' . mysqli_connect_error());
 
-$list2edit = $_POST['list2edit'];
-$datas = explode(",", $list2edit);
-$result1 = "";
+$arrayOfLists = $_POST['arrayOfLists'];
+$list = explode(",", $arrayOfLists);
+$cont = 0;
+$result = "";
 
-$query1 = "UPDATE `$dbname`.`tList` (sName, dCreated, dRealized, nPrice) VALUES (?, ?, ?, ?)";
+foreach ($list as $listsDatas) {
+    if (!empty($listsDatas)) {
+        $datas = explode(";", $listsDatas);
 
-if ($stmt1 = $con->prepare($query)) {
-    $sNameValue = $datas[0];
-    $dCreatedValue = $datas[1];
-    $dRealizedValue = $datas[2];
-    $nPriceValue = $datas[3];
+        $query = "UPDATE `$dbname`.`tList` set dRealized = ?, nPrice = ? WHERE sName = ?";
 
-    $stmt1->bind_param("sssd", $sNameValue, $dCreatedValue, $dRealizedValue, $nPriceValue);
-    $stmt1->execute();
-    $stmt1->close();
+
+        if ($stmt = $con->prepare($query)) {
+            $sNameValue = $datas[0];
+            $dCreatedValue = $datas[1];
+            $dRealizedValue = $datas[2];
+            $nPriceValue = $datas[3];
+
+            $stmt->bind_param("sds", $dRealizedValue, $nPriceValue, $sNameValue);
+            $stmt->execute();
+            $cont++;
+            $stmt->close();
+        }
+    }
+}
+
+if ($cont === count($list)) {
+    $result = "OK";
 }
 
 
-if ($result1 === "OK") {
+if ($result === "OK") {
     $con->commit();
 } else {
     $con->rollback();
@@ -36,6 +49,6 @@ if ($result1 === "OK") {
 
 $con->close();
 
-print($result1 . "," . $result2);
+print($result);
 
 ?>

@@ -20,11 +20,24 @@ class RandomData {
 
         repeat(30) {
             val rr = generateRandomString(15)
-            val startDate = generateRandomDate(2023, ((Math.random() * 6) + 1).toInt(), ((Math.random() * 30) + 1).toInt(), random)
-            val endDate = generateRandomDate(2023, ((Math.random() * 12) + 1).toInt(), ((Math.random() * 30) + 1).toInt(), random)
+            val startDate = generateRandomDate(
+                2023,
+                ((Math.random() * 6) + 1).toInt(),
+                ((Math.random() * 30) + 1).toInt(),
+                random
+            )
+            val endDate = generateRandomDate(
+                2023,
+                ((Math.random() * 12) + 1).toInt(),
+                ((Math.random() * 30) + 1).toInt(),
+                random
+            )
             val price = generateRandomPrice(random)
 
-            val record ="INSERT INTO List (sName, dCreated, dRealized, nPrice, bOnLine) VALUES ('$rr', '${dateFormat.format(startDate)}', '${dateFormat.format(endDate)}', '${priceFormat.format(price)}', 1)"
+            val record =
+                "INSERT INTO List (sName, dCreated, dRealized, nPrice, bOnLine) VALUES ('$rr', '${
+                    dateFormat.format(startDate)
+                }', '${dateFormat.format(endDate)}', '${priceFormat.format(price)}', 1)"
             records.add(record)
         }
 
@@ -52,7 +65,7 @@ class RandomData {
     }
 
     private fun generateRandomPrice(random: Random): Double {
-        return random.nextDouble() * 240.99
+        return (random.nextDouble() * 100.99) + 1
     }
 
 }

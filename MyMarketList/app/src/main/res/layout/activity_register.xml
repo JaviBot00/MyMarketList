@@ -93,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
+                android:textSize="18sp"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 app:errorEnabled="true" />
@@ -110,6 +111,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:hint="@string/password"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
@@ -127,6 +129,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:textSize="18sp"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:imeOptions="actionDone"
@@ -143,8 +146,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         android:text="@string/sign_up"
-        android:textSize="16sp"
-        app:cornerRadius="20dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/llTxtInput" />

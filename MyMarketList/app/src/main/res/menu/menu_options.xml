@@ -12,6 +12,6 @@
 
     <item
         android:id="@+id/menu_random"
-        android:title="@string/generate_datas"
+        android:title="@string/generate_data"
         android:visible="false" />
 </menu>

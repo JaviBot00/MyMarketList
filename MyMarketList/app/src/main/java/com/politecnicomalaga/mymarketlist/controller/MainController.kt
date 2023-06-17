@@ -2,18 +2,12 @@ package com.politecnicomalaga.mymarketlist.controller
 
 import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
-import android.media.Session2Command
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +19,7 @@ import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.EditActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.SuggestActivity
 
 
 class MainController {
@@ -47,7 +42,7 @@ class MainController {
         if (message != 0) Toast.makeText(fromActivity, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun exitDialog(fromActivity: AppCompatActivity){
+    fun exitDialog(fromActivity: AppCompatActivity) {
         MaterialAlertDialogBuilder(fromActivity).setTitle(fromActivity.resources.getString(R.string.alert))
             .setMessage(fromActivity.resources.getString(R.string.exit_activity))
             .setPositiveButton(fromActivity.resources.getString(R.string.accept)) { _, _ ->
@@ -55,7 +50,7 @@ class MainController {
                 fromActivity.finish()
             }.setNegativeButton(
                 fromActivity.resources.getString(R.string.cancel), null
-            ).show()
+            ).setCancelable(false).show()
     }
 
     private fun setAppBar(fromActivity: AppCompatActivity, title: Int, list: String) {
@@ -99,8 +94,13 @@ class MainController {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when (fromActivity) {
-                    is RegisterActivity, is CatalogueActivity, is EditActivity -> {
+                    is RegisterActivity, is CatalogueActivity, is EditActivity, is SuggestActivity -> {
                         exitDialog(fromActivity)
+                    }
+
+                    else -> {
+                        fromActivity.setResult(RESULT_CANCELED)
+                        fromActivity.finish()
                     }
                 }
             }

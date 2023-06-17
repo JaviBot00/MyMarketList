@@ -13,9 +13,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cAdapter.rvList.ListRVAdapter
+import com.politecnicomalaga.mymarketlist.controller.cEntities.RandomData
 import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
-import com.politecnicomalaga.mymarketlist.controller.cEntities.RandomData
 import com.politecnicomalaga.mymarketlist.model.List
 
 class ListActivity : AppCompatActivity() {
@@ -109,6 +109,7 @@ class ListActivity : AppCompatActivity() {
 
             R.id.menu_random -> {
                 RandomData().main(this@ListActivity)
+                setRecycler(this@ListActivity)
             }
         }
         return super.onOptionsItemSelected(item)

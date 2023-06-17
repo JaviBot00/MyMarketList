@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgCP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
@@ -22,6 +22,7 @@
         app:riv_tile_mode="clamp" />
 
     <Button
+        style="@style/Widget.Material3.Button"
         android:id="@+id/btnMakeList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,13 +30,14 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:text="@string/catalogue"
-        app:cornerRadius="20dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btnShowList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
+        app:layout_constraintTop_toBottomOf="@id/imgCP" />
 
     <Button
+        style="@style/Widget.Material3.Button"
         android:id="@+id/btnShowList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,7 +45,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:text="@string/my_list"
-        app:cornerRadius="20dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btnStats"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,13 +53,14 @@
 
     <Button
         android:id="@+id/btnStats"
+        style="@style/Widget.Material3.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:text="@string/stats"
-        app:cornerRadius="20dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btnSuggest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,11 +70,12 @@
         android:id="@+id/btnSuggest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button"
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:text="@string/suggest"
-        app:cornerRadius="20dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

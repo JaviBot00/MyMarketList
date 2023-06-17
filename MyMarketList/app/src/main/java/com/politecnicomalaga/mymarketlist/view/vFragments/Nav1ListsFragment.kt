@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.politecnicomalaga.mymarketlist.R
-import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ControlPanelActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.StatsActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.SuggestActivity
 
 class Nav1ListsFragment : Fragment {
 
@@ -63,7 +63,11 @@ class Nav1ListsFragment : Fragment {
 
         val btnSuggest: Button = view.findViewById(R.id.btnSuggest)
         btnSuggest.setOnClickListener {
-            MainController().showToast(fromActivity, R.string.in_maintenance)
+//            MainController().showToast(fromActivity, R.string.in_maintenance)
+            fromActivity.startActivityForResult(
+                Intent(fromActivity, SuggestActivity::class.java),
+                ControlPanelActivity.SUGGEST_REQUEST
+            )
         }
     }
 

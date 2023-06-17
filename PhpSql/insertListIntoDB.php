@@ -32,9 +32,9 @@ foreach ($list as $listsDatas) {
             $cont1++;
             $stmt1->close();
         }
-
     }
 }
+
 if ($cont1 === count($list)) {
     $result1 = "OK";
 }
@@ -61,10 +61,10 @@ foreach ($products as $productsDatas) {
             $cont2++;
             $stmt2->close();
         }
-
-        error_log($arrayOfProducts);
+        // error_log($arrayOfProducts);
     }
 }
+
 if ($cont2 === count($products)) {
     $result2 = "OK";
 }

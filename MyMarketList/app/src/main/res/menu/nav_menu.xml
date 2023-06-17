@@ -7,5 +7,5 @@
     <item
         android:id="@+id/nav2_details"
         android:icon="@drawable/icon_more_vert"
-        android:title="@string/nav2_details" />
+        android:title="@string/nav2_more" />
 </menu>

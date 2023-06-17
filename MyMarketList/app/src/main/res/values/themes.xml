@@ -10,7 +10,7 @@
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
         <item name="android:button">@color/colorButton</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/holo_green_dark</item>
+        <!--        <item name="android:statusBarColor">@android:color/holo_green_dark</item>-->
         <!-- Customize your theme here. -->
         <!--        <item name="android:forceDarkAllowed">true</item>-->
         <!--        <item name="android:navigationBarColor">@color/black</item>-->

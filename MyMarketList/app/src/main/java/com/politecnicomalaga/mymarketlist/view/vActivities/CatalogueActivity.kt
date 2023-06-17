@@ -75,7 +75,6 @@ class CatalogueActivity : AppCompatActivity() {
                 val inflater = LayoutInflater.from(this@CatalogueActivity)
                 val dialogView = inflater.inflate(R.layout.dialog_ly, null)
                 val textInputList: TextInputLayout = dialogView.findViewById(R.id.editTxtList)
-//                textInputList.editText!!.textSize = 20f
 
                 builder.setView(dialogView).setTitle(resources.getString(R.string.catalogue))
                     .setMessage(resources.getString(R.string.make_list_name))
@@ -103,9 +102,9 @@ class CatalogueActivity : AppCompatActivity() {
     }
 
     fun endCatalogue(fromActivity: Activity) {
-            val result = Intent(fromActivity, ControlPanelActivity::class.java)
-            fromActivity.setResult(RESULT_OK, result)
-            fromActivity.finish()
+        val result = Intent(fromActivity, ControlPanelActivity::class.java)
+        fromActivity.setResult(RESULT_OK, result)
+        fromActivity.finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

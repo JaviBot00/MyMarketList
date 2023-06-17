@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.model.List
-import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -37,7 +36,10 @@ class ListRVAdapter(
 
         holder.txtLists.text = myList.sName.replace("_", " ", false)
         holder.txtPrice.text = myList.nPrice.toString()
-        holder.txtDate.text = if (myList.dRealized.isNullOrEmpty()) "" else simpleDateFormatES.format(simpleDateFormatEN.parse(myList.dRealized!!)!!)
+        holder.txtDate.text =
+            if (myList.dRealized.isNullOrEmpty()) "" else simpleDateFormatES.format(
+                simpleDateFormatEN.parse(myList.dRealized!!)!!
+            )
 
 
 

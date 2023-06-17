@@ -16,11 +16,17 @@ $email = $_POST['email'];
 $imgProfileBase64 = $_POST['imgProfile'];
 
 
+$path = '/photos/';
+
+if (!file_exists($path)) {
+    mkdir($path, 0755, true);
+}
+
 // En ByteArray
 $imgProfileByteArray = base64_decode($imgProfileBase64);
 // $imgProfileFilename = uniqid($username . "_") . ".png";
 $imgProfileFilename = $username . ".png";
-$imgProfilePath = "/photos/" . $imgProfileFilename;
+$imgProfilePath = $path . $imgProfileFilename;
 file_put_contents("." . $imgProfilePath, $imgProfileByteArray);
 
 // En Base64

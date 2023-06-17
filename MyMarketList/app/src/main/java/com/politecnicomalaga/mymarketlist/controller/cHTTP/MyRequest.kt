@@ -22,9 +22,10 @@ class MyRequest(private val fromActivity: Activity) {
     companion object {
         private val IPs = arrayOf("79.147.88.210:8080", "192.168.1.175", "192.168.58.14")
         private var currentIP = IPs[0]
+
+        var host: String = "http://$currentIP/PhpSql"
     }
 
-    private var host: String = "http://$currentIP/PhpSql/"
 
     private val client: OkHttpClient = OkHttpClient()
 

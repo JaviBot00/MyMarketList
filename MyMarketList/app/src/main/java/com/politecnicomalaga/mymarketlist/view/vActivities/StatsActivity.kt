@@ -98,32 +98,32 @@ class StatsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private fun getMonthsForYear(
         myLists: ArrayList<List>, year: String
-    ): ArrayList<String> {
+    ): kotlin.collections.List<String> {
 //        val months = myLists.filter { it.dRealized!!.startsWith(year) }
 //            .map { getMonthName(it.dRealized!!.substring(5, 7)) }.distinct()
         val months = myLists.filter { it.dRealized!!.startsWith(year) }
             .map { it.dRealized!!.substring(5, 7) }.distinct()
-        return months as ArrayList<String>
+        return months
     }
 
-    private fun getMonthName(month: String): String {
-        val monthNames = arrayOf(
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        )
-        val monthIndex = month.toIntOrNull()?.let { it - 1 } ?: 0
-        return monthNames.getOrNull(monthIndex) ?: ""
-    }
+//    private fun getMonthName(month: String): String {
+//        val monthNames = arrayOf(
+//            "Enero",
+//            "Febrero",
+//            "Marzo",
+//            "Abril",
+//            "Mayo",
+//            "Junio",
+//            "Julio",
+//            "Agosto",
+//            "Septiembre",
+//            "Octubre",
+//            "Noviembre",
+//            "Diciembre"
+//        )
+//        val monthIndex = month.toIntOrNull()?.let { it - 1 } ?: 0
+//        return monthNames.getOrNull(monthIndex) ?: ""
+//    }
 
     private fun setGraphic() {
         val gvSensor: GraphView = findViewById(R.id.gvGraphic)
@@ -161,7 +161,7 @@ class StatsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         gvSensor.viewport.isYAxisBoundsManual = true
         gvSensor.viewport.setMinY(0.0)
-        gvSensor.viewport.setMaxY(filteredList.maxOfOrNull { it.nPrice.toDouble() } ?: 0.0)
+        gvSensor.viewport.setMaxY((filteredList.maxOfOrNull { it.nPrice.toDouble() } ?: 0.0) * 1.15)
 
         gvSensor.viewport.isXAxisBoundsManual = true
         gvSensor.viewport.setMinX(1.0)

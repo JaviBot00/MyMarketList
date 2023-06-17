@@ -18,21 +18,23 @@ import com.politecnicomalaga.mymarketlist.view.vActivities.EditActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.LoginActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.RegisterActivity
+import com.politecnicomalaga.mymarketlist.view.vActivities.SuggestActivity
 import okhttp3.MultipartBody
 
 class ServerData(private val fromActivity: Activity) {
 
     private val DELIMITER1 = ";"
     private val DELIMITER2 = ","
-    private val SELECT_FROM_TYPES = "selectFromTypes.php"
-    private val SELECT_FROM_PRODUCTS = "selectFromProducts.php"
-    private val SELECT_FROM_DATABASE = "selectFromDatabase.php"
-    private val SELECT_FROM_DATABASE_IMAGE = "selectFromDatabaseImage.php"
-    private val CREATE_DATABASE = "createDatabase.php"
-    private val INSERT_LIST_INTO_DB = "insertListIntoDB.php"
-    private val SELECT_LIST_FROM_DB = "selectListFromDB.php"
-    private val SELECT_PRODUCTS_FROM_DB = "selectProductsFromDB.php"
-    private val UPDATE_LIST_INTO_DB = "updateListIntoDB.php"
+    private val SELECT_FROM_TYPES = "/selectFromTypes.php"
+    private val SELECT_FROM_PRODUCTS = "/selectFromProducts.php"
+    private val SELECT_FROM_DATABASE = "/selectFromDatabase.php"
+//    private val SELECT_FROM_DATABASE_IMAGE = "/selectFromDatabaseImage.php"
+    private val CREATE_DATABASE = "/createDatabase.php"
+    private val INSERT_LIST_INTO_DB = "/insertListIntoDB.php"
+    private val SELECT_LIST_FROM_DB = "/selectListFromDB.php"
+    private val SELECT_PRODUCTS_FROM_DB = "/selectProductsFromDB.php"
+    private val UPDATE_LIST_INTO_DB = "/updateListIntoDB.php"
+    private val SAVE_SUGGEST = "/saveSuggest.php"
 
     fun getServerProductTables() {
         MyRequest(fromActivity).phpQuery(SELECT_FROM_TYPES) { response1 ->
@@ -54,11 +56,11 @@ class ServerData(private val fromActivity: Activity) {
                         CatalogueSQLite(fromActivity).setItems(myProduct)
                     }
                 }
-                if (response2.isEmpty()){
+                if (response2.isEmpty()) {
                     MainController().showToast(fromActivity, R.string.corrupt_data)
                 }
             }
-            if (response1.isEmpty()){
+            if (response1.isEmpty()) {
                 MainController().showToast(fromActivity, R.string.corrupt_data)
             }
         }
@@ -113,9 +115,6 @@ class ServerData(private val fromActivity: Activity) {
                     }
                 }
             }
-            if (response1.isEmpty()){
-                MainController().showToast(fromActivity, R.string.corrupt_data)
-            }
         }
     }
 
@@ -150,6 +149,19 @@ class ServerData(private val fromActivity: Activity) {
         }
     }
 
+    fun saveSuggest(subject: String, message: String) {
+        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
+            .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
+            .addFormDataPart("subject", subject).addFormDataPart("message", message).build()
+        MyRequest(fromActivity).phpQuery(SAVE_SUGGEST, requestBody) {
+            if (it.isNotEmpty() && it == "OK") {
+                SuggestActivity.getInstance().endSuggest(fromActivity)
+            } else {
+                MainController().showToast(fromActivity, R.string.error_send_suggest)
+            }
+        }
+    }
+
     private fun getServerLists() {
         val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName).build()
@@ -181,11 +193,11 @@ class ServerData(private val fromActivity: Activity) {
                 if (fromActivity is ListActivity) {
                     ListActivity.getInstance().endRefresh(fromActivity)
                 }
-                if (response2.isEmpty()){
+                if (response2.isEmpty()) {
                     MainController().showToast(fromActivity, R.string.corrupt_data)
                 }
             }
-            if (response1.isEmpty()){
+            if (response1.isEmpty()) {
                 MainController().showToast(fromActivity, R.string.corrupt_data)
             }
         }
@@ -211,8 +223,7 @@ class ServerData(private val fromActivity: Activity) {
                 .addFormDataPart("username", ClientSQLite(fromActivity).getUser().userName)
                 .addFormDataPart("arrayOfLists",
                     myLists.joinToString { it.sName + ";" + it.dCreated + ";" + it.dRealized + ";" + it.nPrice })
-                .addFormDataPart(
-                    "arrayOfProducts",
+                .addFormDataPart("arrayOfProducts",
                     myProducts.joinToString { it.sName + ";" + it.nIdList }).build()
             MyRequest(fromActivity).phpQuery(INSERT_LIST_INTO_DB, requestBody) { response ->
                 val state = response.split(DELIMITER2)

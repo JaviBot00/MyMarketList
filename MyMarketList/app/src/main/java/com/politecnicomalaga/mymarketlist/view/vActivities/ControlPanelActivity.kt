@@ -2,15 +2,12 @@ package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
+import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav2DetailsFragment
 
@@ -20,6 +17,7 @@ class ControlPanelActivity : AppCompatActivity() {
         val CATALOGUE_REQUEST = 1000
         val LIST_REQUEST = 2000
         val STATS_REQUEST = 3000
+        val SUGGEST_REQUEST = 4000
     }
 
     private lateinit var bottomNav: BottomNavigationView
@@ -28,6 +26,7 @@ class ControlPanelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_control_panel)
         MainController().setControllers(this@ControlPanelActivity, R.string.app_name, "")
+        ServerData(this@ControlPanelActivity).updateServerLists()
 
         loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
         bottomNav = findViewById(R.id.bottomNav)
@@ -39,7 +38,7 @@ class ControlPanelActivity : AppCompatActivity() {
                 }
 
                 R.id.nav2_details -> {
-                    loadFragment(Nav2DetailsFragment())
+                    loadFragment(Nav2DetailsFragment(this@ControlPanelActivity))
                     true
                 }
 
@@ -73,26 +72,22 @@ class ControlPanelActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        MenuInflater(this@ControlPanelActivity).inflate(R.menu.menu_options, menu)
-        menu.findItem(R.id.menu_log_out).isVisible = true
-        return super.onCreateOptionsMenu(menu)
-    }
+            SUGGEST_REQUEST -> {
+                when (resultCode) {
+                    RESULT_OK -> {
+                        MainController().showToast(
+                            this@ControlPanelActivity, R.string.successful_send_suggest
+                        )
+                    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_log_out -> {
-                ClientSQLite(this@ControlPanelActivity).resetTables(
-                    ClientSQLite(this@ControlPanelActivity).writableDatabase, true, true
-                )
-                val result = Intent(this@ControlPanelActivity, LoginActivity::class.java)
-                setResult(RESULT_OK, result)
-                finish()
+                    RESULT_CANCELED -> {
+                        MainController().showToast(
+                            this@ControlPanelActivity, R.string.error_send_suggest
+                        )
+                    }
+                }
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 }

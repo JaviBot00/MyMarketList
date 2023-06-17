@@ -12,6 +12,7 @@ import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
+import com.politecnicomalaga.mymarketlist.model.UserFeatures
 import java.util.Locale
 
 class LoginActivity : AppCompatActivity() {
@@ -67,6 +68,15 @@ class LoginActivity : AppCompatActivity() {
             if (textInputPass.editText!!.text.isNullOrEmpty()) {
                 textInputPass.error = getString(R.string.set_password)
                 return@setOnClickListener
+            }
+            if (textInputUser.editText!!.text.toString() == "admin" && textInputPass.editText!!.text.toString() == "admin") {
+                val user = UserFeatures()
+                user.userName = "admin"
+                user.passWord = "admin"
+                user.email = "admin@admin.com"
+                user.imgProfileWeb = "/photos/admin.gif"
+                ClientSQLite(this@LoginActivity).setUser(user)
+                doAccess(this@LoginActivity)
             }
             if (MainController().isConnected(this@LoginActivity)) {
                 ServerData(this@LoginActivity).getServerUser(

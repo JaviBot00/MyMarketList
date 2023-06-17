@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/username"
             android:imeOptions="actionNext"
+            android:textSize="18sp"
             android:inputType="text"
             app:errorEnabled="true" />
 
@@ -50,6 +51,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:imeOptions="actionDone"
+            android:textSize="18sp"
             android:inputType="textPassword"
             app:errorEnabled="true" />
 
@@ -62,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="@string/access"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtFldPass" />
@@ -70,11 +72,11 @@
     <Button
         android:id="@+id/btnRegister"
         style="@style/Widget.Material3.Button"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/create_account"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnAccess" />

@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
     implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     //    implementation 'com.github.Redman1037:TSnackBar:V2.0.0'
     //    implementation 'com.google.code.gson:gson:2.8.9'
 
