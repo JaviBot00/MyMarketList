@@ -2,7 +2,10 @@ package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.politecnicomalaga.mymarketlist.R
@@ -14,11 +17,14 @@ import com.politecnicomalaga.mymarketlist.view.vFragments.Nav2DetailsFragment
 class ControlPanelActivity : AppCompatActivity() {
 
     companion object {
-        val CATALOGUE_REQUEST = 1000
-        val LIST_REQUEST = 2000
-        val STATS_REQUEST = 3000
-        val SUGGEST_REQUEST = 4000
+        const val CATALOGUE_REQUEST = 1000
+        const val LIST_REQUEST = 2000
+        const val STATS_REQUEST = 3000
+        const val SUGGEST_REQUEST = 4000
     }
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     private lateinit var bottomNav: BottomNavigationView
 
@@ -27,6 +33,14 @@ class ControlPanelActivity : AppCompatActivity() {
         setContentView(R.layout.activity_control_panel)
         MainController().setControllers(this@ControlPanelActivity, R.string.app_name, "")
         ServerData(this@ControlPanelActivity).updateServerLists()
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        actionBarDrawerToggle = ActionBarDrawerToggle(
+            this@ControlPanelActivity, drawerLayout, R.string.nav_open, R.string.nav_close
+        )
+        drawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
         bottomNav = findViewById(R.id.bottomNav)
@@ -89,5 +103,11 @@ class ControlPanelActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            true
+        } else super.onOptionsItemSelected(item)
     }
 }

@@ -104,5 +104,6 @@
     <string name="successful_send_suggest">Sugerencia enviada con exito</string>
     <string name="about_me">Desarrollado por:\nJavier Botella Muñoz</string>
 
-
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>
