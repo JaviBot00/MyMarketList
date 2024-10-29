@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:background="#ededed"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <LinearLayout
+        android:id="@+id/redessociales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#c7c7c7"	>
+
+        <TextView
+            android:id="@+id/siguenosEn"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/bills"
+            android:textColor="#666666"
+            />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="110dp"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:gravity="right"
+            android:text="v. "
+            android:textColor="#666666"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/redessociales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#c7c7c7"	>
+
+        <ImageView
+            android:layout_height="34dp"
+            android:layout_width="34dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/icon_camera"
+            android:onClick="irAFacebook"
+            />
+
+        <ImageView
+            android:layout_height="34dp"
+            android:layout_width="34dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/icon_list"
+            android:onClick="irATwitter"
+            />
+
+        <ImageView
+            android:layout_height="34dp"
+            android:layout_width="34dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/discord"
+            android:onClick="irALinkedin"
+            />
+
+        <ImageView
+            android:layout_height="34dp"
+            android:layout_width="34dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/icon_photo_library"
+            android:onClick="irAYoutube"
+            />
+
+        <ImageView
+            android:layout_height="34dp"
+            android:layout_width="34dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/icon_delete_forever"
+            android:onClick="irABlog"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ultactdrawer"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:drawablePadding="10dp"
+        android:textSize="14sp"
+        android:gravity="center_vertical"/>
+
+</LinearLayout>
