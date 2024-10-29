@@ -28,17 +28,18 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
         const val SUGGEST_REQUEST = 4000
     }
 
-    private var mDrawerLayout: DrawerLayout? = null
-    private var mDrawerToggle: ActionBarDrawerToggle? = null
-    private val navigationView: NavigationView? = null
+    private lateinit var mDrawerLayout: DrawerLayout
+    private lateinit var mDrawerToggle: ActionBarDrawerToggle
+    private lateinit var navigationView: NavigationView
     private lateinit var bottomNav: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_control_panel)
+        setContentView(R.layout.content_main
+        )
         MainController().setControllers(this@ControlPanelActivity, R.string.app_name, "")
-        ServerData(this@ControlPanelActivity).updateServerLists()
+//        ServerData(this@ControlPanelActivity).updateServerLists()
 
         val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -47,8 +48,8 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
         mDrawerToggle = ActionBarDrawerToggle(
             this, mDrawerLayout, toolbar, R.string.app_name, R.string.in_maintenance
         )
-        mDrawerLayout!!.setDrawerListener(mDrawerToggle)
-        mDrawerToggle!!.syncState()
+        mDrawerLayout.setDrawerListener(mDrawerToggle)
+        mDrawerToggle.syncState()
 
 
         loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
