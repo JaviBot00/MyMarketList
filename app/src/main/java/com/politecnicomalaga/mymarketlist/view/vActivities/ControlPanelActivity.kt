@@ -36,7 +36,7 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.content_main
+        setContentView(R.layout.activity_main
         )
         MainController().setControllers(this@ControlPanelActivity, R.string.app_name, "")
 //        ServerData(this@ControlPanelActivity).updateServerLists()

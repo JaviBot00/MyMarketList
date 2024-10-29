@@ -24,7 +24,7 @@
             android:textSize="14sp"
             android:paddingLeft="20dp"
             android:gravity="center_vertical"
-            android:text="@string/bills"
+            android:text="@string/app_name"
             android:textColor="#666666"
             />
 
@@ -34,7 +34,7 @@
             android:layout_height="30dp"
             android:textSize="14sp"
             android:gravity="right"
-            android:text="v. "
+            android:text="@string/in_maintenance"
             android:textColor="#666666"
             />
 
