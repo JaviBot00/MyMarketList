@@ -17,6 +17,7 @@ import com.politecnicomalaga.mymarketlist.controller.cAdapter.TabsVPAdapter
 import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.CatalogueSQLite
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
+import com.politecnicomalaga.mymarketlist.view.MainActivity
 
 class CatalogueActivity : AppCompatActivity() {
 
@@ -102,7 +103,7 @@ class CatalogueActivity : AppCompatActivity() {
     }
 
     fun endCatalogue(fromActivity: Activity) {
-        val result = Intent(fromActivity, ControlPanelActivity::class.java)
+        val result = Intent(fromActivity, MainActivity::class.java)
         fromActivity.setResult(RESULT_OK, result)
         fromActivity.finish()
     }

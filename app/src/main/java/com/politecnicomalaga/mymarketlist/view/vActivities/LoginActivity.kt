@@ -13,6 +13,7 @@ import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import com.politecnicomalaga.mymarketlist.model.UserFeatures
+import com.politecnicomalaga.mymarketlist.view.MainActivity
 import java.util.Locale
 
 class LoginActivity : AppCompatActivity() {
@@ -102,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
     fun doAccess(fromActivity: Activity) {
         if (fromActivity is LoginActivity) {
             fromActivity.startActivityForResult(
-                Intent(fromActivity, ControlPanelActivity::class.java), CONTROLPANEL_REQUEST
+                Intent(fromActivity, MainActivity::class.java), CONTROLPANEL_REQUEST
             )
             fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
             fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()

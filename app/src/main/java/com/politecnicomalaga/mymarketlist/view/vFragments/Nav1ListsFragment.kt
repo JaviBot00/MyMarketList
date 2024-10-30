@@ -10,7 +10,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.view.vActivities.CatalogueActivity
-import com.politecnicomalaga.mymarketlist.view.vActivities.ControlPanelActivity
+import com.politecnicomalaga.mymarketlist.view.MainActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.ListActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.StatsActivity
 import com.politecnicomalaga.mymarketlist.view.vActivities.SuggestActivity
@@ -41,7 +41,7 @@ class Nav1ListsFragment : Fragment {
         btnMakeList.setOnClickListener {
             fromActivity.startActivityForResult(
                 Intent(fromActivity, CatalogueActivity::class.java),
-                ControlPanelActivity.CATALOGUE_REQUEST
+                MainActivity.CATALOGUE_REQUEST
             )
         }
 
@@ -49,7 +49,7 @@ class Nav1ListsFragment : Fragment {
         btnShowLists.setOnClickListener {
             fromActivity.startActivityForResult(
                 Intent(fromActivity, ListActivity::class.java),
-                ControlPanelActivity.LIST_REQUEST
+                MainActivity.LIST_REQUEST
             )
         }
 
@@ -57,7 +57,7 @@ class Nav1ListsFragment : Fragment {
         btnStats.setOnClickListener {
             fromActivity.startActivityForResult(
                 Intent(fromActivity, StatsActivity::class.java),
-                ControlPanelActivity.STATS_REQUEST
+                MainActivity.STATS_REQUEST
             )
         }
 
@@ -66,7 +66,7 @@ class Nav1ListsFragment : Fragment {
 //            MainController().showToast(fromActivity, R.string.in_maintenance)
             fromActivity.startActivityForResult(
                 Intent(fromActivity, SuggestActivity::class.java),
-                ControlPanelActivity.SUGGEST_REQUEST
+                MainActivity.SUGGEST_REQUEST
             )
         }
     }

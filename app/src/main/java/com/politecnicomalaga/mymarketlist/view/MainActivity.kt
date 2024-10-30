@@ -1,4 +1,4 @@
-package com.politecnicomalaga.mymarketlist.view.vActivities
+package com.politecnicomalaga.mymarketlist.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,12 +14,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav2DetailsFragment
 
 
-class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         const val CATALOGUE_REQUEST = 1000
@@ -38,8 +37,8 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main
         )
-        MainController().setControllers(this@ControlPanelActivity, R.string.app_name, "")
-//        ServerData(this@ControlPanelActivity).updateServerLists()
+        MainController().setControllers(this@MainActivity, R.string.app_name, "")
+//        ServerData(this@MainActivity).updateServerLists()
 
         val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -52,17 +51,17 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
         mDrawerToggle.syncState()
 
 
-        loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
+        loadFragment(Nav1ListsFragment(this@MainActivity))
         bottomNav = findViewById(R.id.bottomNav)
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.nav1_lists -> {
-                    loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
+                    loadFragment(Nav1ListsFragment(this@MainActivity))
                     true
                 }
 
                 R.id.nav2_details -> {
-                    loadFragment(Nav2DetailsFragment(this@ControlPanelActivity))
+                    loadFragment(Nav2DetailsFragment(this@MainActivity))
                     true
                 }
 
@@ -85,13 +84,13 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
                 when (resultCode) {
                     RESULT_OK -> {
                         MainController().showToast(
-                            this@ControlPanelActivity, R.string.successful_create_list
+                            this@MainActivity, R.string.successful_create_list
                         )
                     }
 
                     RESULT_CANCELED -> {
                         MainController().showToast(
-                            this@ControlPanelActivity, R.string.error_create_list
+                            this@MainActivity, R.string.error_create_list
                         )
                     }
                 }
@@ -101,13 +100,13 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
                 when (resultCode) {
                     RESULT_OK -> {
                         MainController().showToast(
-                            this@ControlPanelActivity, R.string.successful_send_suggest
+                            this@MainActivity, R.string.successful_send_suggest
                         )
                     }
 
                     RESULT_CANCELED -> {
                         MainController().showToast(
-                            this@ControlPanelActivity, R.string.error_send_suggest
+                            this@MainActivity, R.string.error_send_suggest
                         )
                     }
                 }
