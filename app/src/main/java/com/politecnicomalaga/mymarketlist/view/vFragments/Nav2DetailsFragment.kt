@@ -16,7 +16,7 @@ import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import com.politecnicomalaga.mymarketlist.view.vActivities.LoginActivity
-import com.squareup.picasso.Picasso
+//import com.squareup.picasso.Picasso
 
 class Nav2DetailsFragment : Fragment {
 
@@ -51,7 +51,7 @@ class Nav2DetailsFragment : Fragment {
 
         val imageUrl = MyRequest.host + user.imgProfileWeb
 
-        Picasso.get().load(imageUrl).into(imageView)
+//        Picasso.get().load(imageUrl).into(imageView)
 
         txtViewUsername.text = user.userName
         txtViewEmail.text = user.email
