@@ -17,37 +17,42 @@ class ProductsRVAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsRVHolder {
         return ProductsRVHolder(
-            LayoutInflater.from(fromActivity).inflate(R.layout.rv_catalogue, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.rv_catalogue, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: ProductsRVHolder, position: Int) {
         val myProduct: Product = myProductsList[position]
 
-        holder.txtItems.text = myProduct.sName
+        holder.kk(fromActivity, myProduct)
+        // Pasada esta logica a la clase Holder
 
-        when (fromActivity) {
-            is CatalogueActivity -> {
-                holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) {
-                        ClientSQLite.myProductsList.add(myProduct)
-                    } else if (!isChecked && ClientSQLite.myProductsList.contains(myProduct)) {
-                        ClientSQLite.myProductsList.remove(myProduct)
-                    }
-                }
+//        holder.txtItems.text = myProduct.sName
+//
+//        when (fromActivity) {
+//            is CatalogueActivity -> {
+//                holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+//                    if (isChecked) {
+//                        ClientSQLite.myProductsList.add(myProduct)
+//                    } else if (!isChecked && ClientSQLite.myProductsList.contains(myProduct)) {
+//                        ClientSQLite.myProductsList.remove(myProduct)
+//                    }
+//                }
+//
+//                if (ClientSQLite.myProductsList.contains(myProduct)) {
+//                    holder.checkBox.isChecked = true
+//                } else if (!ClientSQLite.myProductsList.contains(myProduct)) {
+//                    holder.checkBox.isChecked = false
+//                }
+//            }
+//
+//            is EditActivity -> {
+//                holder.checkBox.isEnabled = false
+//                holder.checkBox.isVisible = false
+//            }
+//        }
 
-                if (ClientSQLite.myProductsList.contains(myProduct)) {
-                    holder.checkBox.isChecked = true
-                } else if (!ClientSQLite.myProductsList.contains(myProduct)) {
-                    holder.checkBox.isChecked = false
-                }
-            }
-
-            is EditActivity -> {
-                holder.checkBox.isEnabled = false
-                holder.checkBox.isVisible = false
-            }
-        }
+        // Hasta aqui
 
     }
 
