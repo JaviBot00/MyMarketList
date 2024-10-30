@@ -166,14 +166,15 @@ class StatsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 //        gvSensor.viewport.isXAxisBoundsManual = true
 //        gvSensor.viewport.setMinX(1.0)
 //        gvSensor.viewport.setMaxX(30.0)
-////
-////        val minX = dataPoints.minOfOrNull { it.x } ?: 1.0
-////        val maxX = dataPoints.maxOfOrNull { it.x } ?: 30.0
-////        gvSensor.viewport.setMinX(minX)
-////        gvSensor.viewport.setMaxX(maxX)
 //
 //
-////        gvSensor.viewport.isScrollable = true
+//        val minX = dataPoints.minOfOrNull { it.x } ?: 1.0
+//        val maxX = dataPoints.maxOfOrNull { it.x } ?: 30.0
+//        gvSensor.viewport.setMinX(minX)
+//        gvSensor.viewport.setMaxX(maxX)
+
+
+//        gvSensor.viewport.isScrollable = true
 //        gvSensor.viewport.isScalable = true
 //        gvSensor.viewport.setDrawBorder(true)
 //        gvSensor.viewport.borderColor = Color.BLACK
