@@ -1,9 +1,11 @@
 package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.politecnicomalaga.mymarketlist.R
 import com.politecnicomalaga.mymarketlist.controller.MainController
-import com.politecnicomalaga.mymarketlist.controller.cEntities.ServerData
+import com.politecnicomalaga.mymarketlist.databinding.ActivityMainBinding
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav1ListsFragment
 import com.politecnicomalaga.mymarketlist.view.vFragments.Nav2DetailsFragment
 
@@ -32,16 +34,18 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
     private lateinit var mDrawerToggle: ActionBarDrawerToggle
     private lateinit var navigationView: NavigationView
     private lateinit var bottomNav: BottomNavigationView
+    private lateinit var binding: ActivityMainBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main
-        )
+//        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         MainController().setControllers(this@ControlPanelActivity, R.string.app_name, "")
 //        ServerData(this@ControlPanelActivity).updateServerLists()
 
-        val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        val toolbar: Toolbar = binding.appBarMain.toolbar
         setSupportActionBar(toolbar)
 
         mDrawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
@@ -50,7 +54,27 @@ class ControlPanelActivity : AppCompatActivity() , NavigationView.OnNavigationIt
         )
         mDrawerLayout.setDrawerListener(mDrawerToggle)
         mDrawerToggle.syncState()
+        navigationView = findViewById(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
 
+
+//        //poner en el menu el usuario
+//        val headerView = navigationView.getHeaderView(0)
+//        val usuarioConectado_tv = headerView.findViewById<View>(R.id.usuario_conectado) as TextView
+//        val usuarioConectado =
+//            getSharedPreferences("preferences", MODE_PRIVATE).getString("usuario", null)
+//        usuarioConectado_tv.text = usuarioConectado
+//
+//
+//        //poner version en el menu
+//        try {
+//            val conetenidoMenu = navigationView.rootView
+//            val version_input = conetenidoMenu.findViewById<View>(R.id.version) as TextView
+//            val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+//            version_input.text = "V.$versionName"
+//        } catch (e: PackageManager.NameNotFoundException) {
+//            e.printStackTrace()
+//        }
 
         loadFragment(Nav1ListsFragment(this@ControlPanelActivity))
         bottomNav = findViewById(R.id.bottomNav)
