@@ -17,6 +17,8 @@
         <!--        <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>-->
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="Theme.MyMarketList.Starting" parent="Theme.SplashScreen">
         <!-- Set the splash screen background, animated icon, and animation duration. -->
         <item name="windowSplashScreenBackground">@color/colorBackground</item>

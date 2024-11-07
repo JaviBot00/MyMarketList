@@ -1,7 +1,9 @@
 package com.politecnicomalaga.mymarketlist.view.vFragments
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.politecnicomalaga.mymarketlist.R
+import com.politecnicomalaga.mymarketlist.controller.MainController
 import com.politecnicomalaga.mymarketlist.controller.cHTTP.MyRequest
 import com.politecnicomalaga.mymarketlist.controller.cSQLite.ClientSQLite
 import com.politecnicomalaga.mymarketlist.view.vActivities.LoginActivity
+
+
 //import com.squareup.picasso.Picasso
 
 class Nav2DetailsFragment : Fragment {
@@ -46,7 +51,7 @@ class Nav2DetailsFragment : Fragment {
         val txtViewUsername: TextView = fromActivity.findViewById(R.id.txtViewUsername)
         val txtViewEmail: TextView = fromActivity.findViewById(R.id.txtViewEmail)
         val btnAbout: Button = fromActivity.findViewById(R.id.btnAbout)
-//        val btnSetting: Button = fromActivity.findViewById(R.id.btnSetting)
+        val btnSetting: Button = fromActivity.findViewById(R.id.btnSetting)
         val btnLogOut: Button = fromActivity.findViewById(R.id.btnLogOut)
 
         val imageUrl = MyRequest.host + user.imgProfileWeb
@@ -64,17 +69,27 @@ class Nav2DetailsFragment : Fragment {
                 }.setCancelable(false).show()
         }
 
-//        btnSetting.setOnClickListener {
-//            MainController().showToast(fromActivity, R.string.in_maintenance)
-//        }
+        btnSetting.setOnClickListener {
+            MainController().showToast(fromActivity, R.string.in_maintenance)
+        }
 
         btnLogOut.setOnClickListener {
-            ClientSQLite(fromActivity).resetTables(
-                ClientSQLite(fromActivity).writableDatabase, true, true
-            )
-            val result = Intent(fromActivity, LoginActivity::class.java)
-            fromActivity.setResult(AppCompatActivity.RESULT_OK, result)
+            // Borrar el estado de inicio de sesión
+            val prefs: SharedPreferences = fromActivity.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val editor = prefs.edit()
+            editor.putBoolean("isLoggedIn", false)
+            editor.apply()
+
+            // Volver a la pantalla de login
+            startActivity(Intent(fromActivity, LoginActivity::class.java))
             fromActivity.finish()
+
+//            ClientSQLite(fromActivity).resetTables(
+//                ClientSQLite(fromActivity).writableDatabase, true, true
+//            )
+//            val result = Intent(fromActivity, LoginActivity::class.java)
+//            fromActivity.setResult(AppCompatActivity.RESULT_OK, result)
+//            fromActivity.finish()
         }
     }
 }

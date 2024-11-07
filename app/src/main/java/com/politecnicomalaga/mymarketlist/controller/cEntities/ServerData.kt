@@ -253,9 +253,9 @@ class ServerData(private val fromActivity: Activity) {
                     RegisterActivity.getInstance().endRegister(fromActivity)
                 }
 
-                is LoginActivity -> {
-                    LoginActivity.getInstance().doAccess(fromActivity)
-                }
+//                is LoginActivity -> {
+//                    LoginActivity.getInstance().doAccess(fromActivity)
+//                }
 
                 else -> MainController().showToast(fromActivity, R.string.in_maintenance)
             }
