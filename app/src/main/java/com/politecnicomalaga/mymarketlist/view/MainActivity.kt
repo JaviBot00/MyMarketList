@@ -50,6 +50,9 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         mDrawerLayout.setDrawerListener(mDrawerToggle)
         mDrawerToggle.syncState()
 
+        navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        navigationView.setNavigationItemSelectedListener(this)
+        navigationView.menu.findItem(R.id.registrarTarjeta).setVisible(false)
 
         loadFragment(Nav1ListsFragment(this@MainActivity))
         bottomNav = findViewById(R.id.bottomNav)

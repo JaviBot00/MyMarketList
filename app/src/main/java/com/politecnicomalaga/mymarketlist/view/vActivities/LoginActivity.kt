@@ -2,6 +2,7 @@ package com.politecnicomalaga.mymarketlist.view.vActivities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -35,8 +36,19 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+
+        // Comprobar si el usuario ya ha iniciado sesión
+        val prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val isLoggedIn = prefs.getBoolean("isLoggedIn", false)
+
+        if (isLoggedIn) {
+            // Redirigir a MainActivity si ya está logueado
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish() // Cierra LoginActivity para que no se pueda regresar a ella
+        }
+
         setContentView(R.layout.activity_login)
-        checkAccess(this@LoginActivity)
+//        checkAccess(this@LoginActivity)
         MainController().setControllers(this@LoginActivity, R.string.app_name, "")
 
         ServerData(this@LoginActivity).getServerProductTables()
@@ -77,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 user.email = "admin@admin.com"
                 user.imgProfileWeb = "/photos/admin.gif"
                 ClientSQLite(this@LoginActivity).setUser(user)
-                doAccess(this@LoginActivity)
+                doAccess(this@LoginActivity, prefs)
             }
             if (MainController().isConnected(this@LoginActivity)) {
                 ServerData(this@LoginActivity).getServerUser(
@@ -94,46 +106,56 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkAccess(fromActivity: Activity) {
-        if (ClientSQLite(fromActivity).getUser().userName.isNotEmpty()) {
-            doAccess(fromActivity)
-        }
+//    private fun checkAccess(fromActivity: Activity) {
+//        if (ClientSQLite(fromActivity).getUser().userName.isNotEmpty()) {
+//            doAccess(fromActivity)
+//        }
+//    }
+
+    fun doAccess(fromActivity: Activity, prefs: SharedPreferences) {
+        // Aquí va la lógica de autenticación
+        // Si es exitosa:
+        val editor: SharedPreferences.Editor = prefs.edit()
+        editor.putBoolean("isLoggedIn", true) // Marcar como logueado
+        editor.apply()
+
+        // Navegar a MainActivity
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
+
+//        if (fromActivity is LoginActivity) {
+//            fromActivity.startActivityForResult(
+//                Intent(fromActivity, MainActivity::class.java), CONTROLPANEL_REQUEST
+//            )
+//            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
+//            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
+//        }
     }
 
-    fun doAccess(fromActivity: Activity) {
-        if (fromActivity is LoginActivity) {
-            fromActivity.startActivityForResult(
-                Intent(fromActivity, MainActivity::class.java), CONTROLPANEL_REQUEST
-            )
-            fromActivity.findViewById<TextInputLayout>(R.id.txtFldUser).editText!!.text.clear()
-            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REGISTER_REQUEST -> {
-                when (resultCode) {
-                    RESULT_OK -> {
-                        MainController().showToast(
-                            this@LoginActivity, R.string.user_successfully_registered
-                        )
-                        doAccess(this@LoginActivity)
-                    }
-
-                    RESULT_CANCELED -> {
-                        MainController().showToast(this@LoginActivity, R.string.user_not_registered)
-                    }
-                }
-            }
-
-            CONTROLPANEL_REQUEST -> {
-                if (resultCode == RESULT_OK) {
-                    MainController().showToast(this@LoginActivity, R.string.successful_log_out)
-                }
-            }
-        }
-    }
+//    @Deprecated("Deprecated in Java")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        when (requestCode) {
+//            REGISTER_REQUEST -> {
+//                when (resultCode) {
+//                    RESULT_OK -> {
+//                        MainController().showToast(
+//                            this@LoginActivity, R.string.user_successfully_registered
+//                        )
+//                        doAccess(this@LoginActivity)
+//                    }
+//
+//                    RESULT_CANCELED -> {
+//                        MainController().showToast(this@LoginActivity, R.string.user_not_registered)
+//                    }
+//                }
+//            }
+//
+//            CONTROLPANEL_REQUEST -> {
+//                if (resultCode == RESULT_OK) {
+//                    MainController().showToast(this@LoginActivity, R.string.successful_log_out)
+//                }
+//            }
+//        }
+//    }
 }
