@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    namespace = "com.politecnicomalaga.mymarketlist"
-    compileSdk = 34
+    namespace = "com.hotguy.mymarketlist"
+    compileSdk = 35
     buildToolsVersion = "35.0.0"
 
     defaultConfig {
-        applicationId = "com.politecnicomalaga.mymarketlist"
+        applicationId = "com.hotguy.mymarketlist"
         minSdk = 31
         targetSdk = 34
         versionCode = 1

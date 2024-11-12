@@ -31,7 +31,7 @@
         <activity
             android:name=".view.vActivities.SuggestActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity"
+            android:parentActivityName=".view.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.EditActivity"
@@ -41,19 +41,19 @@
         <activity
             android:name=".view.vActivities.StatsActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity" />
+            android:parentActivityName=".view.MainActivity" />
         <activity
             android:name=".view.vActivities.ListActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity"
+            android:parentActivityName=".view.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.vActivities.CatalogueActivity"
             android:exported="false"
-            android:parentActivityName=".view.vActivities.ControlPanelActivity"
+            android:parentActivityName=".view.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.vActivities.ControlPanelActivity"
+            android:name=".view.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

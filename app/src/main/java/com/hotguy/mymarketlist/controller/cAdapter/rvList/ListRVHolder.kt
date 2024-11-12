@@ -1,0 +1,12 @@
+package com.hotguy.mymarketlist.controller.cAdapter.rvList
+
+import android.view.View
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.hotguy.mymarketlist.R
+
+class ListRVHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var txtLists: TextView = itemView.findViewById(R.id.txtLists)
+    var txtPrice: TextView = itemView.findViewById(R.id.txtPrice)
+    var txtDate: TextView = itemView.findViewById(R.id.txtDate)
+}
