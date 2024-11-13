@@ -1,0 +1,63 @@
+package com.hotguy.mymarketlist.controller.cAdapter.rvProducts
+
+import android.app.Activity
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.hotguy.mymarketlist.R
+import com.hotguy.mymarketlist.controller.cSQLite.ClientSQLite
+import com.hotguy.mymarketlist.model.Product
+import com.hotguy.mymarketlist.view.vActivities.CatalogueActivity
+import com.hotguy.mymarketlist.view.vActivities.EditActivity
+
+class ProductsRVAdapter(
+    private val fromActivity: Activity, private val myProductsList: ArrayList<Product>
+) : RecyclerView.Adapter<ProductsRVHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsRVHolder {
+        return ProductsRVHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.rv_catalogue, parent, false)
+        )
+    }
+
+    override fun onBindViewHolder(holder: ProductsRVHolder, position: Int) {
+        val myProduct: Product = myProductsList[position]
+
+        holder.kk(fromActivity, myProduct)
+        // Pasada esta logica a la clase Holder
+
+//        holder.txtItems.text = myProduct.sName
+//
+//        when (fromActivity) {
+//            is CatalogueActivity -> {
+//                holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+//                    if (isChecked) {
+//                        ClientSQLite.myProductsList.add(myProduct)
+//                    } else if (!isChecked && ClientSQLite.myProductsList.contains(myProduct)) {
+//                        ClientSQLite.myProductsList.remove(myProduct)
+//                    }
+//                }
+//
+//                if (ClientSQLite.myProductsList.contains(myProduct)) {
+//                    holder.checkBox.isChecked = true
+//                } else if (!ClientSQLite.myProductsList.contains(myProduct)) {
+//                    holder.checkBox.isChecked = false
+//                }
+//            }
+//
+//            is EditActivity -> {
+//                holder.checkBox.isEnabled = false
+//                holder.checkBox.isVisible = false
+//            }
+//        }
+
+        // Hasta aqui
+
+    }
+
+    override fun getItemCount(): Int {
+        return myProductsList.size
+    }
+
+}
