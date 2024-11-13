@@ -43,6 +43,7 @@
     <string name="sign_up">Registrarse</string>
     <string name="camera">Camara</string>
     <string name="gallery">Galeria</string>
+    <string name="nickname">Alias</string>
     <string name="email">Correo</string>
     <string name="set_valid_username">Inserte un usuario valido</string>
     <string name="set_valid_password">Inserte una contraseña valida</string>

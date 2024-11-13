@@ -1,46 +1,40 @@
-package com.hotguy.mymarketlist.view.vActivities
+package com.hotguy.mymarketlist.view.vFragments;
 
-import android.R.attr.password
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.widget.addTextChangedListener
-import com.google.android.material.textfield.TextInputLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.hotguy.mymarketlist.R
 import com.hotguy.mymarketlist.controller.MainController
+import com.hotguy.mymarketlist.controller.cAdapter.rvProducts.ProductsRVAdapter
 import com.hotguy.mymarketlist.controller.cEntities.ServerData
-import com.hotguy.mymarketlist.controller.cSQLite.ClientSQLite
-import com.hotguy.mymarketlist.model.UserFeatures
 import com.hotguy.mymarketlist.view.MainActivity
 
-
-class LoginActivity : AppCompatActivity() {
-
-    companion object {
-        private var myLogin: LoginActivity? = null
-
-        fun getInstance(): LoginActivity {
-            if (myLogin == null) {
-                myLogin = LoginActivity()
-            }
-            return myLogin!!
-        }
-    }
-
-    private val REGISTER_REQUEST = 1000
-    private val CONTROLPANEL_REQUEST = 2000
-
+class SingInFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        retainInstance = true
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_signin, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+         installSplashScreen()
 
         // Inicializar Firebase Auth
         val myAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -171,31 +165,4 @@ class LoginActivity : AppCompatActivity() {
 //            fromActivity.findViewById<TextInputLayout>(R.id.txtFldPass).editText!!.text.clear()
 //        }
     }
-
-//    @Deprecated("Deprecated in Java")
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        when (requestCode) {
-//            REGISTER_REQUEST -> {
-//                when (resultCode) {
-//                    RESULT_OK -> {
-//                        MainController().showToast(
-//                            this@LoginActivity, R.string.user_successfully_registered
-//                        )
-//                        doAccess(this@LoginActivity)
-//                    }
-//
-//                    RESULT_CANCELED -> {
-//                        MainController().showToast(this@LoginActivity, R.string.user_not_registered)
-//                    }
-//                }
-//            }
-//
-//            CONTROLPANEL_REQUEST -> {
-//                if (resultCode == RESULT_OK) {
-//                    MainController().showToast(this@LoginActivity, R.string.successful_log_out)
-//                }
-//            }
-//        }
-//    }
 }

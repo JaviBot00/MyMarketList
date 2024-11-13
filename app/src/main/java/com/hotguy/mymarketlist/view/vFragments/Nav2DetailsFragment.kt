@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.hotguy.mymarketlist.R
 import com.hotguy.mymarketlist.controller.MainController
 import com.hotguy.mymarketlist.controller.cHTTP.MyRequest
@@ -53,6 +54,9 @@ class Nav2DetailsFragment : Fragment {
         val btnSetting: Button = fromActivity.findViewById(R.id.btnSetting)
         val btnLogOut: Button = fromActivity.findViewById(R.id.btnLogOut)
 
+        // Inicializar Firebase Auth
+        val myAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
         val imageUrl = MyRequest.host + user.imgProfileWeb
 
 //        Picasso.get().load(imageUrl).into(imageView)
@@ -74,11 +78,18 @@ class Nav2DetailsFragment : Fragment {
 
         btnLogOut.setOnClickListener {
             // Borrar el estado de inicio de sesión
-            val prefs: SharedPreferences = fromActivity.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putBoolean("isLoggedIn", false)
-            editor.apply()
 
+            myAuth.signOut()
+
+
+
+
+
+//            val prefs: SharedPreferences = fromActivity.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+//            val editor = prefs.edit()
+//            editor.putBoolean("isLoggedIn", false)
+//            editor.apply()
+//
             // Volver a la pantalla de login
             startActivity(Intent(fromActivity, LoginActivity::class.java))
             fromActivity.finish()

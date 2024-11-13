@@ -9,21 +9,24 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.*
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.hotguy.mymarketlist.R
 import com.hotguy.mymarketlist.controller.MainController
 import com.hotguy.mymarketlist.controller.cEntities.CheckPermissions
 import com.hotguy.mymarketlist.controller.cEntities.ServerData
 import com.hotguy.mymarketlist.model.UserFeatures
 import java.io.ByteArrayOutputStream
-import java.util.*
+import java.util.Locale
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -47,9 +50,9 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         MainController().setControllers(this@RegisterActivity, R.string.create_account, "")
 
-        val textInputUsername: TextInputLayout = findViewById(R.id.txtFldUserName)
+        val textInputUsername: TextInputLayout = findViewById(R.id.txtFldEmail)
         val textInputPassword: TextInputLayout = findViewById(R.id.txtFldPassWord)
-        val textInputEmail: TextInputLayout = findViewById(R.id.txtFldEmail)
+        val textInputEmail: TextInputLayout = findViewById(R.id.txtFldNickName)
         val btnSaveUser: Button = findViewById(R.id.btnSaveUser)
 
         val btnAddImg: FloatingActionButton = findViewById(R.id.btnAddImg)
