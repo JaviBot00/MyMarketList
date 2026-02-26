@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.any" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.flash" />
     <uses-feature android:name="android.hardware.camera.front" />
@@ -22,12 +25,10 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/my_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/my_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMarketList"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="34">
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".view.vActivities.SuggestActivity"
             android:exported="false"
@@ -57,12 +58,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.vActivities.RegisterActivity"
-            android:exported="false"
-            android:parentActivityName=".view.vActivities.LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.vActivities.LoginActivity"
+            android:name=".view.AuthActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMarketList.Starting">
